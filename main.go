@@ -3,7 +3,9 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
+	"github.com/docker/docker/api/types"
 	"reflect"
 	"strings"
 )
@@ -27,7 +29,7 @@ func main() {
 	  os.Exit(0)
 	*/
 
-	var t Test
+	var t types.ContainerJSON
 	test(&t)
 }
 
@@ -60,36 +62,6 @@ func test(i interface{}) {
 		nameOfField := element.Type().Field(i).Name
 
 		ToScalarValue(&buffer, field, nameOfField, i)
-		/*
-			if err != nil {
-
-				nameOfField := field.Type().Name()
-				_=nameOfField
-				t:=field
-				_=t
-
-				for i := 0; i < field.NumField(); i += 1 {
-					nameOfField := field.Type().Field(i).Name
-					field := field.Field(i)
-					err, localBuffer := ToScalarValue(field.Type().Kind(), nameOfField, i)
-					if err != nil {
-						panic(err)
-					}
-
-					_, err = buffer.Write(localBuffer.Bytes())
-					if err != nil {
-						panic(err)
-					}
-				}
-
-				continue
-			}
-
-			_, err = buffer.Write(localBuffer.Bytes())
-			if err != nil {
-				panic(err)
-			}
-		*/
 	}
 
 	buffer.WriteString("}\n")
@@ -109,37 +81,31 @@ func ToScalarValue(
 
 	var elementTypeText = element.Type().String()
 	switch element.Type().Kind() {
-
 	case reflect.Invalid:
+		err = errors.New("ToScalarValue() function found an invalid value")
 	case reflect.Bool:
+		buffer.WriteString("  bool " + elementTypeText + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Uintptr:
+		buffer.WriteString("  " + removePtrFromString(elementTypeText) + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Complex64:
+		err = errors.New("ToScalarValue() function has't Complex64 code")
 	case reflect.Complex128:
+		err = errors.New("ToScalarValue() function has't Complex128 code")
 	case reflect.Array:
+		err = errors.New("ToScalarValue() function has't uintptr code")
 	case reflect.Chan:
+		break
 	case reflect.Func:
+		break
 	case reflect.Interface:
 		buffer.WriteString("  interface " + elementTypeText + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Map:
 		mapConverter(buffer, element, nameOfField, i)
 	case reflect.Struct:
-
-		nameOfField := element.Type().Name()
-		_ = nameOfField
-		t := element
-		_ = t
-
-		for i := 0; i < element.NumField(); i += 1 {
-			nameOfField := element.Type().Field(i).Name
-			field := element.Field(i)
-			err := ToScalarValue(buffer, field, nameOfField, i)
-			if err != nil {
-				panic(err)
-			}
-		}
-
+		err = ToStructType(element)
+		buffer.WriteString("  " + nameOfField + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.UnsafePointer:
-
+		break
 	case reflect.String:
 		buffer.WriteString("  string " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Uint:
@@ -169,8 +135,49 @@ func ToScalarValue(
 	case reflect.Slice:
 		buffer.WriteString("  repeated " + removeArrFromString(elementTypeText) + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Ptr:
+
+		switch element.Type().Elem().Kind() {
+		case reflect.Struct:
+			e := element.Elem().Interface()
+			err = ToStructType(reflect.New(reflect.TypeOf(e)))
+		}
+
 		buffer.WriteString("  " + removePtrFromString(elementTypeText) + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	}
+
+	return
+}
+
+func ToStructType(
+	//buffer *bytes.Buffer,
+	element reflect.Value,
+) (
+	err error,
+) {
+
+	var buffer bytes.Buffer
+
+	//var elementTypeText = element.Type().String()
+	var nameOfStruct = element.Type().Name()
+	_ = nameOfStruct
+	t := element
+	_ = t
+
+	buffer.WriteString(fmt.Sprintf("message %v {\n", nameOfStruct))
+
+	for i := 0; i < element.NumField(); i += 1 {
+		nameOfField := element.Type().Field(i).Name
+		field := element.Field(i)
+		err = ToScalarValue(&buffer, field, nameOfField, i)
+		if err != nil {
+			return
+		}
+	}
+
+	buffer.WriteString("}\n")
+	buffer.WriteString("\n")
+
+	fmt.Printf("%v", buffer.String())
 
 	return
 }
