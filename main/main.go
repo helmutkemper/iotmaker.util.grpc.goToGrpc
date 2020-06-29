@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	goToGrpc "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc"
 	"io/ioutil"
 	"os"
 	"reflect"
@@ -45,29 +46,29 @@ package iotmakerDockerCommunicationGrpc;
 		panic(err)
 	}
 
-	var a1 ContainerJSON
+	var a1 goToGrpc.ContainerJSON
 	test(&a1)
-	var a2 Mount
+	var a2 goToGrpc.Mount
 	test(&a2)
-	var a3 HealthcheckResult
+	var a3 goToGrpc.HealthcheckResult
 	test(&a3)
-	var a4 WeightDevice
+	var a4 goToGrpc.WeightDevice
 	test(&a4)
-	var a5 ThrottleDevice
+	var a5 goToGrpc.ThrottleDevice
 	test(&a5)
-	var a6 DeviceMapping
+	var a6 goToGrpc.DeviceMapping
 	test(&a6)
-	var a7 DeviceRequest
+	var a7 goToGrpc.DeviceRequest
 	test(&a7)
-	var a8 Ulimit
+	var a8 goToGrpc.Ulimit
 	test(&a8)
-	var a9 MountPoint
+	var a9 goToGrpc.MountPoint
 	test(&a9)
-	var b1 Address
+	var b1 goToGrpc.Address
 	test(&b1)
-	var b2 EndpointSettings
+	var b2 goToGrpc.EndpointSettings
 	test(&b2)
-	var b3 PortBinding
+	var b3 goToGrpc.PortBinding
 	test(&b3)
 
 }

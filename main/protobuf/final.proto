@@ -379,3 +379,22 @@ message ZoneTrans {
     bool IsStd = 3;
     bool IsUtc = 4;
 }
+
+message ContainerInspectRequest {
+  string ID = 1;
+}
+
+message ContainerInspectReply {
+  string ID = 1;
+  ContainerJSON ContainerJSON = 2;
+  ContainerError Error = 3;
+}
+
+message ContainerError {
+  string Error = 1;
+  bool Success = 2;
+}
+
+service DockerServer {
+  rpc ContainerInspect (ContainerInspectRequest) returns (ContainerInspectReply) {}
+}
