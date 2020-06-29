@@ -5,10 +5,531 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/docker/docker/api/types"
+	"io/ioutil"
+	"os"
 	"reflect"
 	"strings"
 )
+
+type ContainerState struct {
+	Status     string // String representation of the container state. Can be one of "created", "running", "paused", "restarting", "removing", "exited", or "dead"
+	Running    bool
+	Paused     bool
+	Restarting bool
+	OOMKilled  bool
+	Dead       bool
+	Pid        int
+	ExitCode   int
+	Error      string
+	StartedAt  string
+	FinishedAt string
+	Health     Health `json:",omitempty"`
+}
+
+type Health struct {
+	Status        string              // Status is one of Starting, Healthy or Unhealthy
+	FailingStreak int                 // FailingStreak is the number of consecutive failures
+	Log           []HealthcheckResult // Log contains the last few results (oldest first)
+}
+
+type zone struct {
+	name   string // abbreviated name, "CET"
+	offset int    // seconds east of UTC
+	isDST  bool   // is this zone Daylight Savings Time?
+}
+
+type zoneTrans struct {
+	when         int64 // transition time, in seconds since 1970 GMT
+	index        uint8 // the index of the zone that goes into effect at that time
+	isstd, isutc bool  // ignored - no idea what these mean
+}
+
+type Location struct {
+	name string
+	zone []zone
+	tx   []zoneTrans
+
+	// Most lookups will be for the current time.
+	// To avoid the binary search through tx, keep a
+	// static one-element cache that gives the correct
+	// zone for the time when the Location was created.
+	// if cacheStart <= t < cacheEnd,
+	// lookup can return cacheZone.
+	// The units for cacheStart and cacheEnd are seconds
+	// since January 1, 1970 UTC, to match the argument
+	// to lookup.
+	cacheStart int64
+	cacheEnd   int64
+	cacheZone  zone
+}
+
+type Time struct {
+	wall uint64
+	ext  int64
+	loc  Location
+}
+
+type HealthcheckResult struct {
+	Start    Time   // Start is the time this check started
+	End      Time   // End is the time this check ended
+	ExitCode int    // ExitCode meanings: 0=healthy, 1=unhealthy, 2=reserved (considered unhealthy), else=error running probe
+	Output   string // Output from last check
+}
+
+// DeviceRequest represents a request for devices from a device driver.
+// Used by GPU device drivers.
+type DeviceRequest struct {
+	Driver       string            // Name of device driver
+	Count        int               // Number of devices to request (-1 = All)
+	DeviceIDs    []string          // List of device IDs as recognizable by the device driver
+	Capabilities [][]string        // An OR list of AND lists of device capabilities (e.g. "gpu")
+	Options      map[string]string // Options to pass onto the device driver
+}
+
+// DeviceMapping represents the device mapping between the host and the container.
+type DeviceMapping struct {
+	PathOnHost        string
+	PathInContainer   string
+	CgroupPermissions string
+}
+
+// WeightDevice is a structure that holds device:weight pair
+type WeightDevice struct {
+	Path   string
+	Weight uint16
+}
+
+// ThrottleDevice is a structure that holds device:rate_per_second pair
+type ThrottleDevice struct {
+	Path string
+	Rate uint64
+}
+
+// Ulimit is a human friendly version of Rlimit.
+type Ulimit struct {
+	Name string
+	Hard int64
+	Soft int64
+}
+
+// Resources contains container's resources (cgroups config, ulimits...)
+type Resources struct {
+	// Applicable to all platforms
+	CPUShares int64 `json:"CpuShares"` // CPU shares (relative weight vs. other containers)
+	Memory    int64 // Memory limit (in bytes)
+	NanoCPUs  int64 `json:"NanoCpus"` // CPU quota in units of 10<sup>-9</sup> CPUs.
+
+	// Applicable to UNIX platforms
+	CgroupParent         string // Parent cgroup.
+	BlkioWeight          uint16 // Block IO weight (relative weight vs. other containers)
+	BlkioWeightDevice    []WeightDevice
+	BlkioDeviceReadBps   []ThrottleDevice
+	BlkioDeviceWriteBps  []ThrottleDevice
+	BlkioDeviceReadIOps  []ThrottleDevice
+	BlkioDeviceWriteIOps []ThrottleDevice
+	CPUPeriod            int64           `json:"CpuPeriod"`          // CPU CFS (Completely Fair Scheduler) period
+	CPUQuota             int64           `json:"CpuQuota"`           // CPU CFS (Completely Fair Scheduler) quota
+	CPURealtimePeriod    int64           `json:"CpuRealtimePeriod"`  // CPU real-time period
+	CPURealtimeRuntime   int64           `json:"CpuRealtimeRuntime"` // CPU real-time runtime
+	CpusetCpus           string          // CpusetCpus 0-2, 0,1
+	CpusetMems           string          // CpusetMems 0-2, 0,1
+	Devices              []DeviceMapping // List of devices to map inside the container
+	DeviceCgroupRules    []string        // List of rule to be added to the device cgroup
+	DeviceRequests       []DeviceRequest // List of device requests for device drivers
+	KernelMemory         int64           // Kernel memory limit (in bytes)
+	KernelMemoryTCP      int64           // Hard limit for kernel TCP buffer memory (in bytes)
+	MemoryReservation    int64           // Memory soft limit (in bytes)
+	MemorySwap           int64           // Total memory usage (memory + swap); set `-1` to enable unlimited swap
+	MemorySwappiness     int64           // Tuning container memory swappiness behaviour
+	OomKillDisable       bool            // Whether to disable OOM Killer or not
+	PidsLimit            int64           // Setting PIDs limit for a container; Set `0` or `-1` for unlimited, or `null` to not change.
+	Ulimits              []Ulimit        // List of ulimits to be set in the container
+
+	// Applicable to Windows
+	CPUCount           int64  `json:"CpuCount"`   // CPU count
+	CPUPercent         int64  `json:"CpuPercent"` // CPU percent
+	IOMaximumIOps      uint64 // Maximum IOps for the container system drive
+	IOMaximumBandwidth uint64 // Maximum IO in bytes per second for the container system drive
+}
+
+// Isolation represents the isolation technology of a container. The supported
+// values are platform specific
+type Isolation string
+
+// UsernsMode represents userns mode in the container.
+type UsernsMode string
+
+// UTSMode represents the UTS namespace of the container.
+type UTSMode string
+
+// PidMode represents the pid namespace of the container.
+type PidMode string
+
+// CgroupSpec represents the cgroup to use for the container.
+type CgroupSpec string
+
+// IpcMode represents the container ipc stack.
+type IpcMode string
+
+// RestartPolicy represents the restart policies of the container.
+type RestartPolicy struct {
+	Name              string
+	MaximumRetryCount int
+}
+
+type NetworkMode string
+
+// LogConfig represents the logging configuration of the container.
+type LogConfig struct {
+	Type   string
+	Config map[string]string
+}
+
+type StrSlice []string
+
+type Consistency string
+
+// BindOptions defines options specific to mounts of type "bind".
+type BindOptions struct {
+	Propagation  Propagation `json:",omitempty"`
+	NonRecursive bool        `json:",omitempty"`
+}
+
+// Driver represents a volume driver.
+type Driver struct {
+	Name    string            `json:",omitempty"`
+	Options map[string]string `json:",omitempty"`
+}
+
+// VolumeOptions represents the options for a mount of type volume.
+type VolumeOptions struct {
+	NoCopy       bool              `json:",omitempty"`
+	Labels       map[string]string `json:",omitempty"`
+	DriverConfig Driver            `json:",omitempty"`
+}
+
+// TmpfsOptions defines options specific to mounts of type "tmpfs".
+type TmpfsOptions struct {
+	// Size sets the size of the tmpfs, in bytes.
+	//
+	// This will be converted to an operating system specific value
+	// depending on the host. For example, on linux, it will be converted to
+	// use a 'k', 'm' or 'g' syntax. BSD, though not widely supported with
+	// docker, uses a straight byte value.
+	//
+	// Percentages are not supported.
+	SizeBytes int64 `json:",omitempty"`
+	// Mode of the tmpfs upon creation
+	Mode uint32 `json:",omitempty"`
+
+	// TODO(stevvooe): There are several more tmpfs flags, specified in the
+	// daemon, that are accepted. Only the most basic are added for now.
+	//
+	// From docker/docker/pkg/mount/flags.go:
+	//
+	// var validFlags = map[string]bool{
+	// 	"":          true,
+	// 	"size":      true, X
+	// 	"mode":      true, X
+	// 	"uid":       true,
+	// 	"gid":       true,
+	// 	"nr_inodes": true,
+	// 	"nr_blocks": true,
+	// 	"mpol":      true,
+	// }
+	//
+	// Some of these may be straightforward to add, but others, such as
+	// uid/gid have implications in a clustered system.
+}
+
+// Mount represents a mount (volume).
+type Mount struct {
+	Type Type `json:",omitempty"`
+	// Source specifies the name of the mount. Depending on mount type, this
+	// may be a volume name or a host path, or even ignored.
+	// Source is not supported for tmpfs (must be an empty value)
+	Source      string      `json:",omitempty"`
+	Target      string      `json:",omitempty"`
+	ReadOnly    bool        `json:",omitempty"`
+	Consistency Consistency `json:",omitempty"`
+
+	BindOptions   BindOptions   `json:",omitempty"`
+	VolumeOptions VolumeOptions `json:",omitempty"`
+	TmpfsOptions  TmpfsOptions  `json:",omitempty"`
+}
+
+// HostConfig the non-portable Config structure of a container.
+// Here, "non-portable" means "dependent of the host we are running on".
+// Portable information *should* appear in Config.
+type HostConfig struct {
+	// Applicable to all platforms
+	Binds           []string      // List of volume bindings for this container
+	ContainerIDFile string        // File (path) where the containerId is written
+	LogConfig       LogConfig     // Configuration of the logs for this container
+	NetworkMode     NetworkMode   // Network mode to use for the container
+	PortBindings    PortMap       // Port mapping between the exposed port (container) and the host
+	RestartPolicy   RestartPolicy // Restart policy to be used for the container
+	AutoRemove      bool          // Automatically remove container when it exits
+	VolumeDriver    string        // Name of the volume driver used to mount volumes
+	VolumesFrom     []string      // List of volumes to take from other container
+
+	// Applicable to UNIX platforms
+	CapAdd          StrSlice          // List of kernel capabilities to add to the container
+	CapDrop         StrSlice          // List of kernel capabilities to remove from the container
+	Capabilities    []string          `json:"Capabilities"` // List of kernel capabilities to be available for container (this overrides the default set)
+	DNS             []string          `json:"Dns"`          // List of DNS server to lookup
+	DNSOptions      []string          `json:"DnsOptions"`   // List of DNSOption to look for
+	DNSSearch       []string          `json:"DnsSearch"`    // List of DNSSearch to look for
+	ExtraHosts      []string          // List of extra hosts
+	GroupAdd        []string          // List of additional groups that the container process will run as
+	IpcMode         IpcMode           // IPC namespace to use for the container
+	Cgroup          CgroupSpec        // Cgroup to use for the container
+	Links           []string          // List of links (in the name:alias form)
+	OomScoreAdj     int               // Container preference for OOM-killing
+	PidMode         PidMode           // PID namespace to use for the container
+	Privileged      bool              // Is the container in privileged mode
+	PublishAllPorts bool              // Should docker publish all exposed port for the container
+	ReadonlyRootfs  bool              // Is the container root filesystem in read-only
+	SecurityOpt     []string          // List of string values to customize labels for MLS systems, such as SELinux.
+	StorageOpt      map[string]string `json:",omitempty"` // Storage driver options per container.
+	Tmpfs           map[string]string `json:",omitempty"` // List of tmpfs (mounts) used for the container
+	UTSMode         UTSMode           // UTS namespace to use for the container
+	UsernsMode      UsernsMode        // The user namespace to use for the container
+	ShmSize         int64             // Total shm memory usage
+	Sysctls         map[string]string `json:",omitempty"` // List of Namespaced sysctls used for the container
+	Runtime         string            `json:",omitempty"` // Runtime to use with this container
+
+	// Applicable to Windows
+	ConsoleSize [2]uint   // Initial console size (height,width)
+	Isolation   Isolation // Isolation technology of the container (e.g. default, hyperv)
+
+	// Contains container's resources (cgroups, ulimits)
+	Resources
+
+	// Mounts specs used by the container
+	Mounts []Mount `json:",omitempty"`
+
+	// MaskedPaths is the list of paths to be masked inside the container (this overrides the default set of paths)
+	MaskedPaths []string
+
+	// ReadonlyPaths is the list of paths to be set as read-only inside the container (this overrides the default set of paths)
+	ReadonlyPaths []string
+
+	// Run a custom init inside the container, if null, use the daemon's configured settings
+	Init bool `json:",omitempty"`
+}
+
+// GraphDriverData Information about a container's graph driver.
+// swagger:model GraphDriverData
+type GraphDriverData struct {
+
+	// data
+	// Required: true
+	Data map[string]string `json:"Data"`
+
+	// name
+	// Required: true
+	Name string `json:"Name"`
+}
+
+type ContainerJSONBase struct {
+	ID              string `json:"Id"`
+	Created         string
+	Path            string
+	Args            []string
+	State           ContainerState
+	Image           string
+	ResolvConfPath  string
+	HostnamePath    string
+	HostsPath       string
+	LogPath         string
+	Node            ContainerNode `json:",omitempty"`
+	Name            string
+	RestartCount    int
+	Driver          string
+	Platform        string
+	MountLabel      string
+	ProcessLabel    string
+	AppArmorProfile string
+	ExecIDs         []string
+	HostConfig      HostConfig
+	GraphDriver     GraphDriverData
+	SizeRw          int64 `json:",omitempty"`
+	SizeRootFs      int64 `json:",omitempty"`
+}
+
+// ContainerNode stores information about the node that a container
+// is running on.  It's only available in Docker Swarm
+type ContainerNode struct {
+	ID        string
+	IPAddress string `json:"IP"`
+	Addr      string
+	Name      string
+	Cpus      int
+	Memory    int64
+	Labels    map[string]string
+}
+
+// Type represents the type of a mount.
+type Type string
+
+// Propagation represents the propagation of a mount.
+type Propagation string
+
+// MountPoint represents a mount point configuration inside the container.
+// This is used for reporting the mountpoints in use by a container.
+type MountPoint struct {
+	Type        Type   `json:",omitempty"`
+	Name        string `json:",omitempty"`
+	Source      string
+	Destination string
+	Driver      string `json:",omitempty"`
+	Mode        string
+	RW          bool
+	Propagation Propagation
+}
+
+// HealthConfig holds configuration settings for the HEALTHCHECK feature.
+type HealthConfig struct {
+	// Test is the test to perform to check that the container is healthy.
+	// An empty slice means to inherit the default.
+	// The options are:
+	// {} : inherit healthcheck
+	// {"NONE"} : disable healthcheck
+	// {"CMD", args...} : exec arguments directly
+	// {"CMD-SHELL", command} : run command with system's default shell
+	Test []string `json:",omitempty"`
+
+	// Zero means to inherit. Durations are expressed as integer nanoseconds.
+	Interval    int64 `json:",omitempty"` // Interval is the time to wait between checks.
+	Timeout     int64 `json:",omitempty"` // Timeout is the time to wait before considering the check to have hung.
+	StartPeriod int64 `json:",omitempty"` // The start period for the container to initialize before the retries starts to count down.
+
+	// Retries is the number of consecutive failures needed to consider a container as unhealthy.
+	// Zero means inherit.
+	Retries int `json:",omitempty"`
+}
+
+// Config contains the configuration data about a container.
+// It should hold only portable information about the container.
+// Here, "portable" means "independent from the host we are running on".
+// Non-portable information *should* appear in HostConfig.
+// All fields added to this struct must be marked `omitempty` to keep getting
+// predictable hashes from the old `v1Compatibility` configuration.
+type Config struct {
+	Hostname        string              // Hostname
+	Domainname      string              // Domainname
+	User            string              // User that will run the command(s) inside the container, also support user:group
+	AttachStdin     bool                // Attach the standard input, makes possible user interaction
+	AttachStdout    bool                // Attach the standard output
+	AttachStderr    bool                // Attach the standard error
+	ExposedPorts    PortSet             `json:",omitempty"` // List of exposed ports
+	Tty             bool                // Attach standard streams to a tty, including stdin if it is not closed.
+	OpenStdin       bool                // Open stdin
+	StdinOnce       bool                // If true, close stdin after the 1 attached client disconnects.
+	Env             []string            // List of environment variable to set in the container
+	Cmd             StrSlice            // Command to run when starting the container
+	Healthcheck     HealthConfig        `json:",omitempty"` // Healthcheck describes how to check the container is healthy
+	ArgsEscaped     bool                `json:",omitempty"` // True if command is already escaped (meaning treat as a command line) (Windows specific).
+	Image           string              // Name of the image as it was passed by the operator (e.g. could be symbolic)
+	Volumes         map[string]struct{} // List of volumes (mounts) used for the container
+	WorkingDir      string              // Current directory (PWD) in the command will be launched
+	Entrypoint      StrSlice            // Entrypoint to run when starting the container
+	NetworkDisabled bool                `json:",omitempty"` // Is network disabled
+	MacAddress      string              `json:",omitempty"` // Mac Address of the container
+	OnBuild         []string            // ONBUILD metadata that were defined on the image Dockerfile
+	Labels          map[string]string   // List of labels set to this container
+	StopSignal      string              `json:",omitempty"` // Signal to stop a container
+	StopTimeout     int                 `json:",omitempty"` // Timeout (in seconds) to stop a container
+	Shell           StrSlice            `json:",omitempty"` // Shell for shell-form of RUN, CMD, ENTRYPOINT
+}
+
+// Address represents an IP address
+type Address struct {
+	Addr      string
+	PrefixLen int
+}
+
+// PortBinding represents a binding between a Host IP address and a Host Port
+type PortBinding struct {
+	// HostIP is the host IP Address
+	HostIP string `json:"HostIp"`
+	// HostPort is the host port number
+	HostPort string
+}
+
+// PortMap is a collection of PortBinding indexed by Port
+type PortMap map[Port][]PortBinding
+
+// PortSet is a collection of structs indexed by Port
+type PortSet map[Port]struct{}
+
+// Port is a string containing port number and protocol in the format "80/tcp"
+type Port string
+
+// NetworkSettingsBase holds basic information about networks
+type NetworkSettingsBase struct {
+	Bridge                 string  // Bridge is the Bridge name the network uses(e.g. `docker0`)
+	SandboxID              string  // SandboxID uniquely represents a container's network stack
+	HairpinMode            bool    // HairpinMode specifies if hairpin NAT should be enabled on the virtual interface
+	LinkLocalIPv6Address   string  // LinkLocalIPv6Address is an IPv6 unicast address using the link-local prefix
+	LinkLocalIPv6PrefixLen int     // LinkLocalIPv6PrefixLen is the prefix length of an IPv6 unicast address
+	Ports                  PortMap // Ports is a collection of PortBinding indexed by Port
+	SandboxKey             string  // SandboxKey identifies the sandbox
+	SecondaryIPAddresses   []Address
+	SecondaryIPv6Addresses []Address
+}
+
+// EndpointIPAMConfig represents IPAM configurations for the endpoint
+type EndpointIPAMConfig struct {
+	IPv4Address  string   `json:",omitempty"`
+	IPv6Address  string   `json:",omitempty"`
+	LinkLocalIPs []string `json:",omitempty"`
+}
+
+// EndpointSettings stores the network endpoint details
+type EndpointSettings struct {
+	// Configurations
+	IPAMConfig EndpointIPAMConfig
+	Links      []string
+	Aliases    []string
+	// Operational data
+	NetworkID           string
+	EndpointID          string
+	Gateway             string
+	IPAddress           string
+	IPPrefixLen         int
+	IPv6Gateway         string
+	GlobalIPv6Address   string
+	GlobalIPv6PrefixLen int
+	MacAddress          string
+	DriverOpts          map[string]string
+}
+
+type DefaultNetworkSettings struct {
+	EndpointID          string // EndpointID uniquely represents a service endpoint in a Sandbox
+	Gateway             string // Gateway holds the gateway address for the network
+	GlobalIPv6Address   string // GlobalIPv6Address holds network's global IPv6 address
+	GlobalIPv6PrefixLen int    // GlobalIPv6PrefixLen represents mask length of network's global IPv6 address
+	IPAddress           string // IPAddress holds the IPv4 address for the network
+	IPPrefixLen         int    // IPPrefixLen represents mask length of network's IPv4 address
+	IPv6Gateway         string // IPv6Gateway holds gateway address specific for IPv6
+	MacAddress          string // MacAddress holds the MAC address for the network
+}
+
+// NetworkSettings exposes the network settings in the api
+type NetworkSettings struct {
+	NetworkSettingsBase
+	DefaultNetworkSettings
+	Networks map[string]EndpointSettings
+}
+
+type ContainerJSON struct {
+	ContainerJSONBase
+	Mounts          []MountPoint
+	Config          Config
+	NetworkSettings NetworkSettings
+}
 
 func main() {
 
@@ -29,27 +550,51 @@ func main() {
 	  os.Exit(0)
 	*/
 
-	var t types.ContainerJSON
-	test(&t)
-}
+	var err error
+	var content = []byte(`
+syntax = "proto3";
 
-type Car float32
+option go_package = "github.com/helmutkemper/iotmaker_docker_communication_grpc";
 
-type Test struct {
-	MapKct map[string]int
-	Car
-	Gelada  string
-	Piratas []string
-	Alexa   *int
-	Complex
-}
+package iotmakerDockerCommunicationGrpc;
 
-type Complex struct {
-	Float  float32
-	Double float64
+`)
+
+	err = ioutil.WriteFile("./out.proto", content, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	var a1 ContainerJSON
+	test(&a1)
+	var a2 Mount
+	test(&a2)
+	var a3 HealthcheckResult
+	test(&a3)
+	var a4 WeightDevice
+	test(&a4)
+	var a5 ThrottleDevice
+	test(&a5)
+	var a6 DeviceMapping
+	test(&a6)
+	var a7 DeviceRequest
+	test(&a7)
+	var a8 Ulimit
+	test(&a8)
+	var a9 MountPoint
+	test(&a9)
+	var b1 Address
+	test(&b1)
+	var b2 EndpointSettings
+	test(&b2)
+	var b3 PortBinding
+	test(&b3)
+
 }
 
 func test(i interface{}) {
+	var err error
+	var file *os.File
 	var buffer bytes.Buffer
 
 	elementName := reflect.ValueOf(i).Elem().Type().Name()
@@ -61,13 +606,23 @@ func test(i interface{}) {
 		field := element.Field(i)
 		nameOfField := element.Type().Field(i).Name
 
-		ToScalarValue(&buffer, field, nameOfField, i)
+		err = ToScalarValue(&buffer, field, nameOfField, i)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	buffer.WriteString("}\n")
 	buffer.WriteString("\n")
 
-	fmt.Printf("%v", buffer.String())
+	file, err = os.OpenFile("./out.proto", os.O_APPEND|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+	_, err = file.Write(buffer.Bytes())
+	if err != nil {
+		panic(err)
+	}
 }
 
 func ToScalarValue(
@@ -79,12 +634,14 @@ func ToScalarValue(
 	err error,
 ) {
 
+	nameOfField = strings.Replace(nameOfField, "main.", "", -1)
 	var elementTypeText = element.Type().String()
+	elementTypeText = strings.Replace(elementTypeText, "main.", "", -1)
 	switch element.Type().Kind() {
 	case reflect.Invalid:
 		err = errors.New("ToScalarValue() function found an invalid value")
 	case reflect.Bool:
-		buffer.WriteString("  bool " + elementTypeText + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
+		buffer.WriteString("  " + elementTypeText + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Uintptr:
 		buffer.WriteString("  " + removePtrFromString(elementTypeText) + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Complex64:
@@ -92,7 +649,7 @@ func ToScalarValue(
 	case reflect.Complex128:
 		err = errors.New("ToScalarValue() function has't Complex128 code")
 	case reflect.Array:
-		err = errors.New("ToScalarValue() function has't uintptr code")
+		//err = errors.New("ToScalarValue() function has't array code. >"+nameOfField)
 	case reflect.Chan:
 		break
 	case reflect.Func:
@@ -103,7 +660,7 @@ func ToScalarValue(
 		mapConverter(buffer, element, nameOfField, i)
 	case reflect.Struct:
 		err = ToStructType(element)
-		buffer.WriteString("  " + nameOfField + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
+		buffer.WriteString("  " + elementTypeText + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.UnsafePointer:
 		break
 	case reflect.String:
@@ -111,9 +668,9 @@ func ToScalarValue(
 	case reflect.Uint:
 		buffer.WriteString("  uint64 " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Uint8:
-		buffer.WriteString("  uint8 " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
+		buffer.WriteString("  uint32 " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Uint16:
-		buffer.WriteString("  uint16 " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
+		buffer.WriteString("  uint32 " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Uint32:
 		buffer.WriteString("  uint32 " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Uint64:
@@ -135,13 +692,6 @@ func ToScalarValue(
 	case reflect.Slice:
 		buffer.WriteString("  repeated " + removeArrFromString(elementTypeText) + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.Ptr:
-
-		switch element.Type().Elem().Kind() {
-		case reflect.Struct:
-			e := element.Elem().Interface()
-			err = ToStructType(reflect.New(reflect.TypeOf(e)))
-		}
-
 		buffer.WriteString("  " + removePtrFromString(elementTypeText) + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	}
 
@@ -155,6 +705,7 @@ func ToStructType(
 	err error,
 ) {
 
+	var file *os.File
 	var buffer bytes.Buffer
 
 	//var elementTypeText = element.Type().String()
@@ -177,8 +728,14 @@ func ToStructType(
 	buffer.WriteString("}\n")
 	buffer.WriteString("\n")
 
-	fmt.Printf("%v", buffer.String())
-
+	file, err = os.OpenFile("./out.proto", os.O_APPEND|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+	_, err = file.Write(buffer.Bytes())
+	if err != nil {
+		panic(err)
+	}
 	return
 }
 

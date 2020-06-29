@@ -1,0 +1,381 @@
+syntax = "proto3";
+
+option go_package = "github.com/helmutkemper/iotmaker_docker_communication_grpc";
+
+package iotmakerDockerCommunicationGrpc;
+
+message ContainerJSON {
+  ContainerJSONBase ContainerJSONBase = 1;
+  repeated MountPoint Mounts = 2;
+  Config Config = 3;
+  NetworkSettings NetworkSettings = 4;
+}
+
+message ContainerJSONBase {
+  string ID = 1;
+  string Created = 2;
+  string Path = 3;
+  repeated string Args = 4;
+  ContainerState State = 5;
+  string Image = 6;
+  string ResolvConfPath = 7;
+  string HostnamePath = 8;
+  string HostsPath = 9;
+  string LogPath = 10;
+  ContainerNode Node = 11;
+  string Name = 12;
+  int64 RestartCount = 13;
+  string Driver = 14;
+  string Platform = 15;
+  string MountLabel = 16;
+  string ProcessLabel = 17;
+  string AppArmorProfile = 18;
+  repeated string ExecIDs = 19;
+  HostConfig HostConfig = 20;
+  GraphDriverData GraphDriver = 21;
+  int64 SizeRw = 22;
+  int64 SizeRootFs = 23;
+}
+
+message MountPoint {
+  string Type = 1;
+  string Name = 2;
+  string Source = 3;
+  string Destination = 4;
+  string Driver = 5;
+  string Mode = 6;
+  bool RW = 7;
+  string Propagation = 8;
+}
+
+message Config {
+  string Hostname = 1;
+  string Domainname = 2;
+  string User = 3;
+  bool AttachStdin = 4;
+  bool AttachStdout = 5;
+  bool AttachStderr = 6;
+  map<string, Struct> ExposedPorts = 7;
+  bool Tty = 8;
+  bool OpenStdin = 9;
+  bool StdinOnce = 10;
+  repeated string Env = 11;
+  repeated string Cmd = 12;
+  HealthConfig Healthcheck = 13;
+  bool ArgsEscaped = 14;
+  string Image = 15;
+  map<string, Struct> Volumes = 16;
+  string WorkingDir = 17;
+  repeated string Entrypoint = 18;
+  bool NetworkDisabled = 19;
+  string MacAddress = 20;
+  repeated string OnBuild = 21;
+  map<string, string> Labels = 22;
+  string StopSignal = 23;
+  int64 StopTimeout = 24;
+  repeated string Shell = 25;
+}
+
+message Struct {
+
+}
+
+message NetworkSettings {
+  NetworkSettingsBase NetworkSettingsBase = 1;
+  DefaultNetworkSettings DefaultNetworkSettings = 2;
+  map<string, EndpointSettings> Networks = 3;
+}
+
+message ContainerState {
+  string Status = 1;
+  bool Running = 2;
+  bool Paused = 3;
+  bool Restarting = 4;
+  bool OOMKilled = 5;
+  bool Dead = 6;
+  int64 Pid = 7;
+  int64 ExitCode = 8;
+  string Error = 9;
+  string StartedAt = 10;
+  string FinishedAt = 11;
+  Health Health = 12;
+}
+
+message ContainerNode {
+  string ID = 1;
+  string IPAddress = 2;
+  string Addr = 3;
+  string Name = 4;
+  int64 Cpus = 5;
+  int64 Memory = 6;
+  map<string, string> Labels = 7;
+}
+
+message PortMap {
+  map<string, PortBindingList> Port = 1;
+}
+
+message PortBindingList {
+  repeated PortBinding PortBinding = 1;
+}
+
+message HostConfig {
+  repeated string Binds = 1;
+  string ContainerIDFile = 2;
+  LogConfig LogConfig = 3;
+  string NetworkMode = 4;
+  PortMap PortBindings = 5;
+  RestartPolicy RestartPolicy = 6;
+  bool AutoRemove = 7;
+  string VolumeDriver = 8;
+  repeated string VolumesFrom = 9;
+  repeated string CapAdd = 10;
+  repeated string CapDrop = 11;
+  repeated string Capabilities = 12;
+  repeated string DNS = 13;
+  repeated string DNSOptions = 14;
+  repeated string DNSSearch = 15;
+  repeated string ExtraHosts = 16;
+  repeated string GroupAdd = 17;
+  string IpcMode = 18;
+  string Cgroup = 19;
+  repeated string Links = 20;
+  int64 OomScoreAdj = 21;
+  string PidMode = 22;
+  bool Privileged = 23;
+  bool PublishAllPorts = 24;
+  bool ReadonlyRootfs = 25;
+  repeated string SecurityOpt = 26;
+  map<string, string> StorageOpt = 27;
+  map<string, string> Tmpfs = 28;
+  string UTSMode = 29;
+  string UsernsMode = 30;
+  int64 ShmSize = 31;
+  map<string, string> Sysctls = 32;
+  string Runtime = 33;
+  string Isolation = 35;
+  Resources Resources = 36;
+  repeated Mount Mounts = 37;
+  repeated string MaskedPaths = 38;
+  repeated string ReadonlyPaths = 39;
+  bool Init = 40;
+}
+
+message GraphDriverData {
+  map<string, string> Data = 1;
+  string Name = 2;
+}
+
+message HealthConfig {
+  repeated string Test = 1;
+  int64 Interval = 2;
+  int64 Timeout = 3;
+  int64 StartPeriod = 4;
+  int64 Retries = 5;
+}
+
+message NetworkSettingsBase {
+  string Bridge = 1;
+  string SandboxID = 2;
+  bool HairpinMode = 3;
+  string LinkLocalIPv6Address = 4;
+  int64 LinkLocalIPv6PrefixLen = 5;
+  PortMap Ports = 6;
+  string SandboxKey = 7;
+  repeated Address SecondaryIPAddresses = 8;
+  repeated Address SecondaryIPv6Addresses = 9;
+}
+
+message Address {
+  string Addr = 1;
+  int64 PrefixLen = 2;
+}
+
+message DefaultNetworkSettings {
+  string EndpointID = 1;
+  string Gateway = 2;
+  string GlobalIPv6Address = 3;
+  int64 GlobalIPv6PrefixLen = 4;
+  string IPAddress = 5;
+  int64 IPPrefixLen = 6;
+  string IPv6Gateway = 7;
+  string MacAddress = 8;
+}
+
+message EndpointSettings {
+  EndpointIPAMConfig IPAMConfig = 1;
+  repeated string Links = 2;
+  repeated string Aliases = 3;
+  string NetworkID = 4;
+  string EndpointID = 5;
+  string Gateway = 6;
+  string IPAddress = 7;
+  int64 IPPrefixLen = 8;
+  string IPv6Gateway = 9;
+  string GlobalIPv6Address = 10;
+  int64 GlobalIPv6PrefixLen = 11;
+  string MacAddress = 12;
+  map<string, string> DriverOpts = 13;
+}
+
+message Health {
+  string Status = 1;
+  int64 FailingStreak = 2;
+  repeated HealthcheckResult Log = 3;
+}
+
+message LogConfig {
+  string Type = 1;
+  map<string, string> Config = 2;
+}
+
+message PortBinding {
+  string HostIP = 1;
+  string HostPort = 2;
+}
+
+message RestartPolicy {
+  string Name = 1;
+  int64 MaximumRetryCount = 2;
+}
+
+message Resources {
+  int64 CPUShares = 1;
+  int64 Memory = 2;
+  int64 NanoCPUs = 3;
+  string CgroupParent = 4;
+  uint32 BlkioWeight = 5;
+  repeated WeightDevice BlkioWeightDevice = 6;
+  repeated ThrottleDevice BlkioDeviceReadBps = 7;
+  repeated ThrottleDevice BlkioDeviceWriteBps = 8;
+  repeated ThrottleDevice BlkioDeviceReadIOps = 9;
+  repeated ThrottleDevice BlkioDeviceWriteIOps = 10;
+  int64 CPUPeriod = 11;
+  int64 CPUQuota = 12;
+  int64 CPURealtimePeriod = 13;
+  int64 CPURealtimeRuntime = 14;
+  string CpusetCpus = 15;
+  string CpusetMems = 16;
+  repeated DeviceMapping Devices = 17;
+  repeated string DeviceCgroupRules = 18;
+  repeated DeviceRequest DeviceRequests = 19;
+  int64 KernelMemory = 20;
+  int64 KernelMemoryTCP = 21;
+  int64 MemoryReservation = 22;
+  int64 MemorySwap = 23;
+  int64 MemorySwappiness = 24;
+  bool OomKillDisable = 25;
+  int64 PidsLimit = 26;
+  repeated Ulimit Ulimits = 27;
+  int64 CPUCount = 28;
+  int64 CPUPercent = 29;
+  uint64 IOMaximumIOps = 30;
+  uint64 IOMaximumBandwidth = 31;
+}
+
+message Mount {
+  string Type = 1;
+  string Source = 2;
+  string Target = 3;
+  bool ReadOnly = 4;
+  string Consistency = 5;
+  BindOptions BindOptions = 6;
+  VolumeOptions VolumeOptions = 7;
+  TmpfsOptions TmpfsOptions = 8;
+}
+
+message EndpointIPAMConfig {
+  string IPv4Address = 1;
+  string IPv6Address = 2;
+  repeated string LinkLocalIPs = 3;
+}
+
+message HealthcheckResult {
+  Time Start = 1;
+  Time End = 2;
+  int64 ExitCode = 3;
+  string Output = 4;
+}
+
+message Time {
+  uint64 wall = 1;
+  int64 ext = 2;
+  Location loc = 3;
+}
+
+message Zone {
+  string name = 1;
+  int64 offset = 2;
+  bool isDST = 3;
+}
+
+message Location {
+  string name = 1;
+  repeated Zone zone = 2;
+  repeated ZoneTrans tx = 3;
+  int64 cacheStart = 4;
+  int64 cacheEnd = 5;
+  Zone cacheZone = 6;
+}
+
+message WeightDevice {
+  string Path = 1;
+  uint32 Weight = 2;
+}
+
+message ThrottleDevice {
+  string Path = 1;
+  uint64 Rate = 2;
+}
+
+message DeviceMapping {
+  string PathOnHost = 1;
+  string PathInContainer = 2;
+  string CgroupPermissions = 3;
+}
+
+message DeviceRequest {
+  string Driver = 1;
+  int64 Count = 2;
+  repeated string DeviceIDs = 3;
+  repeated CapabilitiesList Capabilities = 4;
+  map<string, string> Options = 5;
+}
+
+message CapabilitiesList {
+  repeated string Capabilities = 1;
+}
+
+message Ulimit {
+  string Name = 1;
+  int64 Hard = 2;
+  int64 Soft = 3;
+}
+
+message BindOptions {
+  string Propagation = 1;
+  bool NonRecursive = 2;
+}
+
+message Driver {
+  string Name = 1;
+  map<string, string> Options = 2;
+}
+
+message VolumeOptions {
+  bool NoCopy = 1;
+  map<string, string> Labels = 2;
+  Driver DriverConfig = 3;
+}
+
+message TmpfsOptions {
+  int64 SizeBytes = 1;
+  uint32 Mode = 2;
+}
+
+message ZoneTrans {
+    int64 When = 1;
+    uint32 Index = 2;
+    bool IsStd = 3;
+    bool IsUtc = 4;
+}
