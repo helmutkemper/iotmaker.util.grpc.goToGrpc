@@ -291,8 +291,8 @@ message EndpointIPAMConfig {
 }
 
 message HealthcheckResult {
-  Time Start = 1;
-  Time End = 2;
+  int64 Start = 1;
+  int64 End = 2;
   int64 ExitCode = 3;
   string Output = 4;
 }
