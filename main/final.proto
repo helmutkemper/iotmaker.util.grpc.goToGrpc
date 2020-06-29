@@ -298,24 +298,24 @@ message HealthcheckResult {
 }
 
 message Time {
-  uint64 wall = 1;
-  int64 ext = 2;
-  Location loc = 3;
+  uint64 Wall = 1;
+  int64 Ext = 2;
+  Location Loc = 3;
 }
 
 message Zone {
-  string name = 1;
-  int64 offset = 2;
-  bool isDST = 3;
+  string Name = 1;
+  int64 Offset = 2;
+  bool IsDST = 3;
 }
 
 message Location {
-  string name = 1;
-  repeated Zone zone = 2;
-  repeated ZoneTrans tx = 3;
-  int64 cacheStart = 4;
-  int64 cacheEnd = 5;
-  Zone cacheZone = 6;
+  string Name = 1;
+  repeated Zone Zone = 2;
+  repeated ZoneTrans Tx = 3;
+  int64 CacheStart = 4;
+  int64 CacheEnd = 5;
+  Zone CacheZone = 6;
 }
 
 message WeightDevice {
