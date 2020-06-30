@@ -280,9 +280,6 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 			},
 
 			Mounts: dataMounts,
-			//MaskedPaths:   nil,
-			//ReadonlyPaths: nil,
-			//Init:          false,
 		}
 	}
 

@@ -156,9 +156,6 @@ message HostConfig {
   string Isolation = 35;
   Resources Resources = 36;
   repeated MountPoint Mounts = 37;
-  repeated string MaskedPaths = 38;
-  repeated string ReadonlyPaths = 39;
-  bool Init = 40;
 }
 
 message GraphDriverData {
