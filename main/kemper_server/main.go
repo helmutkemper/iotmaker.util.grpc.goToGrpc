@@ -148,9 +148,9 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 		for _, deviceRequests := range data.HostConfig.Resources.DeviceRequests {
 
 			var Capabilities = make([]*pb.CapabilitiesList, 0)
-			for _, cap := range deviceRequests.Capabilities {
+			for _, capab := range deviceRequests.Capabilities {
 				Capabilities = append(Capabilities, &pb.CapabilitiesList{
-					Capabilities: cap,
+					Capabilities: capab,
 				})
 			}
 
