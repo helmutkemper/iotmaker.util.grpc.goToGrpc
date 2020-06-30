@@ -20,9 +20,7 @@ type server struct {
 	pb.UnimplementedDockerServerServer
 }
 
-type js pb.ContainerJSON
-
-func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
+func ContainerInspectDataConverterDockerToGRpc(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 
 	var dataState *pb.ContainerState
 	var dataNode *pb.ContainerNode
@@ -347,8 +345,7 @@ func (s *server) ContainerInspect(ctx context.Context, in *pb.ContainerInspectRe
 		}, err
 	}
 
-	var j js
-	var ret = j.FromContainer(inspect)
+	var ret = ContainerInspectDataConverterDockerToGRpc(inspect)
 
 	r := &pb.ContainerInspectReply{
 		ID:            in.GetID(),
@@ -356,6 +353,28 @@ func (s *server) ContainerInspect(ctx context.Context, in *pb.ContainerInspectRe
 	}
 
 	return r, nil
+}
+
+func NetworkInspectDataConverterDockerToGRpc(data types.NetworkResource) (ret *pb.NetworkResource) {
+	ret = &pb.NetworkResource{
+		Name:       data.Name,
+		ID:         data.ID,
+		Created:    data.Created.Unix(),
+		Scope:      data.Scope,
+		Driver:     data.Driver,
+		EnableIPv6: data.EnableIPv6,
+		IPAM:       &pb.IPAM{},
+		Internal:   data.Internal,
+		Attachable: data.Attachable,
+		Ingress:    data.Ingress,
+		ConfigFrom: &pb.ConfigReference{},
+		ConfigOnly: data.ConfigOnly,
+		Containers: data.Containers,
+		Options:    data.Options,
+		Labels:     data.Labels,
+		Peers:      &pb.PeerInfo{},
+		Services:   data.Services,
+	}
 }
 
 func main() {

@@ -377,6 +377,70 @@ message ZoneTrans {
     bool IsUtc = 4;
 }
 
+message NetworkResource {
+  string Name = 1;
+  string ID = 2;
+  int64 Created = 3;
+  string Scope = 4;
+  string Driver = 5;
+  bool EnableIPv6 = 6;
+  IPAM IPAM = 7;
+  bool Internal = 8;
+  bool Attachable = 9;
+  bool Ingress = 10;
+  ConfigReference ConfigFrom = 11;
+  bool ConfigOnly = 12;
+  map<string, EndpointResource> Containers = 13;
+  map<string, string> Options = 14;
+  map<string, string> Labels = 15;
+  PeerInfo Peers = 16;
+  map<string, ServiceInfo> Services = 17;
+}
+
+message IPAM {
+  string Driver = 1;
+  map<string, string> Options = 2;
+  repeated IPAMConfig Config = 3;
+}
+
+message ConfigReference {
+  string Network = 1;
+}
+
+message PeerInfo {
+  string Name = 1;
+  string IP = 2;
+}
+
+message IPAMConfig {
+  string Subnet = 1;
+  string IPRange = 2;
+  string Gateway = 3;
+  map<string, string> AuxAddress = 4;
+}
+
+message EndpointResource {
+  string Name = 1;
+  string EndpointID = 2;
+  string MacAddress = 3;
+  string IPv4Address = 4;
+  string IPv6Address = 5;
+}
+
+message ServiceInfo {
+  string VIP = 1;
+  repeated string Ports = 2;
+  int64 LocalLBIndex = 3;
+  repeated Task Tasks = 4;
+}
+
+message Task {
+  string Name = 1;
+  string EndpointID = 2;
+  string EndpointIP = 3;
+  map<string, string>Info = 4;
+}
+
 message ContainerInspectRequest {
   string ID = 1;
 }
@@ -384,7 +448,6 @@ message ContainerInspectRequest {
 message ContainerInspectReply {
   string ID = 1;
   ContainerJSON ContainerJSON = 2;
-  ContainerError Error = 3;
 }
 
 message ContainerError {
@@ -392,6 +455,16 @@ message ContainerError {
   bool Success = 2;
 }
 
+message NetworkInspectRequest {
+  string ID = 1;
+}
+
+message NetworkInspectReply {
+  string ID = 1;
+  NetworkResource NetworkResource = 2;
+}
+
 service DockerServer {
   rpc ContainerInspect (ContainerInspectRequest) returns (ContainerInspectReply) {}
+  rpc NetworkInspect (NetworkInspectRequest) returns (NetworkInspectReply) {}
 }
