@@ -31,6 +31,13 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 	var dataHostConfigResourcesOomKillDisable bool
 	var dataHostConfigResourcesPidsLimit int64
 	var dataHostConfigResourcesULimits = make([]*pb.Ulimit, 0)
+	var dataHostConfigResourcesBlkioDeviceReadBps = make([]*pb.ThrottleDevice, 0)
+	var dataHostConfigResourcesBlkioDeviceWriteBps = make([]*pb.ThrottleDevice, 0)
+	var dataHostConfigResourcesBlkioDeviceReadIOps = make([]*pb.ThrottleDevice, 0)
+	var dataHostConfigResourcesBlkioDeviceWriteIOps = make([]*pb.ThrottleDevice, 0)
+	var dataHostConfigResourcesDevices = make([]*pb.DeviceMapping, 0)
+	var dataHostConfigResourcesDeviceRequests = make([]*pb.DeviceRequest, 0)
+
 	var dataStateHealthStatus string
 	var dataStateHealthFailingStreak int64
 
@@ -101,6 +108,60 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 				Soft: ULimits.Soft,
 			})
 		}
+
+		for _, blkioDeviceReadBps := range data.HostConfig.Resources.BlkioDeviceReadBps {
+			dataHostConfigResourcesBlkioDeviceReadBps = append(dataHostConfigResourcesBlkioDeviceReadBps, &pb.ThrottleDevice{
+				Path: blkioDeviceReadBps.Path,
+				Rate: blkioDeviceReadBps.Rate,
+			})
+		}
+
+		for _, blkioDeviceWriteBps := range data.HostConfig.Resources.BlkioDeviceWriteBps {
+			dataHostConfigResourcesBlkioDeviceReadBps = append(dataHostConfigResourcesBlkioDeviceReadBps, &pb.ThrottleDevice{
+				Path: blkioDeviceWriteBps.Path,
+				Rate: blkioDeviceWriteBps.Rate,
+			})
+		}
+
+		for _, blkioDeviceReadIOps := range data.HostConfig.Resources.BlkioDeviceReadIOps {
+			dataHostConfigResourcesBlkioDeviceReadBps = append(dataHostConfigResourcesBlkioDeviceReadBps, &pb.ThrottleDevice{
+				Path: blkioDeviceReadIOps.Path,
+				Rate: blkioDeviceReadIOps.Rate,
+			})
+		}
+
+		for _, blkioDeviceWriteIOps := range data.HostConfig.Resources.BlkioDeviceWriteIOps {
+			dataHostConfigResourcesBlkioDeviceReadBps = append(dataHostConfigResourcesBlkioDeviceReadBps, &pb.ThrottleDevice{
+				Path: blkioDeviceWriteIOps.Path,
+				Rate: blkioDeviceWriteIOps.Rate,
+			})
+		}
+
+		for _, devices := range data.HostConfig.Resources.Devices {
+			dataHostConfigResourcesDevices = append(dataHostConfigResourcesDevices, &pb.DeviceMapping{
+				PathOnHost:        devices.PathOnHost,
+				PathInContainer:   devices.PathInContainer,
+				CgroupPermissions: devices.CgroupPermissions,
+			})
+		}
+
+		for _, deviceRequests := range data.HostConfig.Resources.DeviceRequests {
+
+			var Capabilities = make([]*pb.CapabilitiesList, 0)
+			for _, cap := range deviceRequests.Capabilities {
+				Capabilities = append(Capabilities, &pb.CapabilitiesList{
+					Capabilities: cap,
+				})
+			}
+
+			dataHostConfigResourcesDeviceRequests = append(dataHostConfigResourcesDeviceRequests, &pb.DeviceRequest{
+				Driver:       deviceRequests.Driver,
+				Count:        int64(deviceRequests.Count),
+				DeviceIDs:    deviceRequests.DeviceIDs,
+				Capabilities: Capabilities,
+				Options:      deviceRequests.Options,
+			})
+		}
 	}
 
 	if data.HostConfig != nil {
@@ -155,19 +216,25 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 				CgroupParent:      data.HostConfig.Resources.CgroupParent,
 				BlkioWeight:       uint32(data.HostConfig.Resources.BlkioWeight),
 				BlkioWeightDevice: weightDevice,
-				//BlkioDeviceReadBps:   data.HostConfig.Resources.BlkioDeviceReadBps,
-				//BlkioDeviceWriteBps:  data.HostConfig.Resources.BlkioDeviceWriteBps,
-				//BlkioDeviceReadIOps:  data.HostConfig.Resources.BlkioDeviceReadIOps,
-				//BlkioDeviceWriteIOps: data.HostConfig.Resources.BlkioDeviceWriteIOps,
+
+				BlkioDeviceReadBps:   dataHostConfigResourcesBlkioDeviceReadBps,
+				BlkioDeviceWriteBps:  dataHostConfigResourcesBlkioDeviceWriteBps,
+				BlkioDeviceReadIOps:  dataHostConfigResourcesBlkioDeviceReadIOps,
+				BlkioDeviceWriteIOps: dataHostConfigResourcesBlkioDeviceWriteIOps,
+
 				CPUPeriod:          data.HostConfig.Resources.CPUPeriod,
 				CPUQuota:           data.HostConfig.Resources.CPUQuota,
 				CPURealtimePeriod:  data.HostConfig.Resources.CPURealtimePeriod,
 				CPURealtimeRuntime: data.HostConfig.Resources.CPURealtimeRuntime,
 				CpusetCpus:         data.HostConfig.Resources.CpusetCpus,
 				CpusetMems:         data.HostConfig.Resources.CpusetMems,
-				//Devices:              data.HostConfig.Resources.Devices,
+
+				Devices: dataHostConfigResourcesDevices,
+
 				DeviceCgroupRules: data.HostConfig.Resources.DeviceCgroupRules,
-				//DeviceRequests:       data.HostConfig.Resources.DeviceRequests,
+
+				DeviceRequests: dataHostConfigResourcesDeviceRequests,
+
 				KernelMemory:      data.HostConfig.Resources.KernelMemory,
 				KernelMemoryTCP:   data.HostConfig.Resources.KernelMemoryTCP,
 				MemoryReservation: data.HostConfig.Resources.MemoryReservation,
