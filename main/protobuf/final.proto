@@ -155,7 +155,7 @@ message HostConfig {
   string Runtime = 33;
   string Isolation = 35;
   Resources Resources = 36;
-  repeated Mount Mounts = 37;
+  repeated MountPoint Mounts = 37;
   repeated string MaskedPaths = 38;
   repeated string ReadonlyPaths = 39;
   bool Init = 40;

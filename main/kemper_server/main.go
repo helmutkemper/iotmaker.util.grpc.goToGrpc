@@ -37,6 +37,20 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 	var dataHostConfigResourcesBlkioDeviceWriteIOps = make([]*pb.ThrottleDevice, 0)
 	var dataHostConfigResourcesDevices = make([]*pb.DeviceMapping, 0)
 	var dataHostConfigResourcesDeviceRequests = make([]*pb.DeviceRequest, 0)
+	var dataMounts = make([]*pb.MountPoint, 0)
+
+	for _, point := range data.Mounts {
+		dataMounts = append(dataMounts, &pb.MountPoint{
+			Type:        string(point.Type),
+			Name:        point.Name,
+			Source:      point.Source,
+			Destination: point.Destination,
+			Driver:      point.Driver,
+			Mode:        point.Mode,
+			RW:          point.RW,
+			Propagation: string(point.Propagation),
+		})
+	}
 
 	var portMap = &pb.PortMap{}
 	portMap.Port = make(map[string]*pb.PortBindingList)
@@ -265,10 +279,10 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 				IOMaximumBandwidth: data.HostConfig.Resources.IOMaximumBandwidth,
 			},
 
-			Mounts:        nil,
-			MaskedPaths:   nil,
-			ReadonlyPaths: nil,
-			Init:          false,
+			Mounts: dataMounts,
+			//MaskedPaths:   nil,
+			//ReadonlyPaths: nil,
+			//Init:          false,
 		}
 	}
 
