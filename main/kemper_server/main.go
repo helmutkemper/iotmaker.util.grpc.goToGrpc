@@ -326,9 +326,49 @@ func ContainerInspectDataConverterDockerToGRpc(data types.ContainerJSON) (ret *p
 	return
 }
 
-func (s *server) ContainerInspect(ctx context.Context, in *pb.ContainerInspectRequest) (*pb.ContainerInspectReply, error) {
+func (s *server) NetworkInspect(
+	ctx context.Context,
+	in *pb.NetworkInspectRequest,
+) (
+	response *pb.NetworkInspectReply,
+	err error,
+) {
 
-	var err error
+	var inspect types.NetworkResource
+
+	d := iotmakerDocker.DockerSystem{}
+	err = d.Init()
+	if err != nil {
+		return &pb.NetworkInspectReply{
+			ID: in.GetID(),
+		}, err
+	}
+
+	err, inspect = d.NetworkInspect(in.GetID())
+	if err != nil {
+		return &pb.NetworkInspectReply{
+			ID: in.GetID(),
+		}, err
+	}
+
+	var ret = NetworkInspectDataConverterDockerToGRpc(inspect)
+
+	response = &pb.NetworkInspectReply{
+		ID:              in.GetID(),
+		NetworkResource: ret,
+	}
+
+	return
+}
+
+func (s *server) ContainerInspect(
+	ctx context.Context,
+	in *pb.ContainerInspectRequest,
+) (
+	response *pb.ContainerInspectReply,
+	err error,
+) {
+
 	var inspect types.ContainerJSON
 
 	d := iotmakerDocker.DockerSystem{}
@@ -347,15 +387,72 @@ func (s *server) ContainerInspect(ctx context.Context, in *pb.ContainerInspectRe
 
 	var ret = ContainerInspectDataConverterDockerToGRpc(inspect)
 
-	r := &pb.ContainerInspectReply{
+	response = &pb.ContainerInspectReply{
 		ID:            in.GetID(),
 		ContainerJSON: ret,
 	}
 
-	return r, nil
+	return
 }
 
-func NetworkInspectDataConverterDockerToGRpc(data types.NetworkResource) (ret *pb.NetworkResource) {
+func NetworkInspectDataConverterDockerToGRpc(
+	data types.NetworkResource,
+) (
+	ret *pb.NetworkResource,
+) {
+
+	var containers = make(map[string]*pb.EndpointResource)
+	for k, resource := range data.Containers {
+		var endPointResource = &pb.EndpointResource{
+			Name:        resource.Name,
+			EndpointID:  resource.EndpointID,
+			MacAddress:  resource.MacAddress,
+			IPv4Address: resource.IPv4Address,
+			IPv6Address: resource.IPv4Address,
+		}
+		containers[k] = endPointResource
+	}
+
+	var services = make(map[string]*pb.ServiceInfo)
+	for k, service := range data.Services {
+		var task = make([]*pb.Task, 0)
+		for _, taskValue := range service.Tasks {
+			task = append(task, &pb.Task{
+				Name:       taskValue.Name,
+				EndpointID: taskValue.EndpointID,
+				EndpointIP: taskValue.EndpointIP,
+				Info:       taskValue.Info,
+			})
+		}
+
+		var info = &pb.ServiceInfo{
+			VIP:          service.VIP,
+			Ports:        service.Ports,
+			LocalLBIndex: int64(service.LocalLBIndex),
+			Tasks:        task,
+		}
+
+		services[k] = info
+	}
+
+	var dataPeers = make([]*pb.PeerInfo, 0)
+	for _, peer := range data.Peers {
+		dataPeers = append(dataPeers, &pb.PeerInfo{
+			Name: peer.Name,
+			IP:   peer.IP,
+		})
+	}
+
+	var config = make([]*pb.IPAMConfig, 0)
+	for _, ipConfig := range data.IPAM.Config {
+		config = append(config, &pb.IPAMConfig{
+			Subnet:     ipConfig.Subnet,
+			IPRange:    ipConfig.IPRange,
+			Gateway:    ipConfig.Gateway,
+			AuxAddress: ipConfig.AuxAddress,
+		})
+	}
+
 	ret = &pb.NetworkResource{
 		Name:       data.Name,
 		ID:         data.ID,
@@ -363,18 +460,34 @@ func NetworkInspectDataConverterDockerToGRpc(data types.NetworkResource) (ret *p
 		Scope:      data.Scope,
 		Driver:     data.Driver,
 		EnableIPv6: data.EnableIPv6,
-		IPAM:       &pb.IPAM{},
+
+		IPAM: &pb.IPAM{
+			Driver:  data.IPAM.Driver,
+			Options: data.IPAM.Options,
+			Config:  config,
+		},
+
 		Internal:   data.Internal,
 		Attachable: data.Attachable,
 		Ingress:    data.Ingress,
-		ConfigFrom: &pb.ConfigReference{},
+
+		ConfigFrom: &pb.ConfigReference{
+			Network: data.ConfigFrom.Network,
+		},
+
 		ConfigOnly: data.ConfigOnly,
-		Containers: data.Containers,
-		Options:    data.Options,
-		Labels:     data.Labels,
-		Peers:      &pb.PeerInfo{},
-		Services:   data.Services,
+
+		Containers: containers,
+
+		Options: data.Options,
+		Labels:  data.Labels,
+
+		Peers: dataPeers,
+
+		Services: services,
 	}
+
+	return
 }
 
 func main() {

@@ -393,7 +393,7 @@ message NetworkResource {
   map<string, EndpointResource> Containers = 13;
   map<string, string> Options = 14;
   map<string, string> Labels = 15;
-  PeerInfo Peers = 16;
+  repeated PeerInfo Peers = 16;
   map<string, ServiceInfo> Services = 17;
 }
 
