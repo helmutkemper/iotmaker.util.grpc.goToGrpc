@@ -86,6 +86,10 @@ message NetworkSettings {
   map<string, EndpointSettings> Networks = 3;
 }
 
+message NetworkingConfig {
+  map<string, EndpointSettings> Networks = 1;
+}
+
 message ContainerState {
   string Status = 1;
   bool Running = 2;
@@ -441,6 +445,11 @@ message Task {
   map<string, string>Info = 4;
 }
 
+message Port {
+  string Port = 1;
+  string Protocol = 2;
+}
+
 message ContainerInspectRequest {
   string ID = 1;
 }
@@ -448,11 +457,6 @@ message ContainerInspectRequest {
 message ContainerInspectReply {
   string ID = 1;
   ContainerJSON ContainerJSON = 2;
-}
-
-message ContainerError {
-  string Error = 1;
-  bool Success = 2;
 }
 
 message NetworkInspectRequest {
@@ -464,7 +468,172 @@ message NetworkInspectReply {
   NetworkResource NetworkResource = 2;
 }
 
+message ContainerCreateRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  PortMap PortExposedList = 4;
+  repeated Mount MountVolumes = 5;
+  NetworkingConfig ContainerNetwork = 6;
+}
+
+message ContainerCreateReply {
+  string ContainerID = 1;
+}
+
+message ContainerCreateAndChangeExposedPortRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  repeated Mount MountVolumes = 4;
+  NetworkingConfig ContainerNetwork = 5;
+  repeated Port CurrentPort = 6;
+  repeated Port ChangeToPort = 7;
+}
+
+message ContainerCreateAndChangeExposedPortReply {
+  string ContainerID = 1;
+}
+
+message ContainerCreateAndExposePortsAutomaticallyRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  repeated Mount MountVolumes = 4;
+  NetworkingConfig ContainerNetwork = 5;
+}
+
+message ContainerCreateAndExposePortsAutomaticallyReply {
+  string ContainerID = 1;
+}
+
+message ContainerCreateAndStartRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  PortMap PortExposedList = 4;
+  Mount MountVolumes = 5;
+  NetworkingConfig ContainerNetwork = 6;
+}
+
+message ContainerCreateAndStartReply {
+  string ContainerID = 1;
+}
+
+message ContainerCreateChangeExposedPortAndStartRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  repeated Mount MountVolumes = 4;
+  NetworkingConfig ContainerNetwork = 5;
+  repeated Port CurrentPort = 6;
+  repeated Port ChangeToPort = 7;
+}
+
+message ContainerCreateChangeExposedPortAndStartReply {
+  string ContainerID = 1;
+}
+
+message ContainerCreateExposePortsAutomaticallyAndStartRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  repeated Mount MountVolumes = 4;
+  NetworkingConfig ContainerNetwork = 5;
+}
+
+message ContainerCreateExposePortsAutomaticallyAndStartReply {
+  string ContainerID = 1;
+}
+
+message ContainerCreateWithoutExposePortsRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  repeated Mount MountVolumes = 4;
+  NetworkingConfig ContainerNetwork = 5;
+}
+
+message ContainerCreateWithoutExposePortsReply {
+  string ContainerID = 1;
+}
+
+message ContainerCreateWithoutExposePortsAndStartRequest {
+  string ImageName = 1;
+  string ContainerName = 2;
+  string RestartPolicy = 3;
+  repeated Mount MountVolumes = 4;
+  NetworkingConfig ContainerNetwork = 5;
+}
+
+message ContainerCreateWithoutExposePortsAndStartReply {
+  string ContainerID = 1;
+}
+
+message ContainerFindIdByNameRequest {
+  string Name = 1;
+}
+
+message ContainerFindIdByNameReply {
+  string ContainerID = 1;
+}
+
+message ContainerFindIdByNameContainsRequest {
+  string Name = 1;
+}
+
+message ContainerFindIdByNameContainsReply {
+  string ContainerID = 1;
+}
+
+message ContainerInspectByNameRequest {
+  string name = 1;
+}
+
+message ContainerInspectByNameReply {
+  string ID = 1;
+  ContainerJSON ContainerJSON = 2;
+}
+
+message ContainerInspectJSonRequest {
+  string Id = 1;
+}
+
+message ContainerInspectJSonReply {
+  string Inspect = 1;
+}
+
+message ContainerInspectJSonByNameRequest {
+  string Name = 1;
+}
+
+message ContainerInspectJSonByNameReply {
+  string Inspect = 1;
+}
+
+message ContainerListAllRequest {
+
+}
+
+message ContainerListAllReply {
+
+}
+
 service DockerServer {
+  rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
+  rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
   rpc ContainerInspect (ContainerInspectRequest) returns (ContainerInspectReply) {}
   rpc NetworkInspect (NetworkInspectRequest) returns (NetworkInspectReply) {}
+  rpc ContainerCreateAndExposePortsAutomatically (ContainerCreateAndExposePortsAutomaticallyRequest) returns (ContainerCreateAndExposePortsAutomaticallyReply) {}
+  rpc ContainerCreateAndStart (ContainerCreateAndStartRequest) returns (ContainerCreateAndStartReply) {}
+  rpc ContainerCreateChangeExposedPortAndStart (ContainerCreateChangeExposedPortAndStartRequest) returns (ContainerCreateChangeExposedPortAndStartReply) {}
+  rpc ContainerCreateExposePortsAutomaticallyAndStart (ContainerCreateExposePortsAutomaticallyAndStartRequest) returns (ContainerCreateExposePortsAutomaticallyAndStartReply) {}
+  rpc ContainerCreateWithoutExposePorts (ContainerCreateWithoutExposePortsRequest) returns (ContainerCreateWithoutExposePortsReply) {}
+  rpc ContainerCreateWithoutExposePortsAndStart (ContainerCreateWithoutExposePortsAndStartRequest) returns (ContainerCreateWithoutExposePortsAndStartReply) {}
+  rpc ContainerFindIdByName (ContainerFindIdByNameRequest) returns (ContainerFindIdByNameReply) {}
+  rpc ContainerFindIdByNameContains (ContainerFindIdByNameContainsRequest) returns (ContainerFindIdByNameContainsReply) {}
+  rpc ContainerInspectByName (ContainerInspectByNameRequest) returns (ContainerInspectByNameReply) {}
+  rpc ContainerInspectJSon (ContainerInspectJSonRequest) returns (ContainerInspectJSonReply) {}
+  rpc ContainerInspectJSonByName (ContainerInspectJSonByNameRequest) returns (ContainerInspectJSonByNameReply) {}
+  rpc ContainerListAll (ContainerListAllRequest) returns (ContainerListAllReply) {}
 }
