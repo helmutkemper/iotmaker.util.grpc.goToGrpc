@@ -1,3 +1,0 @@
-package iotmaker_util_grpc_goToGrpc
-
-type Consistency string
