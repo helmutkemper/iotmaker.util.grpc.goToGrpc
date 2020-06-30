@@ -38,6 +38,9 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 	var dataHostConfigResourcesDevices = make([]*pb.DeviceMapping, 0)
 	var dataHostConfigResourcesDeviceRequests = make([]*pb.DeviceRequest, 0)
 
+	var portMap = &pb.PortMap{}
+	portMap.Port = make(map[string]*pb.PortBindingList)
+
 	var dataStateHealthStatus string
 	var dataStateHealthFailingStreak int64
 
@@ -162,6 +165,19 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 				Options:      deviceRequests.Options,
 			})
 		}
+
+		for port, arrPortBinding := range data.HostConfig.PortBindings {
+			var portBind = make([]*pb.PortBinding, 0)
+			var toAdd = &pb.PortBindingList{}
+			for _, bind := range arrPortBinding {
+				portBind = append(portBind, &pb.PortBinding{
+					HostIP:   bind.HostIP,
+					HostPort: bind.HostPort,
+				})
+			}
+			toAdd.PortBinding = portBind
+			portMap.Port[string(port)] = toAdd
+		}
 	}
 
 	if data.HostConfig != nil {
@@ -173,9 +189,7 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 				Config: data.HostConfig.LogConfig.Config,
 			},
 			NetworkMode:  string(data.HostConfig.NetworkMode),
-			PortBindings: &pb.PortMap{
-				//Port: data.HostConfig.PortBindings //todo: fazer
-			},
+			PortBindings: portMap,
 			RestartPolicy: &pb.RestartPolicy{
 				Name:              data.HostConfig.RestartPolicy.Name,
 				MaximumRetryCount: int64(data.HostConfig.RestartPolicy.MaximumRetryCount),
@@ -298,7 +312,6 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 
 			HostConfig: dataHostConfig,
 
-			//HostConfig       : data.HostConfig,
 			//GraphDriver      : data.GraphDriver,
 			//SizeRw           : data.SizeRw,
 			//SizeRootFs       : data.SizeRootFs,
