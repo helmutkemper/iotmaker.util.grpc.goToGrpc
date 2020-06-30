@@ -34,6 +34,14 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 		})
 	}
 
+	weightDevice := make([]*pb.WeightDevice, 0)
+	for _, weight := range data.HostConfig.Resources.BlkioWeightDevice {
+		weightDevice = append(weightDevice, &pb.WeightDevice{
+			Path:   weight.Path,
+			Weight: uint32(weight.Weight),
+		})
+	}
+
 	ret = &pb.ContainerJSON{
 		ContainerJSONBase: &pb.ContainerJSONBase{
 			ID:      data.ID,
@@ -125,15 +133,49 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 				Tmpfs:           data.HostConfig.Tmpfs,
 				UTSMode:         string(data.HostConfig.UTSMode),
 				UsernsMode:      string(data.HostConfig.UsernsMode),
-				ShmSize:         0,
-				Sysctls:         nil,
-				Runtime:         "",
-				Isolation:       "",
-				Resources:       nil,
-				Mounts:          nil,
-				MaskedPaths:     nil,
-				ReadonlyPaths:   nil,
-				Init:            false,
+				ShmSize:         data.HostConfig.ShmSize,
+				Sysctls:         data.HostConfig.Sysctls,
+				Runtime:         data.HostConfig.Runtime,
+				Isolation:       string(data.HostConfig.Isolation),
+
+				Resources: &pb.Resources{
+					CPUShares:         data.HostConfig.Resources.CPUShares,
+					Memory:            data.HostConfig.Resources.Memory,
+					NanoCPUs:          data.HostConfig.Resources.NanoCPUs,
+					CgroupParent:      data.HostConfig.Resources.CgroupParent,
+					BlkioWeight:       uint32(data.HostConfig.Resources.BlkioWeight),
+					BlkioWeightDevice: weightDevice,
+					//BlkioDeviceReadBps:   data.HostConfig.Resources.BlkioDeviceReadBps,
+					//BlkioDeviceWriteBps:  data.HostConfig.Resources.BlkioDeviceWriteBps,
+					//BlkioDeviceReadIOps:  data.HostConfig.Resources.BlkioDeviceReadIOps,
+					//BlkioDeviceWriteIOps: data.HostConfig.Resources.BlkioDeviceWriteIOps,
+					CPUPeriod:          data.HostConfig.Resources.CPUPeriod,
+					CPUQuota:           data.HostConfig.Resources.CPUQuota,
+					CPURealtimePeriod:  data.HostConfig.Resources.CPURealtimePeriod,
+					CPURealtimeRuntime: data.HostConfig.Resources.CPURealtimeRuntime,
+					CpusetCpus:         data.HostConfig.Resources.CpusetCpus,
+					CpusetMems:         data.HostConfig.Resources.CpusetMems,
+					//Devices:              data.HostConfig.Resources.Devices,
+					DeviceCgroupRules: data.HostConfig.Resources.DeviceCgroupRules,
+					//DeviceRequests:       data.HostConfig.Resources.DeviceRequests,
+					KernelMemory:      data.HostConfig.Resources.KernelMemory,
+					KernelMemoryTCP:   data.HostConfig.Resources.KernelMemoryTCP,
+					MemoryReservation: data.HostConfig.Resources.MemoryReservation,
+					MemorySwap:        data.HostConfig.Resources.MemorySwap,
+					MemorySwappiness:  *data.HostConfig.Resources.MemorySwappiness,
+					OomKillDisable:    *data.HostConfig.Resources.OomKillDisable,
+					PidsLimit:         *data.HostConfig.Resources.PidsLimit,
+					//Ulimits:              data.HostConfig.Resources.Ulimits,
+					CPUCount:           data.HostConfig.Resources.CPUCount,
+					CPUPercent:         data.HostConfig.Resources.CPUPercent,
+					IOMaximumIOps:      data.HostConfig.Resources.IOMaximumIOps,
+					IOMaximumBandwidth: data.HostConfig.Resources.IOMaximumBandwidth,
+				},
+
+				Mounts:        nil,
+				MaskedPaths:   nil,
+				ReadonlyPaths: nil,
+				Init:          false,
 			},
 
 			//HostConfig       : data.HostConfig,
