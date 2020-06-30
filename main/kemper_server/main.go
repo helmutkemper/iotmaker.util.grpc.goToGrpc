@@ -322,10 +322,6 @@ func (el *js) FromContainer(data types.ContainerJSON) (ret *pb.ContainerJSON) {
 			ExecIDs:         data.ExecIDs,
 
 			HostConfig: dataHostConfig,
-
-			//GraphDriver      : data.GraphDriver,
-			//SizeRw           : data.SizeRw,
-			//SizeRootFs       : data.SizeRootFs,
 		},
 	}
 
