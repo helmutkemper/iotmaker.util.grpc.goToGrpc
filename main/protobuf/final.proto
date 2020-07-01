@@ -450,6 +450,114 @@ message Port {
   string Protocol = 2;
 }
 
+message ContainerHostConfig {
+  string NetworkMode = 1;
+}
+
+message SummaryNetworkSettings {
+  map<string, EndpointSettings> Networks = 1;
+}
+
+message Container {
+  string ID = 1;
+  repeated string Names = 2;
+  string Image = 3;
+  string ImageID = 4;
+  string Command = 5;
+  string Created = 6;
+  repeated Port Ports = 7;
+  int64 SizeRw = 8;
+  int64 SizeRootFs = 9;
+  map<string, string> Labels = 10;
+  string State = 11;
+  string Status = 12;
+  ContainerHostConfig HostConfig = 13;
+  SummaryNetworkSettings NetworkSettings = 14;
+  repeated MountPoint Mounts = 15;
+}
+
+message ContainerNetworkData {
+  string Gateway = 1;
+  string IPAddress = 2;
+  string EndpointID = 3;
+  string NetworkID = 4;
+  string MacAddress = 5;
+}
+
+message BlkioStatEntry {
+  uint64 Major = 1;
+  uint64 Minor = 2;
+  string Op = 3;
+  uint64 Value = 4;
+}
+
+message BlkioStats {
+  repeated BlkioStatEntry IoServiceBytesRecursive = 1;
+  repeated BlkioStatEntry IoServicedRecursive = 2;
+  repeated BlkioStatEntry IoQueuedRecursive = 3;
+  repeated BlkioStatEntry IoServiceTimeRecursive = 4;
+  repeated BlkioStatEntry IoWaitTimeRecursive = 5;
+  repeated BlkioStatEntry IoMergedRecursive = 6;
+  repeated BlkioStatEntry IoTimeRecursive = 7;
+  repeated BlkioStatEntry SectorsRecursive = 8;
+}
+
+message StorageStats {
+  uint64 ReadCountNormalized = 1;
+  uint64 ReadSizeBytes = 2;
+  uint64 WriteCountNormalized = 3;
+  uint64 WriteSizeBytes = 4;
+}
+
+message CPUUsage {
+  uint64 TotalUsage = 1;
+  repeated uint64 PercpuUsage = 2;
+  uint64 UsageInKernelmode = 3;
+  uint64 UsageInUsermode = 4;
+}
+
+message ThrottlingData {
+  uint64 Periods = 1;
+  uint64 ThrottledPeriods = 2;
+  uint64 ThrottledTime = 3;
+}
+
+message CPUStats {
+  CPUUsage CPUUsage = 1;
+  uint64 SystemUsage = 2;
+  uint32 OnlineCPUs = 3;
+  ThrottlingData ThrottlingData = 4;
+}
+
+message PidsStats {
+  uint64 Current = 1;
+  uint64 Limit = 2;
+}
+
+message MemoryStats {
+  uint64 Usage = 1;
+  uint64 MaxUsage = 2;
+  map<string, uint64> Stats = 3;
+  uint64 Failcnt = 4;
+  uint64 Limit = 5;
+  uint64 Commit = 6;
+  uint64 CommitPeak = 7;
+  uint64 PrivateWorkingSet = 8;
+
+}
+
+message Statistics {
+  int64 Read = 1;
+  int64 PreRead = 2;
+  PidsStats PidsStats = 3;
+  BlkioStats BlkioStats = 4;
+  uint32 NumProcs = 5;
+  StorageStats StorageStats = 6;
+  CPUStats CPUStats = 7;
+  CPUStats PreCPUStats = 8;
+  MemoryStats MemoryStats = 9;
+}
+
 message ContainerInspectRequest {
   string ID = 1;
 }
@@ -596,7 +704,7 @@ message ContainerInspectByNameReply {
 }
 
 message ContainerInspectJSonRequest {
-  string Id = 1;
+  string ID = 1;
 }
 
 message ContainerInspectJSonReply {
@@ -611,12 +719,39 @@ message ContainerInspectJSonByNameReply {
   string Inspect = 1;
 }
 
-message ContainerListAllRequest {
+message Empty {
 
 }
 
 message ContainerListAllReply {
+  repeated Container List = 1;
+}
 
+message ContainerNetworkInspectRequest {
+  string ID = 1;
+}
+
+message ContainerNetworkInspectReply {
+  map<string, ContainerNetworkData> List = 1;
+}
+
+message ContainerRemoveRequest {
+  string ID = 1;
+  bool RemoveVolumes = 2;
+  bool RemoveLinks = 3;
+  bool Force = 4;
+}
+
+message ContainerStartRequest {
+  string ID = 1;
+}
+
+message ContainerStatisticsOneShotRequest {
+  string ID = 1;
+}
+
+message ContainerStatisticsOneShotReply {
+  Statistics Statistics = 1;
 }
 
 service DockerServer {
@@ -635,5 +770,10 @@ service DockerServer {
   rpc ContainerInspectByName (ContainerInspectByNameRequest) returns (ContainerInspectByNameReply) {}
   rpc ContainerInspectJSon (ContainerInspectJSonRequest) returns (ContainerInspectJSonReply) {}
   rpc ContainerInspectJSonByName (ContainerInspectJSonByNameRequest) returns (ContainerInspectJSonByNameReply) {}
-  rpc ContainerListAll (ContainerListAllRequest) returns (ContainerListAllReply) {}
+  rpc ContainerListAll (Empty) returns (ContainerListAllReply) {}
+  rpc ContainerListQuiet (Empty) returns (ContainerListAllReply) {}
+  rpc ContainerNetworkInspect (ContainerNetworkInspectRequest) returns (ContainerNetworkInspectReply) {}
+  rpc ContainerRemove (ContainerRemoveRequest) returns (Empty) {}
+  rpc ContainerStart (ContainerStartRequest) returns (Empty) {}
+  rpc ContainerStatisticsOneShot (ContainerStatisticsOneShotRequest) returns (ContainerStatisticsOneShotReply) {}
 }
