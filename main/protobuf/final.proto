@@ -754,6 +754,29 @@ message ContainerStatisticsOneShotReply {
   Statistics Statistics = 1;
 }
 
+message ContainerStatisticsOneShotByNameRequest {
+  string ID = 1;
+}
+
+message ContainerStatisticsOneShotByNameReplay {
+  Statistics Statistics = 1;
+}
+
+message ContainerStopRequest {
+  string ID = 1;
+}
+
+message ContainerStopAndRemoveRequest {
+  string ID = 1;
+  bool RemoveVolumes = 2;
+  bool RemoveLinks = 3;
+  bool Force = 4;
+}
+
+message ContainerWaitStatusNotRunningRequest {
+  string ID = 1;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
@@ -776,4 +799,8 @@ service DockerServer {
   rpc ContainerRemove (ContainerRemoveRequest) returns (Empty) {}
   rpc ContainerStart (ContainerStartRequest) returns (Empty) {}
   rpc ContainerStatisticsOneShot (ContainerStatisticsOneShotRequest) returns (ContainerStatisticsOneShotReply) {}
+  rpc ContainerStatisticsOneShotByName (ContainerStatisticsOneShotByNameRequest) returns (ContainerStatisticsOneShotByNameReplay) {}
+  rpc ContainerStop (ContainerStopRequest) returns (Empty) {}
+  rpc ContainerStopAndRemove (ContainerStopAndRemoveRequest) returns (Empty) {}
+  rpc ContainerWaitStatusNotRunning (ContainerWaitStatusNotRunningRequest) returns (Empty) {}
 }
