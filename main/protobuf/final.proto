@@ -275,6 +275,12 @@ message Resources {
   uint64 IOMaximumBandwidth = 31;
 }
 
+message MountMount {
+  string Type = 1;
+  string Source = 2;
+  repeated string Options = 3;
+}
+
 message Mount {
   string Type = 1;
   string Source = 2;
@@ -564,8 +570,7 @@ message ContainerInspectRequest {
 }
 
 message ContainerInspectReply {
-  string ID = 1;
-  ContainerJSON ContainerJSON = 2;
+  ContainerJSON ContainerJSON = 1;
 }
 
 message NetworkInspectRequest {
@@ -573,8 +578,7 @@ message NetworkInspectRequest {
 }
 
 message NetworkInspectReply {
-  string ID = 1;
-  NetworkResource NetworkResource = 2;
+  NetworkResource NetworkResource = 1;
 }
 
 message ContainerCreateRequest {
