@@ -116,8 +116,19 @@ message ContainerNode {
   map<string, string> Labels = 7;
 }
 
+message Port {
+  string Port = 1;
+  string Protocol = 2;
+}
+
+//port_number/protocol
 message PortMap {
   map<string, PortBindingList> Port = 1;
+}
+
+message PortBinding {
+  string HostIP = 1;
+  string HostPort = 2;
 }
 
 message PortBindingList {
@@ -229,11 +240,6 @@ message Health {
 message LogConfig {
   string Type = 1;
   map<string, string> Config = 2;
-}
-
-message PortBinding {
-  string HostIP = 1;
-  string HostPort = 2;
 }
 
 message RestartPolicy {
@@ -452,11 +458,6 @@ message Task {
   map<string, string>Info = 4;
 }
 
-message Port {
-  string Port = 1;
-  string Protocol = 2;
-}
-
 message ContainerHostConfig {
   string NetworkMode = 1;
 }
@@ -625,7 +626,7 @@ message ContainerCreateAndStartRequest {
   string ContainerName = 2;
   string RestartPolicy = 3;
   PortMap PortExposedList = 4;
-  Mount MountVolumes = 5;
+  repeated Mount MountVolumes = 5;
   NetworkingConfig ContainerNetwork = 6;
 }
 
