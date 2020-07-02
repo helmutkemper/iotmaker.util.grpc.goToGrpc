@@ -817,7 +817,6 @@ service DockerServer {
   rpc ContainerInspectJSonByName (ContainerInspectJSonByNameRequest) returns (ContainerInspectJSonByNameReply) {}
   rpc ContainerListAll (Empty) returns (ContainerListAllReply) {}
   rpc ContainerListQuiet (Empty) returns (ContainerListAllReply) {}
-  rpc ContainerNetworkInspect (ContainerNetworkInspectRequest) returns (ContainerNetworkInspectReply) {}
   rpc ContainerRemove (ContainerRemoveRequest) returns (Empty) {}
   rpc ContainerStart (ContainerStartRequest) returns (Empty) {}
   rpc ContainerStatisticsOneShot (ContainerStatisticsOneShotRequest) returns (ContainerStatisticsOneShotReply) {}
