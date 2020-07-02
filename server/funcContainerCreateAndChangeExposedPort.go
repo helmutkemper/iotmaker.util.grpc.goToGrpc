@@ -7,11 +7,11 @@ import (
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
-func (el *GRpcServer) ContainerCreateAndStart(
+func (el *GRpcServer) ContainerCreateAndChangeExposedPort(
 	ctx context.Context,
-	in *pb.ContainerCreateAndStartRequest,
+	in *pb.ContainerCreateAndChangeExposedPortRequest,
 ) (
-	response *pb.ContainerCreateAndStartReply,
+	response *pb.ContainerCreateAndChangeExposedPortReply,
 	err error,
 ) {
 
@@ -22,28 +22,29 @@ func (el *GRpcServer) ContainerCreateAndStart(
 	}
 
 	var containerID string
+	var currentPort, changeToPort []nat.Port
 	var restartPolicy iotmakerDocker.RestartPolicy
-	var portExposedList nat.PortMap
 	err, restartPolicy = SupportGRpcToContainerPolicy(in.GetRestartPolicy())
 	if err != nil {
 		return
 	}
 
-	err, portExposedList = SupportGRpcToNatPotMap(in.GetPortExposedList())
-	if err != nil {
-		return
-	}
+	err, currentPort = SupportGRpcArrayPortToArrayNatPot(in.GetCurrentPort())
+	err, changeToPort = SupportGRpcArrayPortToArrayNatPot(in.GetChangeToPort())
 
-	err, containerID = el.dockerSystem.ContainerCreateAndStart(
+	err, containerID = el.dockerSystem.ContainerCreateAndChangeExposedPort(
 		in.GetImageName(),
 		in.GetContainerName(),
 		restartPolicy,
-		portExposedList,
 		SupportGRpcToArrayMount(in.GetMountVolumes()),
 		nil,
+		currentPort,
+		changeToPort,
 	)
 
-	return &pb.ContainerCreateAndStartReply{
+	response = &pb.ContainerCreateAndChangeExposedPortReply{
 		ContainerID: containerID,
-	}, err
+	}
+
+	return
 }

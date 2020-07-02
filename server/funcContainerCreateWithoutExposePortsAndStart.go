@@ -2,16 +2,15 @@ package server
 
 import (
 	"context"
-	"github.com/docker/go-connections/nat"
 	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
-func (el *GRpcServer) ContainerCreateAndStart(
+func (el *GRpcServer) ContainerCreateWithoutExposePortsAndStart(
 	ctx context.Context,
-	in *pb.ContainerCreateAndStartRequest,
+	in *pb.ContainerCreateWithoutExposePortsAndStartRequest,
 ) (
-	response *pb.ContainerCreateAndStartReply,
+	response *pb.ContainerCreateWithoutExposePortsAndStartReply,
 	err error,
 ) {
 
@@ -23,27 +22,20 @@ func (el *GRpcServer) ContainerCreateAndStart(
 
 	var containerID string
 	var restartPolicy iotmakerDocker.RestartPolicy
-	var portExposedList nat.PortMap
 	err, restartPolicy = SupportGRpcToContainerPolicy(in.GetRestartPolicy())
 	if err != nil {
 		return
 	}
 
-	err, portExposedList = SupportGRpcToNatPotMap(in.GetPortExposedList())
-	if err != nil {
-		return
-	}
-
-	err, containerID = el.dockerSystem.ContainerCreateAndStart(
+	err, containerID = el.dockerSystem.ContainerCreateWithoutExposePortsAndStart(
 		in.GetImageName(),
 		in.GetContainerName(),
 		restartPolicy,
-		portExposedList,
 		SupportGRpcToArrayMount(in.GetMountVolumes()),
 		nil,
 	)
 
-	return &pb.ContainerCreateAndStartReply{
+	return &pb.ContainerCreateWithoutExposePortsAndStartReply{
 		ContainerID: containerID,
 	}, err
 }

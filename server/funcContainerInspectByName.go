@@ -6,11 +6,11 @@ import (
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
-func (el *GRpcServer) ContainerInspect(
+func (el *GRpcServer) ContainerInspectByName(
 	ctx context.Context,
-	in *pb.ContainerInspectRequest,
+	in *pb.ContainerInspectByNameRequest,
 ) (
-	response *pb.ContainerInspectReply,
+	response *pb.ContainerInspectByNameReply,
 	err error,
 ) {
 
@@ -22,14 +22,14 @@ func (el *GRpcServer) ContainerInspect(
 
 	var inspect types.ContainerJSON
 
-	err, inspect = el.dockerSystem.ContainerInspect(in.GetID())
+	err, inspect = el.dockerSystem.ContainerInspectByName(in.GetName())
 	if err != nil {
 		return nil, err
 	}
 
 	var ret = ContainerInspectDataConverterDockerToGRpc(inspect)
 
-	response = &pb.ContainerInspectReply{
+	response = &pb.ContainerInspectByNameReply{
 		ContainerJSON: ret,
 	}
 
