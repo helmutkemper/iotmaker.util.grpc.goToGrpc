@@ -116,6 +116,22 @@ message ContainerNode {
   map<string, string> Labels = 7;
 }
 
+message ContainerPort {
+  // Host IP address that the container's port is mapped to
+  string IP = 1;
+
+  // Port on the container
+  // Required: true
+  uint32 PrivatePort = 2;
+
+  // Port exposed on the host
+  uint32 PublicPort = 3;
+
+  // type
+  // Required: true
+  string Type = 4;
+}
+
 message Port {
   string Port = 1;
   string Protocol = 2;
@@ -472,8 +488,8 @@ message Container {
   string Image = 3;
   string ImageID = 4;
   string Command = 5;
-  string Created = 6;
-  repeated Port Ports = 7;
+  int64 Created = 6;
+  repeated ContainerPort Ports = 7;
   int64 SizeRw = 8;
   int64 SizeRootFs = 9;
   map<string, string> Labels = 10;
