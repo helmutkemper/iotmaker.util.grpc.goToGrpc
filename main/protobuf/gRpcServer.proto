@@ -777,10 +777,10 @@ message ContainerStatisticsOneShotReply {
 }
 
 message ContainerStatisticsOneShotByNameRequest {
-  string ID = 1;
+  string Name = 1;
 }
 
-message ContainerStatisticsOneShotByNameReplay {
+message ContainerStatisticsOneShotByNameReply {
   Statistics Statistics = 1;
 }
 
@@ -820,7 +820,7 @@ service DockerServer {
   rpc ContainerRemove (ContainerRemoveRequest) returns (Empty) {}
   rpc ContainerStart (ContainerStartRequest) returns (Empty) {}
   rpc ContainerStatisticsOneShot (ContainerStatisticsOneShotRequest) returns (ContainerStatisticsOneShotReply) {}
-  rpc ContainerStatisticsOneShotByName (ContainerStatisticsOneShotByNameRequest) returns (ContainerStatisticsOneShotByNameReplay) {}
+  rpc ContainerStatisticsOneShotByName (ContainerStatisticsOneShotByNameRequest) returns (ContainerStatisticsOneShotByNameReply) {}
   rpc ContainerStop (ContainerStopRequest) returns (Empty) {}
   rpc ContainerStopAndRemove (ContainerStopAndRemoveRequest) returns (Empty) {}
   rpc ContainerWaitStatusNotRunning (ContainerWaitStatusNotRunningRequest) returns (Empty) {}
