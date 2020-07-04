@@ -833,6 +833,10 @@ message NetworkRemoveRequest {
   string NetworkID = 1;
 }
 
+message NetworkRemoveByNameRequest {
+  string Name = 1;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
@@ -862,4 +866,5 @@ service DockerServer {
   rpc NetworkFindIdByName (NetworkFindIdByNameRequest) returns (NetworkFindIdByNameReply) {}
   rpc NetworkList (Empty) returns (NetworkListReply) {}
   rpc NetworkRemove (NetworkRemoveRequest) returns (Empty) {}
+  rpc NetworkRemoveByName (NetworkRemoveByNameRequest) returns (Empty) {}
 }
