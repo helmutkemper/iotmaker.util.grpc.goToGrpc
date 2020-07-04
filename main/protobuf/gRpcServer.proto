@@ -604,7 +604,7 @@ message ContainerCreateRequest {
   string RestartPolicy = 3;
   PortMap PortExposedList = 4;
   repeated Mount MountVolumes = 5;
-  NetworkingConfig ContainerNetwork = 6;
+  string NetworkName = 6;
 }
 
 message ContainerCreateReply {
@@ -616,7 +616,7 @@ message ContainerCreateAndChangeExposedPortRequest {
   string ContainerName = 2;
   string RestartPolicy = 3;
   repeated Mount MountVolumes = 4;
-  NetworkingConfig ContainerNetwork = 5;
+  string NetworkName = 5;
   repeated Port CurrentPort = 6;
   repeated Port ChangeToPort = 7;
 }
@@ -630,7 +630,7 @@ message ContainerCreateAndExposePortsAutomaticallyRequest {
   string ContainerName = 2;
   string RestartPolicy = 3;
   repeated Mount MountVolumes = 4;
-  NetworkingConfig ContainerNetwork = 5;
+  string NetworkName = 5;
 }
 
 message ContainerCreateAndExposePortsAutomaticallyReply {
@@ -643,7 +643,7 @@ message ContainerCreateAndStartRequest {
   string RestartPolicy = 3;
   PortMap PortExposedList = 4;
   repeated Mount MountVolumes = 5;
-  NetworkingConfig ContainerNetwork = 6;
+  string NetworkName = 6;
 }
 
 message ContainerCreateAndStartReply {
@@ -655,7 +655,7 @@ message ContainerCreateChangeExposedPortAndStartRequest {
   string ContainerName = 2;
   string RestartPolicy = 3;
   repeated Mount MountVolumes = 4;
-  NetworkingConfig ContainerNetwork = 5;
+  string NetworkName = 5;
   repeated Port CurrentPort = 6;
   repeated Port ChangeToPort = 7;
 }
@@ -669,7 +669,7 @@ message ContainerCreateExposePortsAutomaticallyAndStartRequest {
   string ContainerName = 2;
   string RestartPolicy = 3;
   repeated Mount MountVolumes = 4;
-  NetworkingConfig ContainerNetwork = 5;
+  string NetworkName = 5;
 }
 
 message ContainerCreateExposePortsAutomaticallyAndStartReply {
@@ -681,7 +681,7 @@ message ContainerCreateWithoutExposePortsRequest {
   string ContainerName = 2;
   string RestartPolicy = 3;
   repeated Mount MountVolumes = 4;
-  NetworkingConfig ContainerNetwork = 5;
+  string NetworkName = 5;
 }
 
 message ContainerCreateWithoutExposePortsReply {
@@ -693,7 +693,7 @@ message ContainerCreateWithoutExposePortsAndStartRequest {
   string ContainerName = 2;
   string RestartPolicy = 3;
   repeated Mount MountVolumes = 4;
-  NetworkingConfig ContainerNetwork = 5;
+  string NetworkName = 5;
 }
 
 message ContainerCreateWithoutExposePortsAndStartReply {
@@ -799,6 +799,40 @@ message ContainerWaitStatusNotRunningRequest {
   string ID = 1;
 }
 
+message NetworkConnectRequest {
+  string NetworkID = 1;
+  string ContainerID = 2;
+  EndpointSettings Config = 3;
+}
+
+message NetworkCreateRequest {
+  string Name = 1;
+  string NetworkDrive = 2;
+  string Scope = 3;
+  string Subnet = 4;
+  string Gateway  = 5;
+}
+
+message NetworkCreateReply {
+  string NetworkID = 1;
+}
+
+message NetworkFindIdByNameRequest {
+  string Name = 1;
+}
+
+message NetworkFindIdByNameReply {
+  string NetworkID = 1;
+}
+
+message NetworkListReply {
+  repeated NetworkResource List = 1;
+}
+
+message NetworkRemoveRequest {
+  string NetworkID = 1;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
@@ -824,4 +858,8 @@ service DockerServer {
   rpc ContainerStop (ContainerStopRequest) returns (Empty) {}
   rpc ContainerStopAndRemove (ContainerStopAndRemoveRequest) returns (Empty) {}
   rpc ContainerWaitStatusNotRunning (ContainerWaitStatusNotRunningRequest) returns (Empty) {}
+  rpc NetworkCreate (NetworkCreateRequest) returns (NetworkCreateReply) {}
+  rpc NetworkFindIdByName (NetworkFindIdByNameRequest) returns (NetworkFindIdByNameReply) {}
+  rpc NetworkList (Empty) returns (NetworkListReply) {}
+  rpc NetworkRemove (NetworkRemoveRequest) returns (Empty) {}
 }

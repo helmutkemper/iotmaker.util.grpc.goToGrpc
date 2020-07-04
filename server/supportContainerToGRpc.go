@@ -26,30 +26,7 @@ func SupportContainerToGRpc(cont []types.Container) (protoContainers []*pb.Conta
 		var containerNetworks = make(map[string]*pb.EndpointSettings)
 		if container.NetworkSettings != nil {
 			for k, endpoint := range container.NetworkSettings.Networks {
-				var endpointIPAMConfig *pb.EndpointIPAMConfig
-				if endpoint.IPAMConfig != nil {
-					endpointIPAMConfig = &pb.EndpointIPAMConfig{
-						IPv4Address:  endpoint.IPAMConfig.IPv4Address,
-						IPv6Address:  endpoint.IPAMConfig.IPv6Address,
-						LinkLocalIPs: endpoint.IPAMConfig.LinkLocalIPs,
-					}
-				}
-
-				containerNetworks[k] = &pb.EndpointSettings{
-					IPAMConfig:          endpointIPAMConfig,
-					Links:               endpoint.Links,
-					Aliases:             endpoint.Aliases,
-					NetworkID:           endpoint.NetworkID,
-					EndpointID:          endpoint.EndpointID,
-					Gateway:             endpoint.Gateway,
-					IPAddress:           endpoint.IPAddress,
-					IPPrefixLen:         int64(endpoint.IPPrefixLen),
-					IPv6Gateway:         endpoint.IPv6Gateway,
-					GlobalIPv6Address:   endpoint.GlobalIPv6Address,
-					GlobalIPv6PrefixLen: int64(endpoint.GlobalIPv6PrefixLen),
-					MacAddress:          endpoint.MacAddress,
-					DriverOpts:          endpoint.DriverOpts,
-				}
+				containerNetworks[k] = SupportNetworkEndpointSettingsToGRpc(endpoint)
 			}
 		}
 
