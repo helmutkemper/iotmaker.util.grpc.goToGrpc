@@ -867,4 +867,5 @@ service DockerServer {
   rpc NetworkList (Empty) returns (NetworkListReply) {}
   rpc NetworkRemove (NetworkRemoveRequest) returns (Empty) {}
   rpc NetworkRemoveByName (NetworkRemoveByNameRequest) returns (Empty) {}
+  rpc ImageGarbageCollector (Empty) returns (Empty) {}
 }
