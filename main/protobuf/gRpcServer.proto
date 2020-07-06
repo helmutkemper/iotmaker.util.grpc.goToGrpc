@@ -1007,4 +1007,5 @@ service DockerServer {
   rpc ImagePull (ImagePullRequest) returns (ImagePullReply) {}
   rpc ImageRemove (ImageRemoveRequest) returns (Empty) {}
   rpc ImageRemoveByName (ImageRemoveByNameRequest) returns (Empty) {}
+  //todo: verificar escrita em map e colocar mutex
 }
