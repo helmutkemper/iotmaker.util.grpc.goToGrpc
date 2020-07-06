@@ -837,11 +837,46 @@ message NetworkRemoveByNameRequest {
   string Name = 1;
 }
 
+message ImageBuildFromRemoteServerRequest {
+  string ServerPath = 1;
+  string ImageNewName = 2;
+  repeated string ImageTags = 3;
+}
+
+message ImageBuildFromRemoteServerReply {
+  string ID = 1;
+}
+
+message ImageOrContainerBuildPullSubStatus {
+  int64 Count = 1;
+  int64 Current = 2;
+  int64 Total = 3;
+  double Percent = 4;
+}
+
+message ImageOrContainerBuildPullStatusRequest {
+  string ID = 1;
+}
+
+message ImageOrContainerBuildPullStatusReply {
+  int64 Waiting = 1;
+  ImageOrContainerBuildPullSubStatus Downloading = 2;
+  int64 VerifyingChecksum = 3;
+  int64 DownloadComplete = 4;
+  ImageOrContainerBuildPullSubStatus Extracting = 5;
+  int64 PullComplete = 6;
+  string ImageName = 7;
+  string ImageID = 8;
+  bool Closed = 9;
+  string Stream = 10;
+  bool successfullyBuildContainer = 11;
+  bool successfullyBuildImage = 12;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
   rpc ContainerInspect (ContainerInspectRequest) returns (ContainerInspectReply) {}
-  rpc NetworkInspect (NetworkInspectRequest) returns (NetworkInspectReply) {}
   rpc ContainerCreateAndExposePortsAutomatically (ContainerCreateAndExposePortsAutomaticallyRequest) returns (ContainerCreateAndExposePortsAutomaticallyReply) {}
   rpc ContainerCreateAndStart (ContainerCreateAndStartRequest) returns (ContainerCreateAndStartReply) {}
   rpc ContainerCreateChangeExposedPortAndStart (ContainerCreateChangeExposedPortAndStartRequest) returns (ContainerCreateChangeExposedPortAndStartReply) {}
@@ -867,5 +902,7 @@ service DockerServer {
   rpc NetworkList (Empty) returns (NetworkListReply) {}
   rpc NetworkRemove (NetworkRemoveRequest) returns (Empty) {}
   rpc NetworkRemoveByName (NetworkRemoveByNameRequest) returns (Empty) {}
+  rpc NetworkInspect (NetworkInspectRequest) returns (NetworkInspectReply) {}
   rpc ImageGarbageCollector (Empty) returns (Empty) {}
+  rpc ImageBuildFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
 }

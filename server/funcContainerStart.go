@@ -9,6 +9,7 @@ func (el *GRpcServer) ContainerStart(
 	ctx context.Context,
 	in *pb.ContainerStartRequest,
 ) (
+	response *pb.Empty,
 	err error,
 ) {
 
@@ -19,6 +20,7 @@ func (el *GRpcServer) ContainerStart(
 	}
 
 	err = el.dockerSystem.ContainerStart(in.GetID())
+	response = &pb.Empty{}
 
 	return
 }
