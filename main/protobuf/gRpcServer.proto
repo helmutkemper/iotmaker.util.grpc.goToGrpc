@@ -881,6 +881,88 @@ message ImageFindIdByNameReply {
   string ID = 1;
 }
 
+message ImageListExposedPortsRequest {
+  string ID = 1;
+}
+
+message ImageListExposedPortsReply {
+  repeated Port List = 1;
+}
+
+message ImageListExposedPortsByNameRequest {
+  string Name = 1;
+}
+
+message ImageListExposedPortsByNameReply {
+  repeated Port List = 1;
+}
+
+message ImageListExposedVolumesRequest {
+  string ID = 1;
+}
+
+message ImageListExposedVolumesReply {
+  repeated string List = 1;
+}
+
+message ImageListExposedVolumesByNameRequest {
+  string Name = 1;
+}
+
+message ImageListExposedVolumesByNameReply {
+  repeated string List = 1;
+}
+
+message ImageMountNatPortListRequest {
+  string ID = 1;
+}
+
+message ImageMountNatPortListReply {
+  PortMap PortMap = 1;
+}
+
+message ImageMountNatPortListChangeExposedRequest {
+  string ImageID = 1;
+  repeated Port CurrentPortList = 2;
+  repeated Port ChangeToPortList = 3;
+}
+
+message ImageMountNatPortListChangeExposedReply {
+  PortMap PortMap = 1;
+}
+
+message ImageMountNatPortListChangeExposedWithIpAddressRequest {
+  string ImageID = 1;
+  string Ip = 2;
+  repeated Port CurrentPortList = 3;
+  repeated Port ChangeToPortList = 4;
+}
+
+message ImageMountNatPortListChangeExposedWithIpAddressReply {
+  PortMap PortMap = 1;
+}
+
+message ImagePullRequest {
+  string Name = 1;
+}
+
+message ImagePullReply {
+  string ImageName = 1;
+  string ImageID = 2;
+}
+
+message ImageRemoveRequest {
+  string ID = 1;
+  bool Force = 2;
+  bool PruneChildren = 3;
+}
+
+message ImageRemoveByNameRequest {
+  string ID = 1;
+  bool Force = 2;
+  bool PruneChildren = 3;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
@@ -915,4 +997,14 @@ service DockerServer {
   rpc ImageBuildFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
   rpc ImageBuildFromRemoteServerStatus (ImageOrContainerBuildPullStatusRequest) returns (ImageOrContainerBuildPullStatusReply) {}
   rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
+  rpc ImageListExposedPorts (ImageListExposedPortsRequest) returns (ImageListExposedPortsReply) {}
+  rpc ImageListExposedPortsByName (ImageListExposedPortsByNameRequest) returns (ImageListExposedPortsByNameReply) {}
+  rpc ImageListExposedVolumes (ImageListExposedVolumesRequest) returns (ImageListExposedVolumesReply) {}
+  rpc ImageListExposedVolumesByName (ImageListExposedVolumesByNameRequest) returns (ImageListExposedVolumesByNameReply) {}
+  rpc ImageMountNatPortList (ImageMountNatPortListRequest) returns (ImageMountNatPortListReply) {}
+  rpc ImageMountNatPortListChangeExposed (ImageMountNatPortListChangeExposedRequest) returns (ImageMountNatPortListChangeExposedReply) {}
+  rpc ImageMountNatPortListChangeExposedWithIpAddress (ImageMountNatPortListChangeExposedWithIpAddressRequest) returns (ImageMountNatPortListChangeExposedWithIpAddressReply) {}
+  rpc ImagePull (ImagePullRequest) returns (ImagePullReply) {}
+  rpc ImageRemove (ImageRemoveRequest) returns (Empty) {}
+  rpc ImageRemoveByName (ImageRemoveByNameRequest) returns (Empty) {}
 }
