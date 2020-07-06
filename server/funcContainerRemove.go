@@ -9,6 +9,7 @@ func (el *GRpcServer) ContainerRemove(
 	ctx context.Context,
 	in *pb.ContainerRemoveRequest,
 ) (
+	response *pb.Empty,
 	err error,
 ) {
 
@@ -19,6 +20,8 @@ func (el *GRpcServer) ContainerRemove(
 	}
 
 	err = el.dockerSystem.ContainerRemove(in.GetID(), in.GetRemoveVolumes(), in.GetRemoveLinks(), in.GetForce())
+
+	response = &pb.Empty{}
 
 	return
 }

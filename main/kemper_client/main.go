@@ -30,11 +30,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	fmt.Printf("ID: %s\n", ci.GetID())
+	fmt.Printf("JSON: %s\n", ci.GetContainerJSON())
 
 	ni, err = c.NetworkInspect(ctx, &pb.NetworkInspectRequest{ID: "0fdb93c956338309125d1ff94e440448d1b70e2de29626260451bdda4b8d8226"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	fmt.Printf("ID: %s\n", ni.GetID())
+	fmt.Printf("ID: %s\n", ni.NetworkResource.ID)
 }
