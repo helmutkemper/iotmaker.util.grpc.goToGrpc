@@ -905,4 +905,5 @@ service DockerServer {
   rpc NetworkInspect (NetworkInspectRequest) returns (NetworkInspectReply) {}
   rpc ImageGarbageCollector (Empty) returns (Empty) {}
   rpc ImageBuildFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
+  rpc ImageBuildFromRemoteServerStatus (ImageOrContainerBuildPullStatusRequest) returns (ImageOrContainerBuildPullStatusReply) {}
 }
