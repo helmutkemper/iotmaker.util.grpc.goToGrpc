@@ -873,6 +873,14 @@ message ImageOrContainerBuildPullStatusReply {
   bool successfullyBuildImage = 12;
 }
 
+message ImageFindIdByNameRequest {
+  string Name = 1;
+}
+
+message ImageFindIdByNameReply {
+  string ID = 1;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
@@ -906,4 +914,5 @@ service DockerServer {
   rpc ImageGarbageCollector (Empty) returns (Empty) {}
   rpc ImageBuildFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
   rpc ImageBuildFromRemoteServerStatus (ImageOrContainerBuildPullStatusRequest) returns (ImageOrContainerBuildPullStatusReply) {}
+  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
 }
