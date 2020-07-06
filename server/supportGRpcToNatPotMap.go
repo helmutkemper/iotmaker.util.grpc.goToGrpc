@@ -31,4 +31,6 @@ func SupportGRpcToNatPotMap(
 
 		portMap[port] = toBind
 	}
+
+	return
 }

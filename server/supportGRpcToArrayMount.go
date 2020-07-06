@@ -14,7 +14,7 @@ func SupportGRpcToArrayMount(
 	mountList = make([]mount.Mount, 0)
 	for _, m := range pt {
 		mountList = append(mountList, mount.Mount{
-			Type:        m.Type,
+			Type:        mount.Type(m.Type),
 			Source:      m.Source,
 			Target:      m.Target,
 			ReadOnly:    m.ReadOnly,
