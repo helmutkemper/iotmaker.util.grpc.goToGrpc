@@ -1,3 +1,4 @@
+//file:///C:/Program%20Files%20(x86)/Progress/Kendo%20UI%20for%20jQuery%20R2%202019/examples/index.html
 //protoc --go_opt=paths=source_relative --go_out=plugins=grpc:. *.proto
 syntax = "proto3";
 
@@ -858,6 +859,48 @@ message ImageOrContainerBuildPullStatusRequest {
   string ID = 1;
 }
 
+message ImageSummary {
+  // containers
+  // Required: true
+  int64 Containers = 1;
+
+  // created
+  // Required: true
+  int64 Created = 2;
+
+  // Id
+  // Required: true
+  string ID = 3;
+
+  // labels
+  // Required: true
+  map<string, string> Labels = 4;
+
+  // parent Id
+  // Required: true
+  string ParentID = 5;
+
+  // repo digests
+  // Required: true
+  repeated string RepoDigests = 6;
+
+  // repo tags
+  // Required: true
+  repeated string RepoTags = 7;
+
+  // shared size
+  // Required: true
+  int64 SharedSize = 8;
+
+  // size
+  // Required: true
+  int64 Size = 9;
+
+  // virtual size
+  // Required: true
+  int64 VirtualSize = 10;
+}
+
 message ImageOrContainerBuildPullStatusReply {
   int64 Waiting = 1;
   ImageOrContainerBuildPullSubStatus Downloading = 2;
@@ -963,6 +1006,10 @@ message ImageRemoveByNameRequest {
   bool PruneChildren = 3;
 }
 
+message ImageListReply {
+  repeated ImageSummary List = 1;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
@@ -997,6 +1044,7 @@ service DockerServer {
   rpc ImageBuildFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
   rpc ImageBuildFromRemoteServerStatus (ImageOrContainerBuildPullStatusRequest) returns (ImageOrContainerBuildPullStatusReply) {}
   rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
+  rpc ImageList (Empty) returns (ImageListReply) {}
   rpc ImageListExposedPorts (ImageListExposedPortsRequest) returns (ImageListExposedPortsReply) {}
   rpc ImageListExposedPortsByName (ImageListExposedPortsByNameRequest) returns (ImageListExposedPortsByNameReply) {}
   rpc ImageListExposedVolumes (ImageListExposedVolumesRequest) returns (ImageListExposedVolumesReply) {}
