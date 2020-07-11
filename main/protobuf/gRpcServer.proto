@@ -459,6 +459,14 @@ message ImageListReply {
   bytes Data = 1;
 }
 
+message ContainerInspectByNameContainsRequest {
+  string Name = 1;
+}
+
+message ContainerInspectByNameContainsReply {
+  bytes Data = 1;
+}
+
 service DockerServer {
   rpc ContainerCreate (ContainerCreateRequest) returns (ContainerCreateReply) {}
   rpc ContainerCreateAndChangeExposedPort (ContainerCreateAndChangeExposedPortRequest) returns (ContainerCreateAndChangeExposedPortReply) {}
@@ -472,6 +480,7 @@ service DockerServer {
   rpc ContainerFindIdByName (ContainerFindIdByNameRequest) returns (ContainerFindIdByNameReply) {}
   rpc ContainerFindIdByNameContains (ContainerFindIdByNameContainsRequest) returns (ContainerFindIdByNameContainsReply) {}
   rpc ContainerInspectByName (ContainerInspectByNameRequest) returns (ContainerInspectByNameReply) {}
+  rpc ContainerInspectByNameContains (ContainerInspectByNameContainsRequest) returns (ContainerInspectByNameContainsReply) {}
   rpc ContainerInspectJSon (ContainerInspectJSonRequest) returns (ContainerInspectJSonReply) {}
   rpc ContainerInspectJSonByName (ContainerInspectJSonByNameRequest) returns (ContainerInspectJSonByNameReply) {}
   rpc ContainerListAll (Empty) returns (ContainerListAllReply) {}
