@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
@@ -19,10 +20,16 @@ func (el *GRpcServer) ContainerFindIdByNameContains(
 		return
 	}
 
-	var containerID string
-	err, containerID = el.dockerSystem.ContainerFindIdByNameContains(in.GetName())
+	var data []byte
+	var list interface{}
+	err, list = el.dockerSystem.ContainerFindIdByNameContains(in.GetName())
+
+	data, err = json.Marshal(&list)
+	if err != nil {
+		return
+	}
 
 	return &pb.ContainerFindIdByNameContainsReply{
-		ID: containerID,
+		Data: data,
 	}, err
 }

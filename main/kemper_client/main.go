@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/docker/docker/api/types"
+	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/server"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -61,6 +62,7 @@ func main() {
 	mux.HandleFunc("/imageListAll", ImageList)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
+	mux.HandleFunc("/containerFindIdByNameContains", ContainerFindIdByNameContains)
 
 	server := fmt.Sprintf(":%v", KHttpServerPort)
 	fmt.Printf("Listening on %v...", server)
@@ -140,6 +142,45 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 			} else {
 				toOut = toOut.([]map[string]string)
 				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
+	case pb.ContainerFindIdByNameContainsReply:
+		var list []server.NameAndId
+		err = json.Unmarshal(data.(*pb.ContainerFindIdByNameContainsReply).Data, &list)
+		if err != nil {
+			length = 0
+			limit = 0
+			skip = 0
+			success = false
+			errorList = append(errorList, err.Error())
+			toOut = make([]int, 0)
+		} else {
+			toOut = list
+
+			length = int64(len(toOut.([]server.NameAndId)))
+
+			if skip >= length {
+				toOut = make([]int, 0)
+				length = 0
+				errorList = append(errorList, "skip overflow")
+				success = false
+			} else {
+				toOut = toOut.([]server.NameAndId)[skip:]
+				length = int64(len(toOut.([]server.NameAndId)))
+			}
+
+			if length > 0 {
+				if limit > length && limit > 0 {
+					toOut = toOut.([]server.NameAndId)[:length]
+					length = int64(len(toOut.([]server.NameAndId)))
+				} else if limit > 0 {
+					toOut = toOut.([]server.NameAndId)[:limit]
+					length = int64(len(toOut.([]server.NameAndId)))
+				} else {
+					toOut = toOut.([]server.NameAndId)
+					length = int64(len(toOut.([]server.NameAndId)))
+				}
 			}
 		}
 
@@ -349,6 +390,23 @@ func ContainerFindIdByName(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ToJson(pb.ContainerFindIdByNameReply{}, container, w, r)
+}
+
+func ContainerFindIdByNameContains(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerFindIdByNameContainsReply
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	container, err = GRpcClient.ContainerFindIdByNameContains(ctx, &pb.ContainerFindIdByNameContainsRequest{
+		Name: r.URL.Query().Get("Name"),
+	})
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	ToJson(pb.ContainerFindIdByNameContainsReply{}, container, w, r)
 }
 
 func ListContainers(w http.ResponseWriter, r *http.Request) {

@@ -217,11 +217,11 @@ message ContainerFindIdByNameContainsRequest {
 }
 
 message ContainerFindIdByNameContainsReply {
-  string ID = 1;
+  bytes Data = 1;
 }
 
 message ContainerInspectByNameRequest {
-  string name = 1;
+  string Name = 1;
 }
 
 message ContainerInspectByNameReply {

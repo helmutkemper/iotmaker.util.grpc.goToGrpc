@@ -7,7 +7,7 @@ func (el *GRpcServer) Init() (err error) {
 		return
 	}
 
-	el.dockerSystem = &iotmakerDocker.DockerSystem{}
+	el.dockerSystem = iotmakerDocker.DockerSystem{}
 	err = el.dockerSystem.Init()
 	return
 }
