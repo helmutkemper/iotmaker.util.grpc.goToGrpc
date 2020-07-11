@@ -23,6 +23,6 @@ func (el *GRpcServer) ContainerFindIdByName(
 	err, containerID = el.dockerSystem.ContainerFindIdByName(in.GetName())
 
 	return &pb.ContainerFindIdByNameReply{
-		ContainerID: containerID,
+		ID: containerID,
 	}, err
 }

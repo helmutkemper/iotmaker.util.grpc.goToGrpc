@@ -44,8 +44,8 @@ func (el *GRpcServer) ImagePull(
 	err, imageName, imageID = el.dockerSystem.ImagePull(in.GetName(), &pullStatusChannel)
 
 	response = &pb.ImagePullReply{
-		ImageName: imageName,
-		ImageID:   imageID,
+		Name: imageName,
+		ID:   imageID,
 	}
 
 	return

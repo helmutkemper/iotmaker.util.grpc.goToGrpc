@@ -50,7 +50,7 @@ func (el *GRpcServer) ContainerCreateChangeExposedPortAndStart(
 	)
 
 	response = &pb.ContainerCreateChangeExposedPortAndStartReply{
-		ContainerID: containerID,
+		ID: containerID,
 	}
 
 	return

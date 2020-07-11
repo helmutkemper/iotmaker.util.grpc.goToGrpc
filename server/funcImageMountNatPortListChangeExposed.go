@@ -35,7 +35,7 @@ func (el *GRpcServer) ImageMountNatPortListChangeExposed(
 	}
 
 	var list nat.PortMap
-	err, list = el.dockerSystem.ImageMountNatPortListChangeExposed(in.GetImageID(), currentPortList, changeToPortList)
+	err, list = el.dockerSystem.ImageMountNatPortListChangeExposed(in.GetID(), currentPortList, changeToPortList)
 
 	var data []byte
 	data, err = json.Marshal(&list)

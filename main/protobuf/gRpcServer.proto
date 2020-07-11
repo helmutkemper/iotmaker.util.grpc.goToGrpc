@@ -112,7 +112,7 @@ message ContainerCreateRequest {
 }
 
 message ContainerCreateReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerCreateAndChangeExposedPortRequest {
@@ -126,7 +126,7 @@ message ContainerCreateAndChangeExposedPortRequest {
 }
 
 message ContainerCreateAndChangeExposedPortReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerCreateAndExposePortsAutomaticallyRequest {
@@ -138,7 +138,7 @@ message ContainerCreateAndExposePortsAutomaticallyRequest {
 }
 
 message ContainerCreateAndExposePortsAutomaticallyReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerCreateAndStartRequest {
@@ -151,7 +151,7 @@ message ContainerCreateAndStartRequest {
 }
 
 message ContainerCreateAndStartReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerCreateChangeExposedPortAndStartRequest {
@@ -165,7 +165,7 @@ message ContainerCreateChangeExposedPortAndStartRequest {
 }
 
 message ContainerCreateChangeExposedPortAndStartReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerCreateExposePortsAutomaticallyAndStartRequest {
@@ -177,7 +177,7 @@ message ContainerCreateExposePortsAutomaticallyAndStartRequest {
 }
 
 message ContainerCreateExposePortsAutomaticallyAndStartReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerCreateWithoutExposePortsRequest {
@@ -189,7 +189,7 @@ message ContainerCreateWithoutExposePortsRequest {
 }
 
 message ContainerCreateWithoutExposePortsReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerCreateWithoutExposePortsAndStartRequest {
@@ -201,7 +201,7 @@ message ContainerCreateWithoutExposePortsAndStartRequest {
 }
 
 message ContainerCreateWithoutExposePortsAndStartReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerFindIdByNameRequest {
@@ -209,7 +209,7 @@ message ContainerFindIdByNameRequest {
 }
 
 message ContainerFindIdByNameReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerFindIdByNameContainsRequest {
@@ -217,7 +217,7 @@ message ContainerFindIdByNameContainsRequest {
 }
 
 message ContainerFindIdByNameContainsReply {
-  string ContainerID = 1;
+  string ID = 1;
 }
 
 message ContainerInspectByNameRequest {
@@ -317,7 +317,7 @@ message NetworkCreateRequest {
 }
 
 message NetworkCreateReply {
-  string NetworkID = 1;
+  string ID = 1;
 }
 
 message NetworkFindIdByNameRequest {
@@ -325,7 +325,7 @@ message NetworkFindIdByNameRequest {
 }
 
 message NetworkFindIdByNameReply {
-  string NetworkID = 1;
+  string ID = 1;
 }
 
 message NetworkListReply {
@@ -333,7 +333,7 @@ message NetworkListReply {
 }
 
 message NetworkRemoveRequest {
-  string NetworkID = 1;
+  string ID = 1;
 }
 
 message NetworkRemoveByNameRequest {
@@ -414,7 +414,7 @@ message ImageMountNatPortListReply {
 }
 
 message ImageMountNatPortListChangeExposedRequest {
-  string ImageID = 1;
+  string ID = 1;
   repeated Port CurrentPortList = 2;
   repeated Port ChangeToPortList = 3;
 }
@@ -424,7 +424,7 @@ message ImageMountNatPortListChangeExposedReply {
 }
 
 message ImageMountNatPortListChangeExposedWithIpAddressRequest {
-  string ImageID = 1;
+  string ID = 1;
   string Ip = 2;
   repeated Port CurrentPortList = 3;
   repeated Port ChangeToPortList = 4;
@@ -439,8 +439,8 @@ message ImagePullRequest {
 }
 
 message ImagePullReply {
-  string ImageName = 1;
-  string ImageID = 2;
+  string Name = 1;
+  string ID = 2;
 }
 
 message ImageRemoveRequest {

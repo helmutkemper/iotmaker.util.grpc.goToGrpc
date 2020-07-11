@@ -36,6 +36,6 @@ func (el *GRpcServer) ContainerCreateWithoutExposePorts(
 	)
 
 	return &pb.ContainerCreateWithoutExposePortsReply{
-		ContainerID: containerID,
+		ID: containerID,
 	}, err
 }

@@ -47,7 +47,7 @@ func (el *GRpcServer) NetworkCreate(
 	}
 
 	response = &pb.NetworkCreateReply{
-		NetworkID: networkID,
+		ID: networkID,
 	}
 
 	return

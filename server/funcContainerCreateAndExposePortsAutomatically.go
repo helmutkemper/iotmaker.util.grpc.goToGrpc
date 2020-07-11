@@ -36,7 +36,7 @@ func (el *GRpcServer) ContainerCreateAndExposePortsAutomatically(
 	)
 
 	return &pb.ContainerCreateAndExposePortsAutomaticallyReply{
-			ContainerID: containerID,
+			ID: containerID,
 		},
 		err
 }

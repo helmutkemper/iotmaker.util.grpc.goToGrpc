@@ -19,7 +19,7 @@ func (el *GRpcServer) NetworkRemove(
 		return
 	}
 
-	err = el.dockerSystem.NetworkRemove(in.GetNetworkID())
+	err = el.dockerSystem.NetworkRemove(in.GetID())
 	if err != nil {
 		return nil, err
 	}

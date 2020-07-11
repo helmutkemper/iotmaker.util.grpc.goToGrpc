@@ -44,6 +44,6 @@ func (el *GRpcServer) ContainerCreateAndStart(
 	)
 
 	return &pb.ContainerCreateAndStartReply{
-		ContainerID: containerID,
+		ID: containerID,
 	}, err
 }

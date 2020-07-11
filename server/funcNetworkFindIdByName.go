@@ -29,7 +29,7 @@ func (el *GRpcServer) NetworkFindIdByName(
 	}
 
 	response = &pb.NetworkFindIdByNameReply{
-		NetworkID: networkID,
+		ID: networkID,
 	}
 
 	return
