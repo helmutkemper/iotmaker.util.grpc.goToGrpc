@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/docker/docker/api/types"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -20,17 +21,17 @@ func (el *GRpcServer) ContainerInspect(
 		return
 	}
 
+	var data []byte
 	var inspect types.ContainerJSON
-
 	err, inspect = el.dockerSystem.ContainerInspect(in.GetID())
 	if err != nil {
 		return nil, err
 	}
 
-	var ret = ContainerInspectDataConverterDockerToGRpc(inspect)
+	data, err = json.Marshal(&inspect)
 
 	response = &pb.ContainerInspectReply{
-		ContainerJSON: ret,
+		Data: data,
 	}
 
 	return

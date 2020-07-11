@@ -124,6 +124,17 @@ func ToScalarValue(
 	case reflect.Map:
 		mapConverter(buffer, element, nameOfField, i)
 	case reflect.Struct:
+		for i := 0; i < element.NumField(); i += 1 {
+			field := element.Field(i)
+			_ = field
+			nameOfField := element.Type().Field(i).Name
+			_ = nameOfField
+
+			//err = ToScalarValue(&buffer, field, nameOfField, i)
+			if err != nil {
+				panic(err)
+			}
+		}
 		err = ToStructType(element)
 		buffer.WriteString("  " + elementTypeText + " " + nameOfField + " = " + fmt.Sprintf("%v", i+1) + ";\n")
 	case reflect.UnsafePointer:

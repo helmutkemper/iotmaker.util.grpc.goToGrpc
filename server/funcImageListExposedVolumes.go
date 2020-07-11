@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
@@ -22,8 +23,14 @@ func (el *GRpcServer) ImageListExposedVolumes(
 	var list []string
 	err, list = el.dockerSystem.ImageListExposedVolumes(in.GetID())
 
+	var data []byte
+	data, err = json.Marshal(&list)
+	if err != nil {
+		return nil, err
+	}
+
 	response = &pb.ImageListExposedVolumesReply{
-		List: list,
+		Data: data,
 	}
 
 	return

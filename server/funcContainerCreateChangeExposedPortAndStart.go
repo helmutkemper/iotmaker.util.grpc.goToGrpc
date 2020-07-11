@@ -30,7 +30,14 @@ func (el *GRpcServer) ContainerCreateChangeExposedPortAndStart(
 	}
 
 	err, currentPort = SupportGRpcArrayPortToArrayNatPot(in.GetCurrentPort())
+	if err != nil {
+		return
+	}
+
 	err, changeToPort = SupportGRpcArrayPortToArrayNatPot(in.GetChangeToPort())
+	if err != nil {
+		return
+	}
 
 	err, containerID = el.dockerSystem.ContainerCreateChangeExposedPortAndStart(
 		in.GetImageName(),

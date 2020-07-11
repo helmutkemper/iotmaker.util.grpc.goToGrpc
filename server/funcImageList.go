@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/docker/docker/api/types"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -23,23 +24,14 @@ func (el *GRpcServer) ImageList(
 	var imageList []types.ImageSummary
 	err, imageList = el.dockerSystem.ImageList()
 
-	var list = make([]*pb.ImageSummary, 0)
-	for _, image := range imageList {
-		list = append(list, &pb.ImageSummary{
-			Containers:  image.Containers,
-			Created:     image.Created,
-			ID:          image.ID,
-			Labels:      image.Labels,
-			ParentID:    image.ParentID,
-			RepoDigests: image.RepoDigests,
-			RepoTags:    image.RepoTags,
-			SharedSize:  image.SharedSize,
-			Size:        image.Size,
-			VirtualSize: image.VirtualSize,
-		})
+	var data []byte
+	data, err = json.Marshal(&imageList)
+	if err != nil {
+		return nil, err
 	}
+
 	response = &pb.ImageListReply{
-		List: list,
+		Data: data,
 	}
 
 	return

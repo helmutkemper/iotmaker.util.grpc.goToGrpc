@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/docker/go-connections/nat"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -23,8 +24,14 @@ func (el *GRpcServer) ImageListExposedPortsByName(
 	var portList []nat.Port
 	err, portList = el.dockerSystem.ImageListExposedPortsByName(in.GetName())
 
+	var data []byte
+	data, err = json.Marshal(&portList)
+	if err != nil {
+		return nil, err
+	}
+
 	response = &pb.ImageListExposedPortsByNameReply{
-		List: SupportArrayNatPortToGRpc(portList),
+		Data: data,
 	}
 
 	return

@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/docker/go-connections/nat"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -36,8 +37,14 @@ func (el *GRpcServer) ImageMountNatPortListChangeExposed(
 	var list nat.PortMap
 	err, list = el.dockerSystem.ImageMountNatPortListChangeExposed(in.GetImageID(), currentPortList, changeToPortList)
 
+	var data []byte
+	data, err = json.Marshal(&list)
+	if err != nil {
+		return nil, err
+	}
+
 	response = &pb.ImageMountNatPortListChangeExposedReply{
-		PortMap: SupportPortMapToGRpc(list),
+		Data: data,
 	}
 
 	return

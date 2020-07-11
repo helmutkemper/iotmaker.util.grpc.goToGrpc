@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -21,7 +22,15 @@ func (el *GRpcServer) ImageBuildFromRemoteServerStatus(
 		err = errors.New("image build id not found")
 	}
 
-	response = SupportBuildStatusToGRpc(status)
+	var data []byte
+	data, err = json.Marshal(&status)
+	if err != nil {
+		return nil, err
+	}
+
+	response = &pb.ImageOrContainerBuildPullStatusReply{
+		Data: data,
+	}
 
 	return
 }

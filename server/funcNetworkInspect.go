@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/docker/docker/api/types"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -27,10 +28,14 @@ func (el *GRpcServer) NetworkInspect(
 		return nil, err
 	}
 
-	var ret = NetworkInspectDataConverterDockerToGRpc(inspect)
+	var data []byte
+	data, err = json.Marshal(&inspect)
+	if err != nil {
+		return nil, err
+	}
 
 	response = &pb.NetworkInspectReply{
-		NetworkResource: ret,
+		Data: data,
 	}
 
 	return

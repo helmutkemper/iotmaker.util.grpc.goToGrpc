@@ -588,7 +588,8 @@ message ContainerInspectRequest {
 }
 
 message ContainerInspectReply {
-  ContainerJSON ContainerJSON = 1;
+  bytes Data = 1;
+  //ContainerJSON ContainerJSON = 1;
 }
 
 message NetworkInspectRequest {
@@ -596,7 +597,8 @@ message NetworkInspectRequest {
 }
 
 message NetworkInspectReply {
-  NetworkResource NetworkResource = 1;
+  bytes Data = 1;
+  //NetworkResource NetworkResource = 1;
 }
 
 message ContainerCreateRequest {
@@ -722,8 +724,9 @@ message ContainerInspectByNameRequest {
 }
 
 message ContainerInspectByNameReply {
-  string ID = 1;
-  ContainerJSON ContainerJSON = 2;
+  bytes Data = 1;
+  //string ID = 1;
+  //ContainerJSON ContainerJSON = 2;
 }
 
 message ContainerInspectJSonRequest {
@@ -747,7 +750,8 @@ message Empty {
 }
 
 message ContainerListAllReply {
-  repeated Container List = 1;
+  bytes Data = 1;
+  //repeated Container List = 1;
 }
 
 message ContainerNetworkInspectRequest {
@@ -755,7 +759,8 @@ message ContainerNetworkInspectRequest {
 }
 
 message ContainerNetworkInspectReply {
-  map<string, ContainerNetworkData> List = 1;
+  bytes Data = 1;
+  //map<string, ContainerNetworkData> List = 1;
 }
 
 message ContainerRemoveRequest {
@@ -774,7 +779,8 @@ message ContainerStatisticsOneShotRequest {
 }
 
 message ContainerStatisticsOneShotReply {
-  Statistics Statistics = 1;
+  bytes Data = 1;
+  //Statistics Statistics = 1;
 }
 
 message ContainerStatisticsOneShotByNameRequest {
@@ -782,7 +788,8 @@ message ContainerStatisticsOneShotByNameRequest {
 }
 
 message ContainerStatisticsOneShotByNameReply {
-  Statistics Statistics = 1;
+  bytes Data = 1;
+  //Statistics Statistics = 1;
 }
 
 message ContainerStopRequest {
@@ -827,7 +834,8 @@ message NetworkFindIdByNameReply {
 }
 
 message NetworkListReply {
-  repeated NetworkResource List = 1;
+  bytes Data = 1;
+  //repeated NetworkResource List = 1;
 }
 
 message NetworkRemoveRequest {
@@ -902,18 +910,19 @@ message ImageSummary {
 }
 
 message ImageOrContainerBuildPullStatusReply {
-  int64 Waiting = 1;
-  ImageOrContainerBuildPullSubStatus Downloading = 2;
-  int64 VerifyingChecksum = 3;
-  int64 DownloadComplete = 4;
-  ImageOrContainerBuildPullSubStatus Extracting = 5;
-  int64 PullComplete = 6;
-  string ImageName = 7;
-  string ImageID = 8;
-  bool Closed = 9;
-  string Stream = 10;
-  bool successfullyBuildContainer = 11;
-  bool successfullyBuildImage = 12;
+  bytes Data = 1;
+  //int64 Waiting = 1;
+  //ImageOrContainerBuildPullSubStatus Downloading = 2;
+  //int64 VerifyingChecksum = 3;
+  //int64 DownloadComplete = 4;
+  //ImageOrContainerBuildPullSubStatus Extracting = 5;
+  //int64 PullComplete = 6;
+  //string ImageName = 7;
+  //string ImageID = 8;
+  //bool Closed = 9;
+  //string Stream = 10;
+  //bool successfullyBuildContainer = 11;
+  //bool successfullyBuildImage = 12;
 }
 
 message ImageFindIdByNameRequest {
@@ -929,7 +938,8 @@ message ImageListExposedPortsRequest {
 }
 
 message ImageListExposedPortsReply {
-  repeated Port List = 1;
+  bytes Data = 1;
+  //repeated Port List = 1;
 }
 
 message ImageListExposedPortsByNameRequest {
@@ -937,7 +947,8 @@ message ImageListExposedPortsByNameRequest {
 }
 
 message ImageListExposedPortsByNameReply {
-  repeated Port List = 1;
+  bytes Data = 1;
+  //repeated Port List = 1;
 }
 
 message ImageListExposedVolumesRequest {
@@ -945,7 +956,8 @@ message ImageListExposedVolumesRequest {
 }
 
 message ImageListExposedVolumesReply {
-  repeated string List = 1;
+  bytes Data = 1;
+  //repeated string List = 1;
 }
 
 message ImageListExposedVolumesByNameRequest {
@@ -961,7 +973,8 @@ message ImageMountNatPortListRequest {
 }
 
 message ImageMountNatPortListReply {
-  PortMap PortMap = 1;
+  bytes Data = 1;
+  //PortMap PortMap = 1;
 }
 
 message ImageMountNatPortListChangeExposedRequest {
@@ -971,7 +984,8 @@ message ImageMountNatPortListChangeExposedRequest {
 }
 
 message ImageMountNatPortListChangeExposedReply {
-  PortMap PortMap = 1;
+  bytes Data = 1;
+  //PortMap PortMap = 1;
 }
 
 message ImageMountNatPortListChangeExposedWithIpAddressRequest {
@@ -982,7 +996,8 @@ message ImageMountNatPortListChangeExposedWithIpAddressRequest {
 }
 
 message ImageMountNatPortListChangeExposedWithIpAddressReply {
-  PortMap PortMap = 1;
+  bytes Data = 1;
+  //PortMap PortMap = 1;
 }
 
 message ImagePullRequest {
@@ -1007,7 +1022,8 @@ message ImageRemoveByNameRequest {
 }
 
 message ImageListReply {
-  repeated ImageSummary List = 1;
+  bytes Data = 1;
+  //repeated ImageSummary List = 1;
 }
 
 service DockerServer {
