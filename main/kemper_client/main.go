@@ -60,6 +60,7 @@ func main() {
 	mux.HandleFunc("/networkListAll", NetworkList)
 	mux.HandleFunc("/imageListAll", ImageList)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
+	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
 
 	server := fmt.Sprintf(":%v", KHttpServerPort)
 	fmt.Printf("Listening on %v...", server)
@@ -110,6 +111,38 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 	}
 
 	switch dataType.(type) {
+	case pb.ContainerFindIdByNameReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerFindIdByNameReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
 	case pb.ImageListReply:
 		var list []types.ImageSummary
 		err = json.Unmarshal(data.(*pb.ImageListReply).Data, &list)
@@ -299,6 +332,23 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 	if err != nil {
 		panic(err)
 	}
+}
+
+func ContainerFindIdByName(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerFindIdByNameReply
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	container, err = GRpcClient.ContainerFindIdByName(ctx, &pb.ContainerFindIdByNameRequest{
+		Name: r.URL.Query().Get("Name"),
+	})
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	ToJson(pb.ContainerFindIdByNameReply{}, container, w, r)
 }
 
 func ListContainers(w http.ResponseWriter, r *http.Request) {
