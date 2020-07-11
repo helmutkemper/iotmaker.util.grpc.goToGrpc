@@ -102,6 +102,48 @@ message NetworkInspectReply {
   bytes Data = 1;
 }
 
+/*
+{
+  "ImageName": "",
+  "ContainerName": "",
+  "RestartPolicy": "",
+  "PortExposedList": {
+    "port_number/protocol": [
+      {
+        "PortBinding": {
+          "HostIP": "",
+          "HostPort": ""
+        },
+      },
+    ]
+  },
+  "MountVolumes": {
+    "Type": "",
+    "Source": "",
+    "Target": "",
+    "ReadOnly": false,
+    "Consistency": "",
+    "BindOptions": {
+      "Propagation": "",
+      "NonRecursive": false
+    },
+    "VolumeOptions": {
+      "NoCopy": false,
+      "Labels": {
+        "key": "value"
+      },
+      "DriverConfig": {
+        "Name": "",
+        "Options": {
+          "key": "value"
+        }
+      }
+    },
+    "TmpfsOptions": {},
+  },
+  "NetworkName": "",
+}
+*/
 message ContainerCreateRequest {
   string ImageName = 1;
   string ContainerName = 2;
