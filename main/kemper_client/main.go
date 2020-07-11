@@ -63,6 +63,7 @@ func main() {
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
 	mux.HandleFunc("/containerFindIdByNameContains", ContainerFindIdByNameContains)
+	mux.HandleFunc("/containerInspectByName", ContainerInspectByName)
 
 	server := fmt.Sprintf(":%v", KHttpServerPort)
 	fmt.Printf("Listening on %v...", server)
@@ -341,6 +342,46 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 			}
 		}
 
+	case pb.ContainerInspectByNameReply:
+		toOut = make([]types.ContainerJSON, 0)
+		var container types.ContainerJSON
+		err = json.Unmarshal(data.([]byte), &container)
+		if err != nil {
+			length = 0
+			limit = 0
+			skip = 0
+			success = false
+			errorList = append(errorList, err.Error())
+			toOut = make([]int, 0)
+		} else {
+			toOut = append(toOut.([]types.ContainerJSON), container)
+
+			length = int64(len(toOut.([]types.ContainerJSON)))
+
+			if skip >= length {
+				toOut = make([]int, 0)
+				length = 0
+				errorList = append(errorList, "skip overflow")
+				success = false
+			} else {
+				toOut = toOut.([]types.ContainerJSON)[skip:]
+				length = int64(len(toOut.([]types.ContainerJSON)))
+			}
+
+			if length > 0 {
+				if limit > length && limit > 0 {
+					toOut = toOut.([]types.ContainerJSON)[:length]
+					length = int64(len(toOut.([]types.ContainerJSON)))
+				} else if limit > 0 {
+					toOut = toOut.([]types.ContainerJSON)[:limit]
+					length = int64(len(toOut.([]types.ContainerJSON)))
+				} else {
+					toOut = toOut.([]types.ContainerJSON)
+					length = int64(len(toOut.([]types.ContainerJSON)))
+				}
+			}
+		}
+
 	default:
 		fmt.Print("type not found\n")
 	}
@@ -390,6 +431,23 @@ func ContainerFindIdByName(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ToJson(pb.ContainerFindIdByNameReply{}, container, w, r)
+}
+
+func ContainerInspectByName(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerInspectByNameReply
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	container, err = GRpcClient.ContainerInspectByName(ctx, &pb.ContainerInspectByNameRequest{
+		Name: r.URL.Query().Get("Name"),
+	})
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	ToJson(pb.ContainerInspectByNameReply{}, container.Data, w, r)
 }
 
 func ContainerFindIdByNameContains(w http.ResponseWriter, r *http.Request) {
