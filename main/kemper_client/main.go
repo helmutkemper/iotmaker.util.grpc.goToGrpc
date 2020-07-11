@@ -57,7 +57,7 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static", fs))
 	mux.HandleFunc("/", serveTemplate)
 	mux.HandleFunc("/containersListAll", ListContainers)
-	//  mux.HandleFunc("/NetworkList", NetworkList)
+	mux.HandleFunc("/networkListAll", NetworkList)
 	//  mux.HandleFunc("/ImageList", ImageList)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 
@@ -110,6 +110,45 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 	}
 
 	switch dataType.(type) {
+	case pb.NetworkListReply:
+		var list []types.NetworkResource
+		err = json.Unmarshal(data.(*pb.NetworkListReply).Data, &list)
+		if err != nil {
+			length = 0
+			limit = 0
+			skip = 0
+			success = false
+			errorList = append(errorList, err.Error())
+			toOut = make([]int, 0)
+		} else {
+			toOut = list
+
+			length = int64(len(toOut.([]types.NetworkResource)))
+
+			if skip >= length {
+				toOut = make([]int, 0)
+				length = 0
+				errorList = append(errorList, "skip overflow")
+				success = false
+			} else {
+				toOut = toOut.([]types.NetworkResource)[skip:]
+				length = int64(len(toOut.([]types.NetworkResource)))
+			}
+
+			if length > 0 {
+				if limit > length && limit > 0 {
+					toOut = toOut.([]types.NetworkResource)[:length]
+					length = int64(len(toOut.([]types.NetworkResource)))
+				} else if limit > 0 {
+					toOut = toOut.([]types.NetworkResource)[:limit]
+					length = int64(len(toOut.([]types.NetworkResource)))
+				} else {
+					toOut = toOut.([]types.NetworkResource)
+					length = int64(len(toOut.([]types.NetworkResource)))
+				}
+			}
+		}
+
 	case pb.ContainerListAllReply:
 		var list []types.Container
 		err = json.Unmarshal(data.(*pb.ContainerListAllReply).Data, &list)
@@ -272,22 +311,20 @@ func ImageList(w http.ResponseWriter, r *http.Request) {
 }
 */
 
-/*
 func NetworkList(w http.ResponseWriter, r *http.Request) {
-  var err error
-  var list *pb.NetworkListReply
+	var err error
+	var list *pb.NetworkListReply
 
-  ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-  defer cancel()
-  list, err = GRpcClient.NetworkList(ctx, &pb.Empty{})
-  if err != nil {
-    fmt.Printf("could not greet: %v", err)
-    return
-  }
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	list, err = GRpcClient.NetworkList(ctx, &pb.Empty{})
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
 
-  ToJson(list, w, r)
+	ToJson(pb.NetworkListReply{}, list, w, r)
 }
-*/
 
 func HeaderWrite(w http.ResponseWriter, headerType string) {
 	w.Header().Set("Content-Type", headerType)
