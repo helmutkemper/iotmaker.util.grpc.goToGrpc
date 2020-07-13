@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/mount"
+	"github.com/docker/go-connections/nat"
+	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
 	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/server"
 	"html/template"
 	"io/ioutil"
@@ -41,8 +44,47 @@ var (
 	GRpcClient pb.DockerServerClient
 )
 
+type containerCreateAndChangeExposedPort struct {
+	ImageName        string
+	ContainerName    string
+	RestartPolicy    iotmakerDocker.RestartPolicy
+	MountVolumes     []mount.Mount
+	ContainerNetwork string
+	CurrentPort      []nat.Port
+	ChangeToPort     []nat.Port
+}
+
 func main() {
 	var err error
+
+	var test containerCreateAndChangeExposedPort
+	test.ImageName = "mongo:latest"
+	test.ContainerName = "new_mondo_delete_before_test"
+	test.RestartPolicy = iotmakerDocker.KRestartPolicyUnlessStopped
+	test.MountVolumes = []mount.Mount{
+		{
+			Type:        "bind",
+			Source:      "/data/db",
+			Target:      "/data/db",
+			ReadOnly:    true,
+			Consistency: "consistent",
+		},
+	}
+	test.ContainerNetwork = "network"
+	test.CurrentPort = []nat.Port{
+		"27017/tcp",
+	}
+	test.ChangeToPort = []nat.Port{
+		"27017/tcp",
+	}
+
+	var out []byte
+	out, err = json.Marshal(&test)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s\n", out)
+	os.Exit(0)
 
 	conn, err := grpc.Dial(KGRpcServerAddress, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
@@ -59,6 +101,7 @@ func main() {
 	mux.HandleFunc("/", serveTemplate)
 	mux.HandleFunc("/networkListAll", NetworkList)
 	mux.HandleFunc("/imageListAll", ImageList)
+	mux.HandleFunc("/containerCreateAndChangeExposedPort", ContainerCreateAndChangeExposedPort)
 	mux.HandleFunc("/containersListAll", ListContainers)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
@@ -455,6 +498,33 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 	if err != nil {
 		panic(err)
 	}
+}
+
+func ContainerCreateAndChangeExposedPort(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerCreateAndChangeExposedPortReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreateAndChangeExposedPort(
+		ctx,
+		&pb.ContainerCreateAndChangeExposedPortRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerCreateAndChangeExposedPortReply{}, container, w, r)
 }
 
 func ContainerFindIdByName(w http.ResponseWriter, r *http.Request) {

@@ -2,10 +2,22 @@ package server
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/go-connections/nat"
 	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
+
+type containerCreateAndChangeExposedPort struct {
+	ImageName        string
+	ContainerName    string
+	RestartPolicy    iotmakerDocker.RestartPolicy
+	MountVolumes     []mount.Mount
+	ContainerNetwork string
+	CurrentPort      []nat.Port
+	ChangeToPort     []nat.Port
+}
 
 func (el *GRpcServer) ContainerCreateAndChangeExposedPort(
 	ctx context.Context,
@@ -22,31 +34,21 @@ func (el *GRpcServer) ContainerCreateAndChangeExposedPort(
 	}
 
 	var containerID string
-	var currentPort, changeToPort []nat.Port
-	var restartPolicy iotmakerDocker.RestartPolicy
-	err, restartPolicy = SupportGRpcToContainerPolicy(in.GetRestartPolicy())
+	var body = in.GetData()
+	var inData containerCreateAndChangeExposedPort
+
+	err = json.Unmarshal(body, &inData)
 	if err != nil {
 		return
 	}
-
-	err, currentPort = SupportGRpcArrayPortToArrayNatPot(in.GetCurrentPort())
-	if err != nil {
-		return
-	}
-
-	err, changeToPort = SupportGRpcArrayPortToArrayNatPot(in.GetChangeToPort())
-	if err != nil {
-		return
-	}
-
 	err, containerID = el.dockerSystem.ContainerCreateAndChangeExposedPort(
-		in.GetImageName(),
-		in.GetContainerName(),
-		restartPolicy,
-		SupportGRpcToArrayMount(in.GetMountVolumes()),
+		inData.ImageName,
+		inData.ContainerName,
+		inData.RestartPolicy,
+		inData.MountVolumes,
 		nil,
-		currentPort,
-		changeToPort,
+		inData.CurrentPort,
+		inData.ChangeToPort,
 	)
 
 	response = &pb.ContainerCreateAndChangeExposedPortReply{
