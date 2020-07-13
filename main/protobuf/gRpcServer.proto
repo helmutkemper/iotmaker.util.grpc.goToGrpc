@@ -159,29 +159,29 @@ message ContainerCreateReply {
 }
 
 message ContainerCreateAndChangeExposedPortRequest {
-  /*
-  {
-    "ImageName": "mongo:latest",
-    "ContainerName": "new_mondo_delete_before_test",
-    "Rest artPolicy": 3,
-    "MountVolumes": [
-      {
-        "Type": "bind",
-        "Source": "/data/db",
-        "Target": "/data/db",
-        "ReadOnly": true,
-        "Consistency": "consistent"
-      }
-    ],
-    "ContainerNetwork": "network",
-    "CurrentPort": [
-      "27017/tcp"
-    ],
-    "ChangeToPort": [
-      "27017/tcp"
-    ]
-  }
-  */
+/*
+{
+  "ImageName": "mongo:latest",
+  "ContainerName": "new_mondo_delete_before_test",
+  "Rest artPolicy": 3,
+  "MountVolumes": [
+    {
+      "Type": "bind",
+      "Source": "/data/db",
+      "Target": "/data/db",
+      "ReadOnly": true,
+      "Consistency": "consistent"
+    }
+  ],
+  "ContainerNetwork": "network",
+  "CurrentPort": [
+    "27017/tcp"
+  ],
+  "ChangeToPort": [
+    "27017/tcp"
+  ]
+}
+*/
   bytes Data = 1;
 }
 
