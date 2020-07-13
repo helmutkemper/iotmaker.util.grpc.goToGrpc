@@ -208,11 +208,7 @@ message ContainerCreateChangeExposedPortAndStartReply {
 }
 
 message ContainerCreateExposePortsAutomaticallyAndStartRequest {
-  string ImageName = 1;
-  string ContainerName = 2;
-  string RestartPolicy = 3;
-  repeated Mount MountVolumes = 4;
-  string NetworkName = 5;
+  bytes Data = 1;
 }
 
 message ContainerCreateExposePortsAutomaticallyAndStartReply {
