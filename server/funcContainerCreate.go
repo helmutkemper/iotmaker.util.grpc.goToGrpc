@@ -9,11 +9,11 @@ import (
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
-func (el *GRpcServer) ContainerCreateAndStart(
+func (el *GRpcServer) ContainerCreate(
 	ctx context.Context,
-	in *pb.ContainerCreateAndStartRequest,
+	in *pb.ContainerCreateRequest,
 ) (
-	response *pb.ContainerCreateAndStartReply,
+	response *pb.ContainerCreateReply,
 	err error,
 ) {
 
@@ -69,7 +69,7 @@ func (el *GRpcServer) ContainerCreateAndStart(
 		}
 	}
 
-	err, containerID = el.dockerSystem.ContainerCreateAndStart(
+	err, containerID = el.dockerSystem.ContainerCreate(
 		inData.ImageName,
 		inData.ContainerName,
 		inData.RestartPolicy,
@@ -78,7 +78,7 @@ func (el *GRpcServer) ContainerCreateAndStart(
 		networkConfig,
 	)
 
-	return &pb.ContainerCreateAndStartReply{
+	return &pb.ContainerCreateReply{
 		ID: containerID,
 	}, err
 }

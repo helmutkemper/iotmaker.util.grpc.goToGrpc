@@ -72,6 +72,8 @@ func main() {
 	mux.HandleFunc("/", serveTemplate)
 	mux.HandleFunc("/networkListAll", NetworkList)
 	mux.HandleFunc("/imageListAll", ImageList)
+	mux.HandleFunc("/containerCreate", ContainerCreate)
+	mux.HandleFunc("/containerCreateAndStart", ContainerCreateAndStart)
 	mux.HandleFunc("/containerCreateAndChangeExposedPort", ContainerCreateAndChangeExposedPort)
 	mux.HandleFunc("/containerCreateChangeExposedPortAndStart", ContainerCreateChangeExposedPortAndStart)
 	mux.HandleFunc("/containersListAll", ContainersList)
@@ -205,6 +207,70 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 		var list = []map[string]string{
 			{
 				"ID": data.(*pb.ContainerCreateAndChangeExposedPortReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
+	case pb.ContainerCreateReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerCreateReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
+	case pb.ContainerCreateAndStartReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerCreateAndStartReply).ID,
 			},
 		}
 		toOut = list
@@ -561,6 +627,60 @@ func ContainerCreateAndChangeExposedPort(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	ToJson(pb.ContainerCreateAndChangeExposedPortReply{}, container, w, r)
+}
+
+func ContainerCreate(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerCreateReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreate(
+		ctx,
+		&pb.ContainerCreateRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerCreateReply{}, container, w, r)
+}
+
+func ContainerCreateAndStart(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerCreateAndStartReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreateAndStart(
+		ctx,
+		&pb.ContainerCreateAndStartRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerCreateAndStartReply{}, container, w, r)
 }
 
 func ContainerCreateChangeExposedPortAndStart(w http.ResponseWriter, r *http.Request) {

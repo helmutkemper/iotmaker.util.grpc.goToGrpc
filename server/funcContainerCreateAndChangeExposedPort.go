@@ -21,6 +21,15 @@ type containerCreateAndChangeExposedPort struct {
 	ChangeToPort  []nat.Port
 }
 
+type containerCreate struct {
+	ImageName     string
+	ContainerName string
+	RestartPolicy iotmakerDocker.RestartPolicy
+	MountVolumes  []mount.Mount
+	NetworkName   string
+	PortList      []nat.Port
+}
+
 func (el *GRpcServer) ContainerCreateAndChangeExposedPort(
 	ctx context.Context,
 	in *pb.ContainerCreateAndChangeExposedPortRequest,
