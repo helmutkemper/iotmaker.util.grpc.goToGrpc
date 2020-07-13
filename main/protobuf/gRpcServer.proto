@@ -216,11 +216,7 @@ message ContainerCreateExposePortsAutomaticallyAndStartReply {
 }
 
 message ContainerCreateWithoutExposePortsRequest {
-  string ImageName = 1;
-  string ContainerName = 2;
-  string RestartPolicy = 3;
-  repeated Mount MountVolumes = 4;
-  string NetworkName = 5;
+  bytes Data = 1;
 }
 
 message ContainerCreateWithoutExposePortsReply {
@@ -228,11 +224,7 @@ message ContainerCreateWithoutExposePortsReply {
 }
 
 message ContainerCreateWithoutExposePortsAndStartRequest {
-  string ImageName = 1;
-  string ContainerName = 2;
-  string RestartPolicy = 3;
-  repeated Mount MountVolumes = 4;
-  string NetworkName = 5;
+  bytes Data = 1;
 }
 
 message ContainerCreateWithoutExposePortsAndStartReply {

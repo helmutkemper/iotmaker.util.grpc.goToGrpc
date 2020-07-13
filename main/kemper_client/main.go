@@ -78,6 +78,8 @@ func main() {
 	mux.HandleFunc("/containerCreateChangeExposedPortAndStart", ContainerCreateChangeExposedPortAndStart)
 	mux.HandleFunc("/containerCreateAndExposePortsAutomatically", ContainerCreateAndExposePortsAutomatically)
 	mux.HandleFunc("/containerCreateExposePortsAutomaticallyAndStart", ContainerCreateExposePortsAutomaticallyAndStart)
+	mux.HandleFunc("/containerCreateWithoutExposePorts", ContainerCreateWithoutExposePorts)
+	mux.HandleFunc("/containerCreateWithoutExposePortsAndStart", ContainerCreateWithoutExposePortsAndStart)
 	mux.HandleFunc("/containersListAll", ContainersList)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
@@ -273,6 +275,70 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 		var list = []map[string]string{
 			{
 				"ID": data.(*pb.ContainerCreateAndExposePortsAutomaticallyReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
+	case pb.ContainerCreateWithoutExposePortsReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerCreateWithoutExposePortsReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
+	case pb.ContainerCreateWithoutExposePortsAndStartReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerCreateWithoutExposePortsAndStartReply).ID,
 			},
 		}
 		toOut = list
@@ -801,6 +867,60 @@ func ContainerCreateAndExposePortsAutomatically(w http.ResponseWriter, r *http.R
 		return
 	}
 	ToJson(pb.ContainerCreateAndExposePortsAutomaticallyReply{}, container, w, r)
+}
+
+func ContainerCreateWithoutExposePorts(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerCreateWithoutExposePortsReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreateWithoutExposePorts(
+		ctx,
+		&pb.ContainerCreateWithoutExposePortsRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerCreateWithoutExposePortsReply{}, container, w, r)
+}
+
+func ContainerCreateWithoutExposePortsAndStart(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerCreateWithoutExposePortsAndStartReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreateWithoutExposePortsAndStart(
+		ctx,
+		&pb.ContainerCreateWithoutExposePortsAndStartRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerCreateWithoutExposePortsAndStartReply{}, container, w, r)
 }
 
 func ContainerCreateExposePortsAutomaticallyAndStart(w http.ResponseWriter, r *http.Request) {
