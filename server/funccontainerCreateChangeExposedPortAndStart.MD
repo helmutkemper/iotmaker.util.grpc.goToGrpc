@@ -10,15 +10,15 @@ Post data:
   "ImageName": "mongo:latest",
   "ContainerName": "new_mondo_delete_before_test",
   "Rest artPolicy": 3,
-    "MountVolumes": [
-      {
-        "Type": "bind",
-        "Source": "c:/data/db",
-        "Target": "/data/db",
-        "ReadOnly": false,
-        "Consistency": "consistent"
-      }
-    ],
+  "MountVolumes": [
+    {
+      "Type": "bind",
+      "Source": "c:/data/db",
+      "Target": "/data/db",
+      "ReadOnly": false,
+      "Consistency": "consistent"
+    }
+  ],
   "ContainerNetwork": "network",
   "CurrentPort": [
     "27017/tcp"
