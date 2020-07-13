@@ -45,6 +45,13 @@ func (el *GRpcServer) ContainerCreateChangeExposedPortAndStart(
 	}
 
 	if inData.NetworkName != "" {
+		var found bool
+		_, found = networkControl[inData.NetworkName]
+		if found == false {
+			err = errors.New("network not found. it is necessary to create a network with the name: " + inData.NetworkName)
+			return
+		}
+
 		err, networkConfig = networkControl[inData.NetworkName].Generator.GetNext()
 		if err != nil {
 			err = errors.New("network generator error: " + err.Error())

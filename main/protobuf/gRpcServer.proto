@@ -146,12 +146,6 @@ message NetworkInspectReply {
 */
 message ContainerCreateRequest {
   bytes Data = 1;
-//  string ImageName = 1;
-//  string ContainerName = 2;
-//  string RestartPolicy = 3;
-//  PortMap PortExposedList = 4;
-//  repeated Mount MountVolumes = 5;
-//  string NetworkName = 6;
 }
 
 message ContainerCreateReply {
