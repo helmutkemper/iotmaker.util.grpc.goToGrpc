@@ -24,6 +24,13 @@ func (el *GRpcServer) NetworkRemove(
 		return nil, err
 	}
 
+	for _, v := range networkControl {
+		if in.GetID() == v.ID {
+			delete(networkControl, v.Name)
+			break
+		}
+	}
+
 	response = &pb.Empty{}
 
 	return

@@ -215,13 +215,7 @@ message ContainerCreateAndStartReply {
 }
 
 message ContainerCreateChangeExposedPortAndStartRequest {
-  string ImageName = 1;
-  string ContainerName = 2;
-  string RestartPolicy = 3;
-  repeated Mount MountVolumes = 4;
-  string NetworkName = 5;
-  repeated Port CurrentPort = 6;
-  repeated Port ChangeToPort = 7;
+  bytes Data = 1;
 }
 
 message ContainerCreateChangeExposedPortAndStartReply {

@@ -57,35 +57,6 @@ type containerCreateAndChangeExposedPort struct {
 func main() {
 	var err error
 
-	var test containerCreateAndChangeExposedPort
-	test.ImageName = "mongo:latest"
-	test.ContainerName = "new_mondo_delete_before_test"
-	test.RestartPolicy = iotmakerDocker.KRestartPolicyUnlessStopped
-	test.MountVolumes = []mount.Mount{
-		{
-			Type:        "bind",
-			Source:      "/data/db",
-			Target:      "/data/db",
-			ReadOnly:    true,
-			Consistency: "consistent",
-		},
-	}
-	test.ContainerNetwork = "network"
-	test.CurrentPort = []nat.Port{
-		"27017/tcp",
-	}
-	test.ChangeToPort = []nat.Port{
-		"27017/tcp",
-	}
-
-	var out []byte
-	out, err = json.Marshal(&test)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%s\n", out)
-	os.Exit(0)
-
 	conn, err := grpc.Dial(KGRpcServerAddress, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		fmt.Printf("did not connect: %v", err)
@@ -102,7 +73,8 @@ func main() {
 	mux.HandleFunc("/networkListAll", NetworkList)
 	mux.HandleFunc("/imageListAll", ImageList)
 	mux.HandleFunc("/containerCreateAndChangeExposedPort", ContainerCreateAndChangeExposedPort)
-	mux.HandleFunc("/containersListAll", ListContainers)
+	mux.HandleFunc("/containerCreateChangeExposedPortAndStart", ContainerCreateChangeExposedPortAndStart)
+	mux.HandleFunc("/containersListAll", ContainersList)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
 	mux.HandleFunc("/containerFindIdByNameContains", ContainerFindIdByNameContains)
@@ -226,6 +198,70 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 					toOut = toOut.([]server.NameAndId)
 					length = int64(len(toOut.([]server.NameAndId)))
 				}
+			}
+		}
+
+	case pb.ContainerCreateAndChangeExposedPortReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerCreateAndChangeExposedPortReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
+	case pb.ContainerCreateChangeExposedPortAndStartReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerCreateChangeExposedPortAndStartReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
 			}
 		}
 
@@ -467,7 +503,7 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 		}
 
 	default:
-		fmt.Print("type not found\n")
+		fmt.Print("tojson.error: type not found\n")
 	}
 
 	toJsonOut := Output{
@@ -525,6 +561,33 @@ func ContainerCreateAndChangeExposedPort(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	ToJson(pb.ContainerCreateAndChangeExposedPortReply{}, container, w, r)
+}
+
+func ContainerCreateChangeExposedPortAndStart(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerCreateChangeExposedPortAndStartReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreateChangeExposedPortAndStart(
+		ctx,
+		&pb.ContainerCreateChangeExposedPortAndStartRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerCreateChangeExposedPortAndStartReply{}, container, w, r)
 }
 
 func ContainerFindIdByName(w http.ResponseWriter, r *http.Request) {
@@ -595,7 +658,7 @@ func ContainerInspectByNameContains(w http.ResponseWriter, r *http.Request) {
 	ToJson(pb.ContainerInspectByNameContainsReply{}, container.Data, w, r)
 }
 
-func ListContainers(w http.ResponseWriter, r *http.Request) {
+func ContainersList(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var list *pb.ContainerListAllReply
 

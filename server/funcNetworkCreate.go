@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -22,6 +23,13 @@ func (el *GRpcServer) NetworkCreate(
 
 	var networkID string
 	var networkGenerator *iotmakerDocker.NextNetworkAutoConfiguration
+	var found bool
+
+	_, found = networkControl[in.GetName()]
+	if found == true {
+		err = errors.New("there is already a network with the name: " + in.GetName())
+		return
+	}
 
 	err, networkID, networkGenerator = el.dockerSystem.NetworkCreate(
 		in.GetName(),
@@ -37,8 +45,9 @@ func (el *GRpcServer) NetworkCreate(
 	if len(networkControl) == 0 {
 		networkControl = make(map[string]NetworkControl)
 	}
-	networkControl[networkID] = NetworkControl{
+	networkControl[in.GetName()] = NetworkControl{
 		Generator: networkGenerator,
+		ID:        networkID,
 		Name:      in.GetName(),
 		Drive:     in.GetNetworkDrive(),
 		Scope:     in.GetScope(),

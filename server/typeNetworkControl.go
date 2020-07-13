@@ -4,6 +4,7 @@ import iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
 
 type NetworkControl struct {
 	Generator *iotmakerDocker.NextNetworkAutoConfiguration
+	ID        string
 	Name      string
 	Drive     string
 	Scope     string

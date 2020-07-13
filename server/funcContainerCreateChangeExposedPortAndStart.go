@@ -2,8 +2,9 @@ package server
 
 import (
 	"context"
-	"github.com/docker/go-connections/nat"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	"encoding/json"
+	"errors"
+	"github.com/docker/docker/api/types/network"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
@@ -22,31 +23,43 @@ func (el *GRpcServer) ContainerCreateChangeExposedPortAndStart(
 	}
 
 	var containerID string
-	var currentPort, changeToPort []nat.Port
-	var restartPolicy iotmakerDocker.RestartPolicy
-	err, restartPolicy = SupportGRpcToContainerPolicy(in.GetRestartPolicy())
+	var body = in.GetData()
+	var inData containerCreateAndChangeExposedPort
+	var networkConfig *network.NetworkingConfig = nil
+
+	err = json.Unmarshal(body, &inData)
 	if err != nil {
+		err = errors.New("json unmarshal error: " + err.Error())
 		return
 	}
 
-	err, currentPort = SupportGRpcArrayPortToArrayNatPot(in.GetCurrentPort())
-	if err != nil {
+	err, containerID = el.dockerSystem.ContainerFindIdByName(inData.ContainerName)
+	if err != nil && errors.Is(err, errors.New("container name not found")) {
+		err = errors.New("container find by name error: " + err.Error())
 		return
 	}
 
-	err, changeToPort = SupportGRpcArrayPortToArrayNatPot(in.GetChangeToPort())
-	if err != nil {
+	if containerID != "" {
+		err = errors.New("a container with this name already exists")
 		return
+	}
+
+	if inData.NetworkName != "" {
+		err, networkConfig = networkControl[inData.NetworkName].Generator.GetNext()
+		if err != nil {
+			err = errors.New("network generator error: " + err.Error())
+			return
+		}
 	}
 
 	err, containerID = el.dockerSystem.ContainerCreateChangeExposedPortAndStart(
-		in.GetImageName(),
-		in.GetContainerName(),
-		restartPolicy,
-		SupportGRpcToArrayMount(in.GetMountVolumes()),
-		nil,
-		currentPort,
-		changeToPort,
+		inData.ImageName,
+		inData.ContainerName,
+		inData.RestartPolicy,
+		inData.MountVolumes,
+		networkConfig,
+		inData.CurrentPort,
+		inData.ChangeToPort,
 	)
 
 	response = &pb.ContainerCreateChangeExposedPortAndStartReply{
