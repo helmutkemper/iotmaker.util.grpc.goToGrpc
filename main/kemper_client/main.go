@@ -76,6 +76,7 @@ func main() {
 	mux.HandleFunc("/containerCreateAndStart", ContainerCreateAndStart)
 	mux.HandleFunc("/containerCreateAndChangeExposedPort", ContainerCreateAndChangeExposedPort)
 	mux.HandleFunc("/containerCreateChangeExposedPortAndStart", ContainerCreateChangeExposedPortAndStart)
+	mux.HandleFunc("/containerCreateAndExposePortsAutomatically", ContainerCreateAndExposePortsAutomatically)
 	mux.HandleFunc("/containersListAll", ContainersList)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
@@ -239,6 +240,38 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 		var list = []map[string]string{
 			{
 				"ID": data.(*pb.ContainerCreateReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
+	case pb.ContainerCreateAndExposePortsAutomaticallyReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ContainerCreateAndExposePortsAutomaticallyReply).ID,
 			},
 		}
 		toOut = list
@@ -708,6 +741,33 @@ func ContainerCreateChangeExposedPortAndStart(w http.ResponseWriter, r *http.Req
 		return
 	}
 	ToJson(pb.ContainerCreateChangeExposedPortAndStartReply{}, container, w, r)
+}
+
+func ContainerCreateAndExposePortsAutomatically(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerCreateAndExposePortsAutomaticallyReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreateAndExposePortsAutomatically(
+		ctx,
+		&pb.ContainerCreateAndExposePortsAutomaticallyRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerCreateAndExposePortsAutomaticallyReply{}, container, w, r)
 }
 
 func ContainerFindIdByName(w http.ResponseWriter, r *http.Request) {
