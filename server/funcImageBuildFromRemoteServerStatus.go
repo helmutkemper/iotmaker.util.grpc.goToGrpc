@@ -17,9 +17,10 @@ func (el *GRpcServer) ImageBuildFromRemoteServerStatus(
 
 	_ = ctx
 
-	status, found := pullStatusList[in.GetID()]
+	status, found := pullStatusList.Get(in.GetID())
 	if found == false {
 		err = errors.New("image build id not found")
+		return
 	}
 
 	var data []byte

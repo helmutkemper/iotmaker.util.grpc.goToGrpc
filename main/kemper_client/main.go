@@ -92,6 +92,8 @@ func main() {
 	mux.HandleFunc("/containerFindIdByNameContains", ContainerFindIdByNameContains)
 	mux.HandleFunc("/containerInspectByName", ContainerInspectByName)
 	mux.HandleFunc("/containerInspectByNameContains", ContainerInspectByNameContains)
+	mux.HandleFunc("/imageBuildFromRemoteServer", ImageBuildFromRemoteServer)
+	mux.HandleFunc("/ImageBuildFromRemoteServerStatus", ImageBuildFromRemoteServerStatus)
 
 	server := fmt.Sprintf(":%v", KHttpServerPort)
 	fmt.Printf("Listening on %v...", server)
@@ -480,6 +482,38 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 			}
 		}
 
+	case pb.ImageBuildFromRemoteServerReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ImageBuildFromRemoteServerReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
 	case pb.ImageListReply:
 		var list []types.ImageSummary
 		err = json.Unmarshal(data.(*pb.ImageListReply).Data, &list)
@@ -790,6 +824,60 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 	if err != nil {
 		panic(err)
 	}
+}
+
+func ImageBuildFromRemoteServer(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ImageBuildFromRemoteServerReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ImageBuildFromRemoteServer(
+		ctx,
+		&pb.ImageBuildFromRemoteServerRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ImageBuildFromRemoteServerReply{}, container, w, r)
+}
+
+func ImageBuildFromRemoteServerStatus(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ImageOrContainerBuildPullStatusReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ImageBuildFromRemoteServerStatus(
+		ctx,
+		&pb.ImageOrContainerBuildPullStatusRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ImageOrContainerBuildPullStatusRequest{}, container, w, r)
 }
 
 func ContainerStopAndRemove(w http.ResponseWriter, r *http.Request) {

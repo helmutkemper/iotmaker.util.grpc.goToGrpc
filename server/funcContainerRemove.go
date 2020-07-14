@@ -7,7 +7,7 @@ import (
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
-type JSonContainerRemove struct {
+type JSonContainerGenericRequest struct {
 	Name    string
 	Id      string
 	Volumes bool
@@ -30,7 +30,7 @@ func (el *GRpcServer) ContainerRemove(
 	}
 
 	var body = in.GetData()
-	var inData JSonContainerRemove
+	var inData JSonContainerGenericRequest
 	err = json.Unmarshal(body, &inData)
 	if err != nil {
 		err = errors.New("json unmarshal error: " + err.Error())

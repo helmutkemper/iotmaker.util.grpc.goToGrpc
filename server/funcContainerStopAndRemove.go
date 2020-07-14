@@ -22,7 +22,7 @@ func (el *GRpcServer) ContainerStopAndRemove(
 	}
 
 	var body = in.GetData()
-	var inData JSonContainerRemove
+	var inData JSonContainerGenericRequest
 	err = json.Unmarshal(body, &inData)
 	if err != nil {
 		err = errors.New("json unmarshal error: " + err.Error())

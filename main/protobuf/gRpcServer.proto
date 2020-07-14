@@ -358,9 +358,7 @@ message NetworkRemoveByNameRequest {
 }
 
 message ImageBuildFromRemoteServerRequest {
-  string ServerPath = 1;
-  string ImageNewName = 2;
-  repeated string ImageTags = 3;
+  bytes Data = 1;
 }
 
 message ImageBuildFromRemoteServerReply {
@@ -375,7 +373,7 @@ message ImageOrContainerBuildPullSubStatus {
 }
 
 message ImageOrContainerBuildPullStatusRequest {
-  string ID = 1;
+  bytes Data = 1;
 }
 
 message ImageOrContainerBuildPullStatusReply {
