@@ -2,8 +2,17 @@ package server
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
+
+type JSonContainerRemove struct {
+	Id      string
+	Volumes bool
+	Links   bool
+	Force   bool
+}
 
 func (el *GRpcServer) ContainerRemove(
 	ctx context.Context,
@@ -19,7 +28,20 @@ func (el *GRpcServer) ContainerRemove(
 		return
 	}
 
-	err = el.dockerSystem.ContainerRemove(in.GetID(), in.GetRemoveVolumes(), in.GetRemoveLinks(), in.GetForce())
+	var body = in.GetData()
+	var inData JSonContainerRemove
+	err = json.Unmarshal(body, &inData)
+	if err != nil {
+		err = errors.New("json unmarshal error: " + err.Error())
+		return
+	}
+
+	err = el.dockerSystem.ContainerRemove(
+		inData.Id,
+		inData.Volumes,
+		inData.Links,
+		inData.Force,
+	)
 
 	response = &pb.Empty{}
 

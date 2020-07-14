@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
@@ -19,7 +21,15 @@ func (el *GRpcServer) ContainerStop(
 		return
 	}
 
-	err = el.dockerSystem.ContainerStop(in.GetID())
+	var body = in.GetData()
+	var inData JSonContainerRemove
+	err = json.Unmarshal(body, &inData)
+	if err != nil {
+		err = errors.New("json unmarshal error: " + err.Error())
+		return
+	}
+
+	err = el.dockerSystem.ContainerStop(inData.Id)
 
 	response = &pb.Empty{}
 

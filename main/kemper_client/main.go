@@ -81,6 +81,10 @@ func main() {
 	mux.HandleFunc("/containerCreateWithoutExposePorts", ContainerCreateWithoutExposePorts)
 	mux.HandleFunc("/containerCreateWithoutExposePortsAndStart", ContainerCreateWithoutExposePortsAndStart)
 	mux.HandleFunc("/containersListAll", ContainersList)
+	mux.HandleFunc("/containerStopAndRemove", ContainerStopAndRemove)
+	mux.HandleFunc("/containerRemove", ContainerRemove)
+	mux.HandleFunc("/containerStop", ContainerStop)
+	mux.HandleFunc("/containerStart", ContainerStart)
 	mux.HandleFunc("/containerInspectById", ContainerInspect)
 	mux.HandleFunc("/containerFindIdByName", ContainerFindIdByName)
 	mux.HandleFunc("/containerFindIdByNameContains", ContainerFindIdByNameContains)
@@ -136,6 +140,17 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 	}
 
 	switch dataType.(type) {
+	case pb.Empty:
+		toOut = make([]int, 0)
+		length = 1
+
+		if skip > 0 {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		}
+
 	case pb.ContainerFindIdByNameReply:
 		var list = []map[string]string{
 			{
@@ -732,6 +747,110 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 	if err != nil {
 		panic(err)
 	}
+}
+
+func ContainerStopAndRemove(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	_, err = GRpcClient.ContainerStopAndRemove(
+		ctx,
+		&pb.ContainerStopAndRemoveRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.Empty{}, nil, w, r)
+}
+
+func ContainerRemove(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	_, err = GRpcClient.ContainerRemove(
+		ctx,
+		&pb.ContainerRemoveRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.Empty{}, nil, w, r)
+}
+
+func ContainerStop(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	_, err = GRpcClient.ContainerStop(
+		ctx,
+		&pb.ContainerStopRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.Empty{}, nil, w, r)
+}
+
+func ContainerStart(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	_, err = GRpcClient.ContainerStart(
+		ctx,
+		&pb.ContainerStartRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.Empty{}, nil, w, r)
 }
 
 func ContainerCreateAndChangeExposedPort(w http.ResponseWriter, r *http.Request) {

@@ -288,14 +288,11 @@ message ContainerNetworkInspectReply {
 }
 
 message ContainerRemoveRequest {
-  string ID = 1;
-  bool RemoveVolumes = 2;
-  bool RemoveLinks = 3;
-  bool Force = 4;
+  bytes Data = 1;
 }
 
 message ContainerStartRequest {
-  string ID = 1;
+  bytes Data = 1;
 }
 
 message ContainerStatisticsOneShotRequest {
@@ -315,14 +312,11 @@ message ContainerStatisticsOneShotByNameReply {
 }
 
 message ContainerStopRequest {
-  string ID = 1;
+  bytes Data = 1;
 }
 
 message ContainerStopAndRemoveRequest {
-  string ID = 1;
-  bool RemoveVolumes = 2;
-  bool RemoveLinks = 3;
-  bool Force = 4;
+  bytes Data = 1;
 }
 
 message ContainerWaitStatusNotRunningRequest {
