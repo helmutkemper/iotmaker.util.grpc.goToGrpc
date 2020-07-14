@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"github.com/docker/docker/api/types"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
@@ -21,8 +22,16 @@ func (el *GRpcServer) ContainerStatisticsOneShot(
 		return
 	}
 
+	var body = in.GetData()
+	var inData JSonContainerRemove
+	err = json.Unmarshal(body, &inData)
+	if err != nil {
+		err = errors.New("json unmarshal error: " + err.Error())
+		return
+	}
+
 	var stat types.Stats
-	err, stat = el.dockerSystem.ContainerStatisticsOneShot(in.GetID())
+	err, stat = el.dockerSystem.ContainerStatisticsOneShot(inData.Id)
 
 	var data []byte
 	data, err = json.Marshal(&stat)

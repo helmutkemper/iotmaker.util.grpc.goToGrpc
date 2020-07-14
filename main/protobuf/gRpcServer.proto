@@ -296,7 +296,7 @@ message ContainerStartRequest {
 }
 
 message ContainerStatisticsOneShotRequest {
-  string ID = 1;
+  bytes Data = 1;
 }
 
 message ContainerStatisticsOneShotReply {

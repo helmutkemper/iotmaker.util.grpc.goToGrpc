@@ -73,6 +73,7 @@ func main() {
 	mux.HandleFunc("/networkListAll", NetworkList)
 	mux.HandleFunc("/imageListAll", ImageList)
 	mux.HandleFunc("/containerCreate", ContainerCreate)
+	mux.HandleFunc("/containerStatisticsOneShot", ContainerStatisticsOneShot)
 	mux.HandleFunc("/containerCreateAndStart", ContainerCreateAndStart)
 	mux.HandleFunc("/containerCreateAndChangeExposedPort", ContainerCreateAndChangeExposedPort)
 	mux.HandleFunc("/containerCreateChangeExposedPortAndStart", ContainerCreateChangeExposedPortAndStart)
@@ -595,6 +596,47 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 			}
 		}
 
+	case pb.ContainerStatisticsOneShotReply:
+		var list types.Stats
+		err = json.Unmarshal(data.(*pb.ContainerStatisticsOneShotReply).Data, &list)
+		if err != nil {
+			length = 0
+			limit = 0
+			skip = 0
+			success = false
+			errorList = append(errorList, err.Error())
+			toOut = make([]int, 0)
+		} else {
+			toOut = []types.Stats{
+				list,
+			}
+
+			length = 1
+
+			if skip >= length {
+				toOut = make([]int, 0)
+				length = 0
+				errorList = append(errorList, "skip overflow")
+				success = false
+			} else {
+				toOut = toOut.([]types.Stats)[skip:]
+				length = int64(len(toOut.([]types.Stats)))
+			}
+
+			if length > 0 {
+				if limit > length && limit > 0 {
+					toOut = toOut.([]types.Stats)[:length]
+					length = int64(len(toOut.([]types.Stats)))
+				} else if limit > 0 {
+					toOut = toOut.([]types.Stats)[:limit]
+					length = int64(len(toOut.([]types.Stats)))
+				} else {
+					toOut = toOut.([]types.Stats)
+					length = int64(len(toOut.([]types.Stats)))
+				}
+			}
+		}
+
 	case pb.ContainerInspectReply:
 		toOut = make([]types.ContainerJSON, 0)
 		var container types.ContainerJSON
@@ -932,6 +974,33 @@ func ContainerCreateAndStart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ToJson(pb.ContainerCreateAndStartReply{}, container, w, r)
+}
+
+func ContainerStatisticsOneShot(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerStatisticsOneShotReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*12000)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerStatisticsOneShot(
+		ctx,
+		&pb.ContainerStatisticsOneShotRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerStatisticsOneShotReply{}, container, w, r)
 }
 
 func ContainerCreateChangeExposedPortAndStart(w http.ResponseWriter, r *http.Request) {
