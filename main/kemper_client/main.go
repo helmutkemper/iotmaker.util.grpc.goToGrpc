@@ -74,6 +74,7 @@ func main() {
 	mux.HandleFunc("/imageListAll", ImageList)
 	mux.HandleFunc("/containerCreate", ContainerCreate)
 	mux.HandleFunc("/containerStatisticsOneShot", ContainerStatisticsOneShot)
+	mux.HandleFunc("/containerStatisticsOneShotByName", ContainerStatisticsOneShotByName)
 	mux.HandleFunc("/containerCreateAndStart", ContainerCreateAndStart)
 	mux.HandleFunc("/containerCreateAndChangeExposedPort", ContainerCreateAndChangeExposedPort)
 	mux.HandleFunc("/containerCreateChangeExposedPortAndStart", ContainerCreateChangeExposedPortAndStart)
@@ -993,6 +994,33 @@ func ContainerStatisticsOneShot(w http.ResponseWriter, r *http.Request) {
 	container, err = GRpcClient.ContainerStatisticsOneShot(
 		ctx,
 		&pb.ContainerStatisticsOneShotRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ContainerStatisticsOneShotReply{}, container, w, r)
+}
+
+func ContainerStatisticsOneShotByName(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ContainerStatisticsOneShotReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*12000)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerStatisticsOneShotByName(
+		ctx,
+		&pb.ContainerStatisticsOneShotByNameRequest{
 			Data: body,
 		},
 	)

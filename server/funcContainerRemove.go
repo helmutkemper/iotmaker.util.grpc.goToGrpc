@@ -8,6 +8,7 @@ import (
 )
 
 type JSonContainerRemove struct {
+	Name    string
 	Id      string
 	Volumes bool
 	Links   bool
