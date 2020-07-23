@@ -16,6 +16,18 @@ type PullStatusList struct {
 	mux sync.Mutex
 }
 
+func (el *PullStatusList) Verify(key string) (found bool) {
+	el.mux.Lock()
+	defer el.mux.Unlock()
+
+	if len(el.m) == 0 {
+		return
+	}
+
+	_, found = el.m[key]
+	return
+}
+
 func (el *PullStatusList) Set(key string, value BuildOrPullLog) {
 	el.mux.Lock()
 	defer el.mux.Unlock()
@@ -35,7 +47,7 @@ func (el *PullStatusList) Get(key string) (value BuildOrPullLog, found bool) {
 	return
 }
 
-func (el *PullStatusList) TickerProcessToDeleteOldData() {
+func (el *PullStatusList) TickerDeleteOldData() {
 	el.mux.Lock()
 	defer el.mux.Unlock()
 
@@ -78,8 +90,20 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 
 	var pullStatusChannel = make(chan iotmakerDocker.ContainerPullStatusSendToChannel, 1)
 
-	var imageChannelID = util.RandId30()
-	pullStatusList.Set(imageChannelID, BuildOrPullLog{Start: time.Now()})
+	var imageChannelID string
+
+	for {
+		imageChannelID = util.RandId30()
+		if pullStatusList.Verify(imageChannelID) == false {
+			break
+		}
+	}
+	pullStatusList.Set(
+		imageChannelID,
+		BuildOrPullLog{
+			Start: time.Now(),
+		},
+	)
 
 	go func(c chan iotmakerDocker.ContainerPullStatusSendToChannel, imageChannelID string) {
 
@@ -130,7 +154,7 @@ func init() {
 		for {
 			select {
 			case <-pullStatusTicker.C:
-				pullStatusList.TickerProcessToDeleteOldData()
+				pullStatusList.TickerDeleteOldData()
 			}
 		}
 	}()

@@ -29,7 +29,11 @@ func (el *GRpcServer) ImagePull(
 		for {
 			select {
 			case status := <-c:
-				pullStatusList[imageChannelID] = status
+				var tmp, _ = pullStatusList.Get(imageChannelID)
+				tmp.Status = status
+				tmp.Log += status.Stream
+
+				pullStatusList.Set(imageChannelID, tmp)
 
 				if status.Closed == true {
 					return

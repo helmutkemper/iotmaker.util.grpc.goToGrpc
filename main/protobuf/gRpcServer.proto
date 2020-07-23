@@ -373,7 +373,7 @@ message ImageOrContainerBuildPullSubStatus {
 }
 
 message ImageOrContainerBuildPullStatusRequest {
-  bytes Data = 1;
+  string ID = 1;
 }
 
 message ImageOrContainerBuildPullStatusReply {

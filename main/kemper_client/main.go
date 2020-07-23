@@ -514,6 +514,75 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 			}
 		}
 
+	case pb.ImageOrContainerBuildPullStatusRequest:
+		var list []iotmakerDocker.ContainerPullStatusSendToChannel
+		err = json.Unmarshal(data.(*pb.ImageOrContainerBuildPullStatusReply).Data, &list)
+		if err != nil {
+			length = 0
+			limit = 0
+			skip = 0
+			success = false
+			errorList = append(errorList, err.Error())
+			toOut = make([]int, 0)
+		} else {
+			toOut = list
+
+			length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+
+			if skip >= length {
+				toOut = make([]int, 0)
+				length = 0
+				errorList = append(errorList, "skip overflow")
+				success = false
+			} else {
+				toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)[skip:]
+				length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+			}
+
+			if length > 0 {
+				if limit > length && limit > 0 {
+					toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)[:length]
+					length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+				} else if limit > 0 {
+					toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)[:limit]
+					length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+				} else {
+					toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)
+					length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+				}
+			}
+		}
+
+	case pb.ImageOrContainerBuildPullStatusReply:
+		var list = []string{
+			data.(*pb.ImageOrContainerBuildPullStatusReply).String(),
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]string)[skip:]
+			length = int64(len(toOut.([]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]string)[:length]
+				length = int64(len(toOut.([]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]string)[:limit]
+				length = int64(len(toOut.([]string)))
+			} else {
+				toOut = toOut.([]string)
+				length = int64(len(toOut.([]string)))
+			}
+		}
+
 	case pb.ImageListReply:
 		var list []types.ImageSummary
 		err = json.Unmarshal(data.(*pb.ImageListReply).Data, &list)
@@ -855,29 +924,22 @@ func ImageBuildFromRemoteServer(w http.ResponseWriter, r *http.Request) {
 
 func ImageBuildFromRemoteServerStatus(w http.ResponseWriter, r *http.Request) {
 	var err error
-	var container *pb.ImageOrContainerBuildPullStatusReply
-	var body []byte
+	var status *pb.ImageOrContainerBuildPullStatusReply
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	body, err = ioutil.ReadAll(r.Body)
-	if err != nil {
-		fmt.Printf("body.err: %v", err.Error())
-		return
-	}
-
-	container, err = GRpcClient.ImageBuildFromRemoteServerStatus(
+	status, err = GRpcClient.ImageBuildFromRemoteServerStatus(
 		ctx,
 		&pb.ImageOrContainerBuildPullStatusRequest{
-			Data: body,
+			ID: r.URL.Query().Get("ID"),
 		},
 	)
 	if err != nil {
 		fmt.Printf("could not greet: %v", err)
 		return
 	}
-	ToJson(pb.ImageOrContainerBuildPullStatusRequest{}, container, w, r)
+	ToJson(pb.ImageOrContainerBuildPullStatusRequest{}, status, w, r)
 }
 
 func ContainerStopAndRemove(w http.ResponseWriter, r *http.Request) {
