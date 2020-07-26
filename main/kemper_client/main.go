@@ -93,7 +93,7 @@ func main() {
 	mux.HandleFunc("/containerInspectByName", ContainerInspectByName)
 	mux.HandleFunc("/containerInspectByNameContains", ContainerInspectByNameContains)
 	mux.HandleFunc("/imageBuildFromRemoteServer", ImageBuildFromRemoteServer)
-	mux.HandleFunc("/ImageBuildFromRemoteServerStatus", ImageBuildFromRemoteServerStatus)
+	mux.HandleFunc("/imageBuildFromRemoteServerStatus", ImageBuildFromRemoteServerStatus)
 
 	server := fmt.Sprintf(":%v", KHttpServerPort)
 	fmt.Printf("Listening on %v...", server)
@@ -515,7 +515,7 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 		}
 
 	case pb.ImageOrContainerBuildPullStatusRequest:
-		var list []iotmakerDocker.ContainerPullStatusSendToChannel
+		var list server.BuildOrPullLog
 		err = json.Unmarshal(data.(*pb.ImageOrContainerBuildPullStatusReply).Data, &list)
 		if err != nil {
 			length = 0
@@ -525,9 +525,10 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 			errorList = append(errorList, err.Error())
 			toOut = make([]int, 0)
 		} else {
-			toOut = list
-
-			length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+			toOut = []server.BuildOrPullLog{
+				list,
+			}
+			length = 1
 
 			if skip >= length {
 				toOut = make([]int, 0)
@@ -535,20 +536,20 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 				errorList = append(errorList, "skip overflow")
 				success = false
 			} else {
-				toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)[skip:]
-				length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+				toOut = toOut.([]server.BuildOrPullLog)[skip:]
+				length = int64(len(toOut.([]server.BuildOrPullLog)))
 			}
 
 			if length > 0 {
 				if limit > length && limit > 0 {
-					toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)[:length]
-					length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+					toOut = toOut.([]server.BuildOrPullLog)[:length]
+					length = int64(len(toOut.([]server.BuildOrPullLog)))
 				} else if limit > 0 {
-					toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)[:limit]
-					length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+					toOut = toOut.([]server.BuildOrPullLog)[:limit]
+					length = int64(len(toOut.([]server.BuildOrPullLog)))
 				} else {
-					toOut = toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)
-					length = int64(len(toOut.([]iotmakerDocker.ContainerPullStatusSendToChannel)))
+					toOut = toOut.([]server.BuildOrPullLog)
+					length = int64(len(toOut.([]server.BuildOrPullLog)))
 				}
 			}
 		}
@@ -1495,6 +1496,7 @@ func TemplateParser(w http.ResponseWriter, name string, data interface{}) (err e
 }
 
 func serveTemplate(w http.ResponseWriter, r *http.Request) {
+	return
 	_ = r
 
 	var err error

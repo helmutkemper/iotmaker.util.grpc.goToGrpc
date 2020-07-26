@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/util"
@@ -114,9 +115,12 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 				tmp.Status = status
 				tmp.Log += status.Stream
 
+				//fmt.Printf("build channel id: %v\n", imageChannelID)
+				//fmt.Printf("%+v\n\n", tmp)
 				pullStatusList.Set(imageChannelID, tmp)
 
 				if status.Closed == true {
+					fmt.Printf("build channel end\n\n\n")
 					return
 				}
 			}
@@ -132,15 +136,29 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 		return
 	}
 
-	err = el.dockerSystem.ImageBuildFromRemoteServer(
+	go func(
+		serverPath,
+		imageName string,
+		imageTags []string,
+		pullStatusChannel *chan iotmakerDocker.ContainerPullStatusSendToChannel,
+	) {
+		err = el.dockerSystem.ImageBuildFromRemoteServer(
+			serverPath,
+			imageName,
+			imageTags,
+			pullStatusChannel,
+		)
+		if err != nil {
+			//todo: log
+			fmt.Printf("ImageBuildFromRemoteServer().error: %v\n", err.Error())
+			return
+		}
+	}(
 		inData.ServerPath,
 		inData.ImageName,
 		inData.ImageTags,
 		&pullStatusChannel,
 	)
-	if err != nil {
-		return
-	}
 
 	response = &pb.ImageBuildFromRemoteServerReply{
 		ID: imageChannelID,
