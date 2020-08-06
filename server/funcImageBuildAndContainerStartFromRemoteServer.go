@@ -5,16 +5,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/docker/docker/api/types/mount"
+	"github.com/docker/docker/api/types/network"
+	"github.com/docker/go-connections/nat"
 	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/util"
 	"time"
 )
 
-var pullStatusList PullStatusList
-var pullStatusTicker = time.NewTicker(30 * time.Second * 60)
-
-func (el *GRpcServer) ImageBuildFromRemoteServer(
+func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 	ctx context.Context,
 	in *pb.ImageBuildFromRemoteServerRequest,
 ) (
@@ -30,6 +30,7 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 
 	var pullStatusChannel = make(chan iotmakerDocker.ContainerPullStatusSendToChannel, 1)
 	var imageChannelID string
+	var containerID string
 
 	for {
 		imageChannelID = util.RandId30()
@@ -67,7 +68,7 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 	}(pullStatusChannel, imageChannelID)
 
 	var body = in.GetData()
-	var inData JSonImageBuildFromRemoteServer
+	var inData JSonImageBuildAndContainerStartFromRemoteServer
 	err = json.Unmarshal(body, &inData)
 	if err != nil {
 		err = errors.New("json unmarshal error: " + err.Error())
@@ -78,6 +79,12 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 		serverPath,
 		imageName string,
 		imageTags []string,
+		containerName string,
+		restartPolicy iotmakerDocker.RestartPolicy,
+		mountVolumes []mount.Mount,
+		containerNetwork *network.NetworkingConfig,
+		currentPort []nat.Port,
+		changeToPort []nat.Port,
 		pullStatusChannel *chan iotmakerDocker.ContainerPullStatusSendToChannel,
 	) {
 		err = el.dockerSystem.ImageBuildFromRemoteServer(
@@ -91,13 +98,41 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 			tmp.Log += "\nError: " + err.Error()
 			pullStatusList.Set(imageChannelID, tmp)
 
-			fmt.Printf("ImageBuildFromRemoteServer().error: %v\n", err.Error())
+			fmt.Printf("funcImageBuildAndContainerStartFromRemoteServer().error: %v\n", err.Error())
 			return
 		}
+		err, containerID = el.dockerSystem.ContainerCreateAndChangeExposedPort(
+			imageName,
+			containerName,
+			restartPolicy,
+			mountVolumes,
+			containerNetwork,
+			currentPort,
+			changeToPort,
+		)
+		if err != nil {
+			var tmp, _ = pullStatusList.Get(imageChannelID)
+			tmp.Log += "\nError: " + err.Error()
+			pullStatusList.Set(imageChannelID, tmp)
+
+			fmt.Printf("funcImageBuildAndContainerStartFromRemoteServer().error: %v\n", err.Error())
+			return
+		}
+
+		var tmp, _ = pullStatusList.Get(imageChannelID)
+		tmp.Status.ContainerID = containerID
+		pullStatusList.Set(imageChannelID, tmp)
+
 	}(
 		inData.ServerPath,
 		inData.ImageName,
 		inData.ImageTags,
+		inData.ContainerName,
+		inData.RestartPolicy,
+		inData.MountVolumes,
+		inData.ContainerNetwork,
+		inData.CurrentPort,
+		inData.ChangeToPort,
 		&pullStatusChannel,
 	)
 
@@ -106,15 +141,4 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 	}
 
 	return
-}
-
-func init() {
-	go func() {
-		for {
-			select {
-			case <-pullStatusTicker.C:
-				pullStatusList.TickerDeleteOldData()
-			}
-		}
-	}()
 }

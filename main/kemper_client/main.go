@@ -93,6 +93,7 @@ func main() {
 	mux.HandleFunc("/containerInspectByName", ContainerInspectByName)
 	mux.HandleFunc("/containerInspectByNameContains", ContainerInspectByNameContains)
 	mux.HandleFunc("/imageBuildFromRemoteServer", ImageBuildFromRemoteServer)
+	mux.HandleFunc("/imageBuildAndContainerStartFromRemoteServer", ImageBuildAndContainerStartFromRemoteServer)
 	mux.HandleFunc("/imageBuildFromRemoteServerStatus", ImageBuildFromRemoteServerStatus)
 	//mux.HandleFunc("/imageFindIdByName", ImageFindIdByName)
 	//mux.HandleFunc("/imageListExposedPorts", ImageListExposedPorts)
@@ -922,6 +923,33 @@ func ImageBuildFromRemoteServer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	container, err = GRpcClient.ImageBuildFromRemoteServer(
+		ctx,
+		&pb.ImageBuildFromRemoteServerRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+	ToJson(pb.ImageBuildFromRemoteServerReply{}, container, w, r)
+}
+
+func ImageBuildAndContainerStartFromRemoteServer(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var container *pb.ImageBuildFromRemoteServerReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ImageBuildAndContainerStartFromRemoteServer(
 		ctx,
 		&pb.ImageBuildFromRemoteServerRequest{
 			Data: body,

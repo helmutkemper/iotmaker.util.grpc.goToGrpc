@@ -515,18 +515,19 @@ service DockerServer {
   rpc NetworkInspect (NetworkInspectRequest) returns (NetworkInspectReply) {}
   rpc ImageGarbageCollector (Empty) returns (Empty) {}
   rpc ImageBuildFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
+  rpc ImageBuildAndContainerStartFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
   rpc ImageBuildFromRemoteServerStatus (ImageOrContainerBuildPullStatusRequest) returns (ImageOrContainerBuildPullStatusReply) {}
-  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
+//  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
   rpc ImageList (Empty) returns (ImageListReply) {}
-  rpc ImageListExposedPorts (ImageListExposedPortsRequest) returns (ImageListExposedPortsReply) {}
-  rpc ImageListExposedPortsByName (ImageListExposedPortsByNameRequest) returns (ImageListExposedPortsByNameReply) {}
-  rpc ImageListExposedVolumes (ImageListExposedVolumesRequest) returns (ImageListExposedVolumesReply) {}
-  rpc ImageListExposedVolumesByName (ImageListExposedVolumesByNameRequest) returns (ImageListExposedVolumesByNameReply) {}
-  rpc ImageMountNatPortList (ImageMountNatPortListRequest) returns (ImageMountNatPortListReply) {}
-  rpc ImageMountNatPortListChangeExposed (ImageMountNatPortListChangeExposedRequest) returns (ImageMountNatPortListChangeExposedReply) {}
-  rpc ImageMountNatPortListChangeExposedWithIpAddress (ImageMountNatPortListChangeExposedWithIpAddressRequest) returns (ImageMountNatPortListChangeExposedWithIpAddressReply) {}
-  rpc ImagePull (ImagePullRequest) returns (ImagePullReply) {}
-  rpc ImageRemove (ImageRemoveRequest) returns (Empty) {}
-  rpc ImageRemoveByName (ImageRemoveByNameRequest) returns (Empty) {}
+//  rpc ImageListExposedPorts (ImageListExposedPortsRequest) returns (ImageListExposedPortsReply) {}
+//  rpc ImageListExposedPortsByName (ImageListExposedPortsByNameRequest) returns (ImageListExposedPortsByNameReply) {}
+//  rpc ImageListExposedVolumes (ImageListExposedVolumesRequest) returns (ImageListExposedVolumesReply) {}
+//  rpc ImageListExposedVolumesByName (ImageListExposedVolumesByNameRequest) returns (ImageListExposedVolumesByNameReply) {}
+//  rpc ImageMountNatPortList (ImageMountNatPortListRequest) returns (ImageMountNatPortListReply) {}
+//  rpc ImageMountNatPortListChangeExposed (ImageMountNatPortListChangeExposedRequest) returns (ImageMountNatPortListChangeExposedReply) {}
+//  rpc ImageMountNatPortListChangeExposedWithIpAddress (ImageMountNatPortListChangeExposedWithIpAddressRequest) returns (ImageMountNatPortListChangeExposedWithIpAddressReply) {}
+//  rpc ImagePull (ImagePullRequest) returns (ImagePullReply) {}
+//  rpc ImageRemove (ImageRemoveRequest) returns (Empty) {}
+//  rpc ImageRemoveByName (ImageRemoveByNameRequest) returns (Empty) {}
   //todo: verificar escrita em map e colocar mutex
 }

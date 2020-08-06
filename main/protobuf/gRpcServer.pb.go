@@ -5180,7 +5180,7 @@ var file_gRpcServer_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x65, 0x72, 0x49, 0x6e, 0x73, 0x70, 0x65, 0x63, 0x74, 0x42, 0x79, 0x4e, 0x61, 0x6d,
 	0x65, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x12,
 	0x0a, 0x04, 0x44, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x44, 0x61,
-	0x74, 0x61, 0x32, 0xfe, 0x35, 0x0a, 0x0c, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x53, 0x65, 0x72,
+	0x74, 0x61, 0x32, 0x82, 0x2a, 0x0a, 0x0c, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x53, 0x65, 0x72,
 	0x76, 0x65, 0x72, 0x12, 0x83, 0x01, 0x0a, 0x0f, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65,
 	0x72, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x37, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b,
 	0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63,
@@ -5487,136 +5487,40 @@ var file_gRpcServer_proto_rawDesc = []byte{
 	0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49,
 	0x6d, 0x61, 0x67, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x46, 0x72, 0x6f, 0x6d, 0x52, 0x65, 0x6d,
 	0x6f, 0x74, 0x65, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00,
-	0x12, 0xb4, 0x01, 0x0a, 0x20, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x46,
-	0x72, 0x6f, 0x6d, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x53,
-	0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x47, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72,
-	0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4f, 0x72, 0x43,
-	0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x50, 0x75, 0x6c,
-	0x6c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x45,
-	0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43,
-	0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63,
-	0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4f, 0x72, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65,
-	0x72, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x50, 0x75, 0x6c, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
-	0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x89, 0x01, 0x0a, 0x11, 0x49, 0x6d, 0x61, 0x67,
-	0x65, 0x46, 0x69, 0x6e, 0x64, 0x49, 0x64, 0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x39, 0x2e,
-	0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f,
-	0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e,
-	0x49, 0x6d, 0x61, 0x67, 0x65, 0x46, 0x69, 0x6e, 0x64, 0x49, 0x64, 0x42, 0x79, 0x4e, 0x61, 0x6d,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x37, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61,
-	0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69,
-	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65,
-	0x46, 0x69, 0x6e, 0x64, 0x49, 0x64, 0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x70, 0x6c,
-	0x79, 0x22, 0x00, 0x12, 0x66, 0x0a, 0x09, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74,
-	0x12, 0x26, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65,
+	0x12, 0xb5, 0x01, 0x0a, 0x2b, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x41,
+	0x6e, 0x64, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x53, 0x74, 0x61, 0x72, 0x74,
+	0x46, 0x72, 0x6f, 0x6d, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72,
+	0x12, 0x42, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65,
 	0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72,
-	0x70, 0x63, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x2f, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61,
-	0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69,
-	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65,
-	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x95, 0x01, 0x0a, 0x15,
-	0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64,
-	0x50, 0x6f, 0x72, 0x74, 0x73, 0x12, 0x3d, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72,
-	0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73,
-	0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x50, 0x6f, 0x72, 0x74, 0x73, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x3b, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44,
+	0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x46, 0x72, 0x6f,
+	0x6d, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x40, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44,
 	0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74,
-	0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x50, 0x6f, 0x72, 0x74, 0x73, 0x52, 0x65, 0x70, 0x6c,
-	0x79, 0x22, 0x00, 0x12, 0xa7, 0x01, 0x0a, 0x1b, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73,
-	0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x50, 0x6f, 0x72, 0x74, 0x73, 0x42, 0x79, 0x4e,
-	0x61, 0x6d, 0x65, 0x12, 0x43, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f,
-	0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x45,
-	0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x50, 0x6f, 0x72, 0x74, 0x73, 0x42, 0x79, 0x4e, 0x61, 0x6d,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x41, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61,
-	0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69,
-	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65,
-	0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x50, 0x6f, 0x72, 0x74, 0x73,
-	0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x9b, 0x01,
-	0x0a, 0x17, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x70, 0x6f, 0x73,
-	0x65, 0x64, 0x56, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x73, 0x12, 0x3f, 0x2e, 0x69, 0x6f, 0x74, 0x6d,
-	0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e,
-	0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67,
-	0x65, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x56, 0x6f, 0x6c, 0x75,
-	0x6d, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x3d, 0x2e, 0x69, 0x6f, 0x74,
-	0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75,
-	0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61,
-	0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x56, 0x6f, 0x6c,
-	0x75, 0x6d, 0x65, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0xad, 0x01, 0x0a, 0x1d,
-	0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64,
-	0x56, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x73, 0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x45, 0x2e,
+	0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x42, 0x75, 0x69, 0x6c,
+	0x64, 0x46, 0x72, 0x6f, 0x6d, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x53, 0x65, 0x72, 0x76, 0x65,
+	0x72, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0xb4, 0x01, 0x0a, 0x20, 0x49, 0x6d, 0x61,
+	0x67, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x46, 0x72, 0x6f, 0x6d, 0x52, 0x65, 0x6d, 0x6f, 0x74,
+	0x65, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x47, 0x2e,
 	0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f,
 	0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e,
-	0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64,
-	0x56, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x73, 0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x43, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44,
+	0x49, 0x6d, 0x61, 0x67, 0x65, 0x4f, 0x72, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72,
+	0x42, 0x75, 0x69, 0x6c, 0x64, 0x50, 0x75, 0x6c, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x45, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65,
+	0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4f, 0x72,
+	0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x50, 0x75,
+	0x6c, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12,
+	0x66, 0x0a, 0x09, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x26, 0x2e, 0x69,
+	0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d,
+	0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x45,
+	0x6d, 0x70, 0x74, 0x79, 0x1a, 0x2f, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44,
 	0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69,
 	0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74,
-	0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x56, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x73, 0x42, 0x79,
-	0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x95, 0x01, 0x0a, 0x15,
-	0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72,
-	0x74, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x3d, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72,
-	0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f, 0x75,
-	0x6e, 0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x3b, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44,
-	0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f, 0x75, 0x6e,
-	0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x70, 0x6c,
-	0x79, 0x22, 0x00, 0x12, 0xbc, 0x01, 0x0a, 0x22, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f, 0x75,
-	0x6e, 0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x68, 0x61,
-	0x6e, 0x67, 0x65, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x12, 0x4a, 0x2e, 0x69, 0x6f, 0x74,
-	0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75,
-	0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61,
-	0x67, 0x65, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72, 0x74, 0x4c, 0x69,
-	0x73, 0x74, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x48, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65,
-	0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f,
-	0x75, 0x6e, 0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x68,
-	0x61, 0x6e, 0x67, 0x65, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x52, 0x65, 0x70, 0x6c, 0x79,
-	0x22, 0x00, 0x12, 0xe3, 0x01, 0x0a, 0x2f, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f, 0x75, 0x6e,
-	0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x68, 0x61, 0x6e,
-	0x67, 0x65, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x57, 0x69, 0x74, 0x68, 0x49, 0x70, 0x41,
-	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x57, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65,
-	0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f,
-	0x75, 0x6e, 0x74, 0x4e, 0x61, 0x74, 0x50, 0x6f, 0x72, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x68,
-	0x61, 0x6e, 0x67, 0x65, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x57, 0x69, 0x74, 0x68, 0x49,
-	0x70, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x55, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72,
-	0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70,
-	0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x4e, 0x61, 0x74, 0x50,
-	0x6f, 0x72, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x45, 0x78, 0x70,
-	0x6f, 0x73, 0x65, 0x64, 0x57, 0x69, 0x74, 0x68, 0x49, 0x70, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73,
-	0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x71, 0x0a, 0x09, 0x49, 0x6d, 0x61, 0x67,
-	0x65, 0x50, 0x75, 0x6c, 0x6c, 0x12, 0x31, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72,
-	0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x50, 0x75, 0x6c,
-	0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61,
-	0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69,
-	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65,
-	0x50, 0x75, 0x6c, 0x6c, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x6c, 0x0a, 0x0b, 0x49,
-	0x6d, 0x61, 0x67, 0x65, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x12, 0x33, 0x2e, 0x69, 0x6f, 0x74,
-	0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75,
-	0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61,
-	0x67, 0x65, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x26, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72,
-	0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70,
-	0x63, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x78, 0x0a, 0x11, 0x49, 0x6d, 0x61,
-	0x67, 0x65, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x39,
-	0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43,
-	0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63,
-	0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x42, 0x79, 0x4e, 0x61,
-	0x6d, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x69, 0x6f, 0x74, 0x6d,
-	0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e,
-	0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x45, 0x6d, 0x70, 0x74,
-	0x79, 0x22, 0x00, 0x42, 0x3c, 0x5a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x68, 0x65, 0x6c, 0x6d, 0x75, 0x74, 0x6b, 0x65, 0x6d, 0x70, 0x65, 0x72, 0x2f, 0x69,
-	0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x5f, 0x64, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x5f, 0x63,
-	0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x67, 0x72, 0x70,
-	0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x42, 0x3c, 0x5a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x68, 0x65, 0x6c, 0x6d, 0x75, 0x74, 0x6b, 0x65, 0x6d, 0x70,
+	0x65, 0x72, 0x2f, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x5f, 0x64, 0x6f, 0x63, 0x6b,
+	0x65, 0x72, 0x5f, 0x63, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x5f, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -5779,66 +5683,46 @@ var file_gRpcServer_proto_depIdxs = []int32{
 	14, // 46: iotmakerDockerCommunicationGrpc.DockerServer.NetworkInspect:input_type -> iotmakerDockerCommunicationGrpc.NetworkInspectRequest
 	42, // 47: iotmakerDockerCommunicationGrpc.DockerServer.ImageGarbageCollector:input_type -> iotmakerDockerCommunicationGrpc.Empty
 	62, // 48: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServer:input_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerRequest
-	65, // 49: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServerStatus:input_type -> iotmakerDockerCommunicationGrpc.ImageOrContainerBuildPullStatusRequest
-	67, // 50: iotmakerDockerCommunicationGrpc.DockerServer.ImageFindIdByName:input_type -> iotmakerDockerCommunicationGrpc.ImageFindIdByNameRequest
+	62, // 49: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildAndContainerStartFromRemoteServer:input_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerRequest
+	65, // 50: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServerStatus:input_type -> iotmakerDockerCommunicationGrpc.ImageOrContainerBuildPullStatusRequest
 	42, // 51: iotmakerDockerCommunicationGrpc.DockerServer.ImageList:input_type -> iotmakerDockerCommunicationGrpc.Empty
-	69, // 52: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedPorts:input_type -> iotmakerDockerCommunicationGrpc.ImageListExposedPortsRequest
-	71, // 53: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedPortsByName:input_type -> iotmakerDockerCommunicationGrpc.ImageListExposedPortsByNameRequest
-	73, // 54: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedVolumes:input_type -> iotmakerDockerCommunicationGrpc.ImageListExposedVolumesRequest
-	75, // 55: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedVolumesByName:input_type -> iotmakerDockerCommunicationGrpc.ImageListExposedVolumesByNameRequest
-	77, // 56: iotmakerDockerCommunicationGrpc.DockerServer.ImageMountNatPortList:input_type -> iotmakerDockerCommunicationGrpc.ImageMountNatPortListRequest
-	79, // 57: iotmakerDockerCommunicationGrpc.DockerServer.ImageMountNatPortListChangeExposed:input_type -> iotmakerDockerCommunicationGrpc.ImageMountNatPortListChangeExposedRequest
-	81, // 58: iotmakerDockerCommunicationGrpc.DockerServer.ImageMountNatPortListChangeExposedWithIpAddress:input_type -> iotmakerDockerCommunicationGrpc.ImageMountNatPortListChangeExposedWithIpAddressRequest
-	83, // 59: iotmakerDockerCommunicationGrpc.DockerServer.ImagePull:input_type -> iotmakerDockerCommunicationGrpc.ImagePullRequest
-	85, // 60: iotmakerDockerCommunicationGrpc.DockerServer.ImageRemove:input_type -> iotmakerDockerCommunicationGrpc.ImageRemoveRequest
-	86, // 61: iotmakerDockerCommunicationGrpc.DockerServer.ImageRemoveByName:input_type -> iotmakerDockerCommunicationGrpc.ImageRemoveByNameRequest
-	17, // 62: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreate:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateReply
-	19, // 63: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndChangeExposedPort:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndChangeExposedPortReply
-	13, // 64: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspect:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectReply
-	21, // 65: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndExposePortsAutomatically:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndExposePortsAutomaticallyReply
-	23, // 66: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndStartReply
-	25, // 67: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateChangeExposedPortAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateChangeExposedPortAndStartReply
-	27, // 68: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateExposePortsAutomaticallyAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateExposePortsAutomaticallyAndStartReply
-	29, // 69: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePorts:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsReply
-	31, // 70: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePortsAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsAndStartReply
-	33, // 71: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameReply
-	35, // 72: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameContainsReply
-	37, // 73: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameReply
-	89, // 74: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameContainsReply
-	39, // 75: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSon:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonReply
-	41, // 76: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSonByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonByNameReply
-	43, // 77: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListAll:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
-	43, // 78: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListQuiet:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
-	42, // 79: iotmakerDockerCommunicationGrpc.DockerServer.ContainerRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 80: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStart:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	49, // 81: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShot:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
-	49, // 82: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShotByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
-	42, // 83: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStop:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 84: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStopAndRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 85: iotmakerDockerCommunicationGrpc.DockerServer.ContainerWaitStatusNotRunning:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	56, // 86: iotmakerDockerCommunicationGrpc.DockerServer.NetworkCreate:output_type -> iotmakerDockerCommunicationGrpc.NetworkCreateReply
-	58, // 87: iotmakerDockerCommunicationGrpc.DockerServer.NetworkFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.NetworkFindIdByNameReply
-	59, // 88: iotmakerDockerCommunicationGrpc.DockerServer.NetworkList:output_type -> iotmakerDockerCommunicationGrpc.NetworkListReply
-	42, // 89: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 90: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemoveByName:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	15, // 91: iotmakerDockerCommunicationGrpc.DockerServer.NetworkInspect:output_type -> iotmakerDockerCommunicationGrpc.NetworkInspectReply
-	42, // 92: iotmakerDockerCommunicationGrpc.DockerServer.ImageGarbageCollector:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	63, // 93: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServer:output_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerReply
-	66, // 94: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServerStatus:output_type -> iotmakerDockerCommunicationGrpc.ImageOrContainerBuildPullStatusReply
-	68, // 95: iotmakerDockerCommunicationGrpc.DockerServer.ImageFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.ImageFindIdByNameReply
-	87, // 96: iotmakerDockerCommunicationGrpc.DockerServer.ImageList:output_type -> iotmakerDockerCommunicationGrpc.ImageListReply
-	70, // 97: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedPorts:output_type -> iotmakerDockerCommunicationGrpc.ImageListExposedPortsReply
-	72, // 98: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedPortsByName:output_type -> iotmakerDockerCommunicationGrpc.ImageListExposedPortsByNameReply
-	74, // 99: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedVolumes:output_type -> iotmakerDockerCommunicationGrpc.ImageListExposedVolumesReply
-	76, // 100: iotmakerDockerCommunicationGrpc.DockerServer.ImageListExposedVolumesByName:output_type -> iotmakerDockerCommunicationGrpc.ImageListExposedVolumesByNameReply
-	78, // 101: iotmakerDockerCommunicationGrpc.DockerServer.ImageMountNatPortList:output_type -> iotmakerDockerCommunicationGrpc.ImageMountNatPortListReply
-	80, // 102: iotmakerDockerCommunicationGrpc.DockerServer.ImageMountNatPortListChangeExposed:output_type -> iotmakerDockerCommunicationGrpc.ImageMountNatPortListChangeExposedReply
-	82, // 103: iotmakerDockerCommunicationGrpc.DockerServer.ImageMountNatPortListChangeExposedWithIpAddress:output_type -> iotmakerDockerCommunicationGrpc.ImageMountNatPortListChangeExposedWithIpAddressReply
-	84, // 104: iotmakerDockerCommunicationGrpc.DockerServer.ImagePull:output_type -> iotmakerDockerCommunicationGrpc.ImagePullReply
-	42, // 105: iotmakerDockerCommunicationGrpc.DockerServer.ImageRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 106: iotmakerDockerCommunicationGrpc.DockerServer.ImageRemoveByName:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	62, // [62:107] is the sub-list for method output_type
-	17, // [17:62] is the sub-list for method input_type
+	17, // 52: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreate:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateReply
+	19, // 53: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndChangeExposedPort:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndChangeExposedPortReply
+	13, // 54: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspect:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectReply
+	21, // 55: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndExposePortsAutomatically:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndExposePortsAutomaticallyReply
+	23, // 56: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndStartReply
+	25, // 57: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateChangeExposedPortAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateChangeExposedPortAndStartReply
+	27, // 58: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateExposePortsAutomaticallyAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateExposePortsAutomaticallyAndStartReply
+	29, // 59: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePorts:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsReply
+	31, // 60: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePortsAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsAndStartReply
+	33, // 61: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameReply
+	35, // 62: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameContainsReply
+	37, // 63: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameReply
+	89, // 64: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameContainsReply
+	39, // 65: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSon:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonReply
+	41, // 66: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSonByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonByNameReply
+	43, // 67: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListAll:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
+	43, // 68: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListQuiet:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
+	42, // 69: iotmakerDockerCommunicationGrpc.DockerServer.ContainerRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 70: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStart:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	49, // 71: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShot:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
+	49, // 72: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShotByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
+	42, // 73: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStop:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 74: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStopAndRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 75: iotmakerDockerCommunicationGrpc.DockerServer.ContainerWaitStatusNotRunning:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	56, // 76: iotmakerDockerCommunicationGrpc.DockerServer.NetworkCreate:output_type -> iotmakerDockerCommunicationGrpc.NetworkCreateReply
+	58, // 77: iotmakerDockerCommunicationGrpc.DockerServer.NetworkFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.NetworkFindIdByNameReply
+	59, // 78: iotmakerDockerCommunicationGrpc.DockerServer.NetworkList:output_type -> iotmakerDockerCommunicationGrpc.NetworkListReply
+	42, // 79: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 80: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemoveByName:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	15, // 81: iotmakerDockerCommunicationGrpc.DockerServer.NetworkInspect:output_type -> iotmakerDockerCommunicationGrpc.NetworkInspectReply
+	42, // 82: iotmakerDockerCommunicationGrpc.DockerServer.ImageGarbageCollector:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	63, // 83: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServer:output_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerReply
+	63, // 84: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildAndContainerStartFromRemoteServer:output_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerReply
+	66, // 85: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServerStatus:output_type -> iotmakerDockerCommunicationGrpc.ImageOrContainerBuildPullStatusReply
+	87, // 86: iotmakerDockerCommunicationGrpc.DockerServer.ImageList:output_type -> iotmakerDockerCommunicationGrpc.ImageListReply
+	52, // [52:87] is the sub-list for method output_type
+	17, // [17:52] is the sub-list for method input_type
 	17, // [17:17] is the sub-list for extension type_name
 	17, // [17:17] is the sub-list for extension extendee
 	0,  // [0:17] is the sub-list for field type_name
@@ -6995,19 +6879,10 @@ type DockerServerClient interface {
 	NetworkInspect(ctx context.Context, in *NetworkInspectRequest, opts ...grpc.CallOption) (*NetworkInspectReply, error)
 	ImageGarbageCollector(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 	ImageBuildFromRemoteServer(ctx context.Context, in *ImageBuildFromRemoteServerRequest, opts ...grpc.CallOption) (*ImageBuildFromRemoteServerReply, error)
+	ImageBuildAndContainerStartFromRemoteServer(ctx context.Context, in *ImageBuildFromRemoteServerRequest, opts ...grpc.CallOption) (*ImageBuildFromRemoteServerReply, error)
 	ImageBuildFromRemoteServerStatus(ctx context.Context, in *ImageOrContainerBuildPullStatusRequest, opts ...grpc.CallOption) (*ImageOrContainerBuildPullStatusReply, error)
-	ImageFindIdByName(ctx context.Context, in *ImageFindIdByNameRequest, opts ...grpc.CallOption) (*ImageFindIdByNameReply, error)
+	//  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
 	ImageList(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ImageListReply, error)
-	ImageListExposedPorts(ctx context.Context, in *ImageListExposedPortsRequest, opts ...grpc.CallOption) (*ImageListExposedPortsReply, error)
-	ImageListExposedPortsByName(ctx context.Context, in *ImageListExposedPortsByNameRequest, opts ...grpc.CallOption) (*ImageListExposedPortsByNameReply, error)
-	ImageListExposedVolumes(ctx context.Context, in *ImageListExposedVolumesRequest, opts ...grpc.CallOption) (*ImageListExposedVolumesReply, error)
-	ImageListExposedVolumesByName(ctx context.Context, in *ImageListExposedVolumesByNameRequest, opts ...grpc.CallOption) (*ImageListExposedVolumesByNameReply, error)
-	ImageMountNatPortList(ctx context.Context, in *ImageMountNatPortListRequest, opts ...grpc.CallOption) (*ImageMountNatPortListReply, error)
-	ImageMountNatPortListChangeExposed(ctx context.Context, in *ImageMountNatPortListChangeExposedRequest, opts ...grpc.CallOption) (*ImageMountNatPortListChangeExposedReply, error)
-	ImageMountNatPortListChangeExposedWithIpAddress(ctx context.Context, in *ImageMountNatPortListChangeExposedWithIpAddressRequest, opts ...grpc.CallOption) (*ImageMountNatPortListChangeExposedWithIpAddressReply, error)
-	ImagePull(ctx context.Context, in *ImagePullRequest, opts ...grpc.CallOption) (*ImagePullReply, error)
-	ImageRemove(ctx context.Context, in *ImageRemoveRequest, opts ...grpc.CallOption) (*Empty, error)
-	ImageRemoveByName(ctx context.Context, in *ImageRemoveByNameRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type dockerServerClient struct {
@@ -7306,6 +7181,15 @@ func (c *dockerServerClient) ImageBuildFromRemoteServer(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *dockerServerClient) ImageBuildAndContainerStartFromRemoteServer(ctx context.Context, in *ImageBuildFromRemoteServerRequest, opts ...grpc.CallOption) (*ImageBuildFromRemoteServerReply, error) {
+	out := new(ImageBuildFromRemoteServerReply)
+	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageBuildAndContainerStartFromRemoteServer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *dockerServerClient) ImageBuildFromRemoteServerStatus(ctx context.Context, in *ImageOrContainerBuildPullStatusRequest, opts ...grpc.CallOption) (*ImageOrContainerBuildPullStatusReply, error) {
 	out := new(ImageOrContainerBuildPullStatusReply)
 	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageBuildFromRemoteServerStatus", in, out, opts...)
@@ -7315,108 +7199,9 @@ func (c *dockerServerClient) ImageBuildFromRemoteServerStatus(ctx context.Contex
 	return out, nil
 }
 
-func (c *dockerServerClient) ImageFindIdByName(ctx context.Context, in *ImageFindIdByNameRequest, opts ...grpc.CallOption) (*ImageFindIdByNameReply, error) {
-	out := new(ImageFindIdByNameReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageFindIdByName", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *dockerServerClient) ImageList(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ImageListReply, error) {
 	out := new(ImageListReply)
 	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageList", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageListExposedPorts(ctx context.Context, in *ImageListExposedPortsRequest, opts ...grpc.CallOption) (*ImageListExposedPortsReply, error) {
-	out := new(ImageListExposedPortsReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedPorts", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageListExposedPortsByName(ctx context.Context, in *ImageListExposedPortsByNameRequest, opts ...grpc.CallOption) (*ImageListExposedPortsByNameReply, error) {
-	out := new(ImageListExposedPortsByNameReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedPortsByName", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageListExposedVolumes(ctx context.Context, in *ImageListExposedVolumesRequest, opts ...grpc.CallOption) (*ImageListExposedVolumesReply, error) {
-	out := new(ImageListExposedVolumesReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedVolumes", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageListExposedVolumesByName(ctx context.Context, in *ImageListExposedVolumesByNameRequest, opts ...grpc.CallOption) (*ImageListExposedVolumesByNameReply, error) {
-	out := new(ImageListExposedVolumesByNameReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedVolumesByName", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageMountNatPortList(ctx context.Context, in *ImageMountNatPortListRequest, opts ...grpc.CallOption) (*ImageMountNatPortListReply, error) {
-	out := new(ImageMountNatPortListReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageMountNatPortList", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageMountNatPortListChangeExposed(ctx context.Context, in *ImageMountNatPortListChangeExposedRequest, opts ...grpc.CallOption) (*ImageMountNatPortListChangeExposedReply, error) {
-	out := new(ImageMountNatPortListChangeExposedReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageMountNatPortListChangeExposed", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageMountNatPortListChangeExposedWithIpAddress(ctx context.Context, in *ImageMountNatPortListChangeExposedWithIpAddressRequest, opts ...grpc.CallOption) (*ImageMountNatPortListChangeExposedWithIpAddressReply, error) {
-	out := new(ImageMountNatPortListChangeExposedWithIpAddressReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageMountNatPortListChangeExposedWithIpAddress", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImagePull(ctx context.Context, in *ImagePullRequest, opts ...grpc.CallOption) (*ImagePullReply, error) {
-	out := new(ImagePullReply)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImagePull", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageRemove(ctx context.Context, in *ImageRemoveRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageRemove", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dockerServerClient) ImageRemoveByName(ctx context.Context, in *ImageRemoveByNameRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageRemoveByName", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -7457,19 +7242,10 @@ type DockerServerServer interface {
 	NetworkInspect(context.Context, *NetworkInspectRequest) (*NetworkInspectReply, error)
 	ImageGarbageCollector(context.Context, *Empty) (*Empty, error)
 	ImageBuildFromRemoteServer(context.Context, *ImageBuildFromRemoteServerRequest) (*ImageBuildFromRemoteServerReply, error)
+	ImageBuildAndContainerStartFromRemoteServer(context.Context, *ImageBuildFromRemoteServerRequest) (*ImageBuildFromRemoteServerReply, error)
 	ImageBuildFromRemoteServerStatus(context.Context, *ImageOrContainerBuildPullStatusRequest) (*ImageOrContainerBuildPullStatusReply, error)
-	ImageFindIdByName(context.Context, *ImageFindIdByNameRequest) (*ImageFindIdByNameReply, error)
+	//  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
 	ImageList(context.Context, *Empty) (*ImageListReply, error)
-	ImageListExposedPorts(context.Context, *ImageListExposedPortsRequest) (*ImageListExposedPortsReply, error)
-	ImageListExposedPortsByName(context.Context, *ImageListExposedPortsByNameRequest) (*ImageListExposedPortsByNameReply, error)
-	ImageListExposedVolumes(context.Context, *ImageListExposedVolumesRequest) (*ImageListExposedVolumesReply, error)
-	ImageListExposedVolumesByName(context.Context, *ImageListExposedVolumesByNameRequest) (*ImageListExposedVolumesByNameReply, error)
-	ImageMountNatPortList(context.Context, *ImageMountNatPortListRequest) (*ImageMountNatPortListReply, error)
-	ImageMountNatPortListChangeExposed(context.Context, *ImageMountNatPortListChangeExposedRequest) (*ImageMountNatPortListChangeExposedReply, error)
-	ImageMountNatPortListChangeExposedWithIpAddress(context.Context, *ImageMountNatPortListChangeExposedWithIpAddressRequest) (*ImageMountNatPortListChangeExposedWithIpAddressReply, error)
-	ImagePull(context.Context, *ImagePullRequest) (*ImagePullReply, error)
-	ImageRemove(context.Context, *ImageRemoveRequest) (*Empty, error)
-	ImageRemoveByName(context.Context, *ImageRemoveByNameRequest) (*Empty, error)
 }
 
 // UnimplementedDockerServerServer can be embedded to have forward compatible implementations.
@@ -7572,44 +7348,14 @@ func (*UnimplementedDockerServerServer) ImageGarbageCollector(context.Context, *
 func (*UnimplementedDockerServerServer) ImageBuildFromRemoteServer(context.Context, *ImageBuildFromRemoteServerRequest) (*ImageBuildFromRemoteServerReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ImageBuildFromRemoteServer not implemented")
 }
+func (*UnimplementedDockerServerServer) ImageBuildAndContainerStartFromRemoteServer(context.Context, *ImageBuildFromRemoteServerRequest) (*ImageBuildFromRemoteServerReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ImageBuildAndContainerStartFromRemoteServer not implemented")
+}
 func (*UnimplementedDockerServerServer) ImageBuildFromRemoteServerStatus(context.Context, *ImageOrContainerBuildPullStatusRequest) (*ImageOrContainerBuildPullStatusReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ImageBuildFromRemoteServerStatus not implemented")
 }
-func (*UnimplementedDockerServerServer) ImageFindIdByName(context.Context, *ImageFindIdByNameRequest) (*ImageFindIdByNameReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageFindIdByName not implemented")
-}
 func (*UnimplementedDockerServerServer) ImageList(context.Context, *Empty) (*ImageListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ImageList not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageListExposedPorts(context.Context, *ImageListExposedPortsRequest) (*ImageListExposedPortsReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageListExposedPorts not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageListExposedPortsByName(context.Context, *ImageListExposedPortsByNameRequest) (*ImageListExposedPortsByNameReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageListExposedPortsByName not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageListExposedVolumes(context.Context, *ImageListExposedVolumesRequest) (*ImageListExposedVolumesReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageListExposedVolumes not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageListExposedVolumesByName(context.Context, *ImageListExposedVolumesByNameRequest) (*ImageListExposedVolumesByNameReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageListExposedVolumesByName not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageMountNatPortList(context.Context, *ImageMountNatPortListRequest) (*ImageMountNatPortListReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageMountNatPortList not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageMountNatPortListChangeExposed(context.Context, *ImageMountNatPortListChangeExposedRequest) (*ImageMountNatPortListChangeExposedReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageMountNatPortListChangeExposed not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageMountNatPortListChangeExposedWithIpAddress(context.Context, *ImageMountNatPortListChangeExposedWithIpAddressRequest) (*ImageMountNatPortListChangeExposedWithIpAddressReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageMountNatPortListChangeExposedWithIpAddress not implemented")
-}
-func (*UnimplementedDockerServerServer) ImagePull(context.Context, *ImagePullRequest) (*ImagePullReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImagePull not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageRemove(context.Context, *ImageRemoveRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageRemove not implemented")
-}
-func (*UnimplementedDockerServerServer) ImageRemoveByName(context.Context, *ImageRemoveByNameRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ImageRemoveByName not implemented")
 }
 
 func RegisterDockerServerServer(s *grpc.Server, srv DockerServerServer) {
@@ -8192,6 +7938,24 @@ func _DockerServer_ImageBuildFromRemoteServer_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DockerServer_ImageBuildAndContainerStartFromRemoteServer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImageBuildFromRemoteServerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DockerServerServer).ImageBuildAndContainerStartFromRemoteServer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageBuildAndContainerStartFromRemoteServer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DockerServerServer).ImageBuildAndContainerStartFromRemoteServer(ctx, req.(*ImageBuildFromRemoteServerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DockerServer_ImageBuildFromRemoteServerStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ImageOrContainerBuildPullStatusRequest)
 	if err := dec(in); err != nil {
@@ -8210,24 +7974,6 @@ func _DockerServer_ImageBuildFromRemoteServerStatus_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DockerServer_ImageFindIdByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageFindIdByNameRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageFindIdByName(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageFindIdByName",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageFindIdByName(ctx, req.(*ImageFindIdByNameRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _DockerServer_ImageList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -8242,186 +7988,6 @@ func _DockerServer_ImageList_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DockerServerServer).ImageList(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageListExposedPorts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageListExposedPortsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageListExposedPorts(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedPorts",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageListExposedPorts(ctx, req.(*ImageListExposedPortsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageListExposedPortsByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageListExposedPortsByNameRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageListExposedPortsByName(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedPortsByName",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageListExposedPortsByName(ctx, req.(*ImageListExposedPortsByNameRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageListExposedVolumes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageListExposedVolumesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageListExposedVolumes(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedVolumes",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageListExposedVolumes(ctx, req.(*ImageListExposedVolumesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageListExposedVolumesByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageListExposedVolumesByNameRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageListExposedVolumesByName(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageListExposedVolumesByName",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageListExposedVolumesByName(ctx, req.(*ImageListExposedVolumesByNameRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageMountNatPortList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageMountNatPortListRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageMountNatPortList(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageMountNatPortList",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageMountNatPortList(ctx, req.(*ImageMountNatPortListRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageMountNatPortListChangeExposed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageMountNatPortListChangeExposedRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageMountNatPortListChangeExposed(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageMountNatPortListChangeExposed",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageMountNatPortListChangeExposed(ctx, req.(*ImageMountNatPortListChangeExposedRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageMountNatPortListChangeExposedWithIpAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageMountNatPortListChangeExposedWithIpAddressRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageMountNatPortListChangeExposedWithIpAddress(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageMountNatPortListChangeExposedWithIpAddress",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageMountNatPortListChangeExposedWithIpAddress(ctx, req.(*ImageMountNatPortListChangeExposedWithIpAddressRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImagePull_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImagePullRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImagePull(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImagePull",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImagePull(ctx, req.(*ImagePullRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageRemove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageRemoveRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageRemove(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageRemove",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageRemove(ctx, req.(*ImageRemoveRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DockerServer_ImageRemoveByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImageRemoveByNameRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DockerServerServer).ImageRemoveByName(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageRemoveByName",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DockerServerServer).ImageRemoveByName(ctx, req.(*ImageRemoveByNameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -8559,56 +8125,16 @@ var _DockerServer_serviceDesc = grpc.ServiceDesc{
 			Handler:    _DockerServer_ImageBuildFromRemoteServer_Handler,
 		},
 		{
+			MethodName: "ImageBuildAndContainerStartFromRemoteServer",
+			Handler:    _DockerServer_ImageBuildAndContainerStartFromRemoteServer_Handler,
+		},
+		{
 			MethodName: "ImageBuildFromRemoteServerStatus",
 			Handler:    _DockerServer_ImageBuildFromRemoteServerStatus_Handler,
 		},
 		{
-			MethodName: "ImageFindIdByName",
-			Handler:    _DockerServer_ImageFindIdByName_Handler,
-		},
-		{
 			MethodName: "ImageList",
 			Handler:    _DockerServer_ImageList_Handler,
-		},
-		{
-			MethodName: "ImageListExposedPorts",
-			Handler:    _DockerServer_ImageListExposedPorts_Handler,
-		},
-		{
-			MethodName: "ImageListExposedPortsByName",
-			Handler:    _DockerServer_ImageListExposedPortsByName_Handler,
-		},
-		{
-			MethodName: "ImageListExposedVolumes",
-			Handler:    _DockerServer_ImageListExposedVolumes_Handler,
-		},
-		{
-			MethodName: "ImageListExposedVolumesByName",
-			Handler:    _DockerServer_ImageListExposedVolumesByName_Handler,
-		},
-		{
-			MethodName: "ImageMountNatPortList",
-			Handler:    _DockerServer_ImageMountNatPortList_Handler,
-		},
-		{
-			MethodName: "ImageMountNatPortListChangeExposed",
-			Handler:    _DockerServer_ImageMountNatPortListChangeExposed_Handler,
-		},
-		{
-			MethodName: "ImageMountNatPortListChangeExposedWithIpAddress",
-			Handler:    _DockerServer_ImageMountNatPortListChangeExposedWithIpAddress_Handler,
-		},
-		{
-			MethodName: "ImagePull",
-			Handler:    _DockerServer_ImagePull_Handler,
-		},
-		{
-			MethodName: "ImageRemove",
-			Handler:    _DockerServer_ImageRemove_Handler,
-		},
-		{
-			MethodName: "ImageRemoveByName",
-			Handler:    _DockerServer_ImageRemoveByName_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
