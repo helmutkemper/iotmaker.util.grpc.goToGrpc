@@ -66,6 +66,7 @@ func (el *GRpcServer) ContainerCreateAndChangeExposedPort(
 		return
 	}
 
+	//todo: make a function
 	if inData.NetworkName != "" {
 		var found bool
 		_, found = networkControl[inData.NetworkName]

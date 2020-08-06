@@ -1,6 +1,7 @@
 # Image Build And Container Start From Remote Server
 
 ```url
+http://localhost:8081/imageBuildFromRemoteServer
 ```
 
 ```json
@@ -22,4 +23,16 @@
 ```
 
 ```json
+{
+  "Length":1,
+  "Limit":0,
+  "Skip":0,
+  "Success":true,
+  "Error":[],
+  "Data":[
+    {
+      "ID":"5yEAXdODbdNmaJZHNHK8mOp5MOoHAG"
+    }
+  ]
+}
 ```

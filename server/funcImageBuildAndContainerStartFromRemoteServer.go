@@ -31,6 +31,7 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 	var pullStatusChannel = make(chan iotmakerDocker.ContainerPullStatusSendToChannel, 1)
 	var imageChannelID string
 	var containerID string
+	var networkConfig *network.NetworkingConfig = nil
 
 	for {
 		imageChannelID = util.RandId30()
@@ -73,6 +74,21 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 	if err != nil {
 		err = errors.New("json unmarshal error: " + err.Error())
 		return
+	}
+
+	if inData.NetworkName != "" {
+		var found bool
+		_, found = networkControl[inData.NetworkName]
+		if found == false {
+			err = errors.New("network not found. it is necessary to create a network with the name: " + inData.NetworkName)
+			return
+		}
+
+		err, networkConfig = networkControl[inData.NetworkName].Generator.GetNext()
+		if err != nil {
+			err = errors.New("network generator error: " + err.Error())
+			return
+		}
 	}
 
 	go func(
@@ -121,7 +137,18 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 
 		var tmp, _ = pullStatusList.Get(imageChannelID)
 		tmp.Status.ContainerID = containerID
+		tmp.Status.SuccessfullyBuildContainer = true
 		pullStatusList.Set(imageChannelID, tmp)
+
+		err = el.dockerSystem.ContainerStart(containerID)
+		if err != nil {
+			var tmp, _ = pullStatusList.Get(imageChannelID)
+			tmp.Log += "\nError: " + err.Error()
+			pullStatusList.Set(imageChannelID, tmp)
+
+			fmt.Printf("funcImageBuildAndContainerStartFromRemoteServer().error: %v\n", err.Error())
+			return
+		}
 
 	}(
 		inData.ServerPath,
@@ -130,7 +157,7 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 		inData.ContainerName,
 		inData.RestartPolicy,
 		inData.MountVolumes,
-		inData.ContainerNetwork,
+		networkConfig,
 		inData.CurrentPort,
 		inData.ChangeToPort,
 		&pullStatusChannel,
