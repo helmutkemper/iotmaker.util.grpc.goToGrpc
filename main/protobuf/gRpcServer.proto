@@ -517,7 +517,7 @@ service DockerServer {
   rpc ImageBuildFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
   rpc ImageBuildAndContainerStartFromRemoteServer (ImageBuildFromRemoteServerRequest) returns (ImageBuildFromRemoteServerReply) {}
   rpc ImageBuildFromRemoteServerStatus (ImageOrContainerBuildPullStatusRequest) returns (ImageOrContainerBuildPullStatusReply) {}
-//  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
+  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
   rpc ImageList (Empty) returns (ImageListReply) {}
 //  rpc ImageListExposedPorts (ImageListExposedPortsRequest) returns (ImageListExposedPortsReply) {}
 //  rpc ImageListExposedPortsByName (ImageListExposedPortsByNameRequest) returns (ImageListExposedPortsByNameReply) {}

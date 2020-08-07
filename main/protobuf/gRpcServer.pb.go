@@ -5180,7 +5180,7 @@ var file_gRpcServer_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x65, 0x72, 0x49, 0x6e, 0x73, 0x70, 0x65, 0x63, 0x74, 0x42, 0x79, 0x4e, 0x61, 0x6d,
 	0x65, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x12,
 	0x0a, 0x04, 0x44, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x44, 0x61,
-	0x74, 0x61, 0x32, 0x82, 0x2a, 0x0a, 0x0c, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x53, 0x65, 0x72,
+	0x74, 0x61, 0x32, 0x8e, 0x2b, 0x0a, 0x0c, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x53, 0x65, 0x72,
 	0x76, 0x65, 0x72, 0x12, 0x83, 0x01, 0x0a, 0x0f, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65,
 	0x72, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x37, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b,
 	0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63,
@@ -5510,17 +5510,26 @@ var file_gRpcServer_proto_rawDesc = []byte{
 	0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4f, 0x72,
 	0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x50, 0x75,
 	0x6c, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12,
-	0x66, 0x0a, 0x09, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x26, 0x2e, 0x69,
-	0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d,
-	0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x45,
-	0x6d, 0x70, 0x74, 0x79, 0x1a, 0x2f, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44,
-	0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74,
-	0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x42, 0x3c, 0x5a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x68, 0x65, 0x6c, 0x6d, 0x75, 0x74, 0x6b, 0x65, 0x6d, 0x70,
-	0x65, 0x72, 0x2f, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x5f, 0x64, 0x6f, 0x63, 0x6b,
-	0x65, 0x72, 0x5f, 0x63, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x5f, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x89, 0x01, 0x0a, 0x11, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x46, 0x69, 0x6e, 0x64, 0x49, 0x64, 0x42,
+	0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x39, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72,
+	0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x46, 0x69, 0x6e,
+	0x64, 0x49, 0x64, 0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x37, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65,
+	0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72,
+	0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x46, 0x69, 0x6e, 0x64, 0x49, 0x64, 0x42, 0x79,
+	0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x66, 0x0a, 0x09, 0x49,
+	0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x26, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61,
+	0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72, 0x70, 0x63, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79,
+	0x1a, 0x2f, 0x2e, 0x69, 0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x44, 0x6f, 0x63, 0x6b, 0x65,
+	0x72, 0x43, 0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x47, 0x72,
+	0x70, 0x63, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x70, 0x6c,
+	0x79, 0x22, 0x00, 0x42, 0x3c, 0x5a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x68, 0x65, 0x6c, 0x6d, 0x75, 0x74, 0x6b, 0x65, 0x6d, 0x70, 0x65, 0x72, 0x2f, 0x69,
+	0x6f, 0x74, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x5f, 0x64, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x5f, 0x63,
+	0x6f, 0x6d, 0x6d, 0x75, 0x6e, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x67, 0x72, 0x70,
+	0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -5685,44 +5694,46 @@ var file_gRpcServer_proto_depIdxs = []int32{
 	62, // 48: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServer:input_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerRequest
 	62, // 49: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildAndContainerStartFromRemoteServer:input_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerRequest
 	65, // 50: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServerStatus:input_type -> iotmakerDockerCommunicationGrpc.ImageOrContainerBuildPullStatusRequest
-	42, // 51: iotmakerDockerCommunicationGrpc.DockerServer.ImageList:input_type -> iotmakerDockerCommunicationGrpc.Empty
-	17, // 52: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreate:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateReply
-	19, // 53: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndChangeExposedPort:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndChangeExposedPortReply
-	13, // 54: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspect:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectReply
-	21, // 55: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndExposePortsAutomatically:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndExposePortsAutomaticallyReply
-	23, // 56: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndStartReply
-	25, // 57: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateChangeExposedPortAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateChangeExposedPortAndStartReply
-	27, // 58: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateExposePortsAutomaticallyAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateExposePortsAutomaticallyAndStartReply
-	29, // 59: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePorts:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsReply
-	31, // 60: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePortsAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsAndStartReply
-	33, // 61: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameReply
-	35, // 62: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameContainsReply
-	37, // 63: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameReply
-	89, // 64: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameContainsReply
-	39, // 65: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSon:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonReply
-	41, // 66: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSonByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonByNameReply
-	43, // 67: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListAll:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
-	43, // 68: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListQuiet:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
-	42, // 69: iotmakerDockerCommunicationGrpc.DockerServer.ContainerRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 70: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStart:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	49, // 71: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShot:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
-	49, // 72: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShotByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
-	42, // 73: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStop:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 74: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStopAndRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 75: iotmakerDockerCommunicationGrpc.DockerServer.ContainerWaitStatusNotRunning:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	56, // 76: iotmakerDockerCommunicationGrpc.DockerServer.NetworkCreate:output_type -> iotmakerDockerCommunicationGrpc.NetworkCreateReply
-	58, // 77: iotmakerDockerCommunicationGrpc.DockerServer.NetworkFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.NetworkFindIdByNameReply
-	59, // 78: iotmakerDockerCommunicationGrpc.DockerServer.NetworkList:output_type -> iotmakerDockerCommunicationGrpc.NetworkListReply
-	42, // 79: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	42, // 80: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemoveByName:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	15, // 81: iotmakerDockerCommunicationGrpc.DockerServer.NetworkInspect:output_type -> iotmakerDockerCommunicationGrpc.NetworkInspectReply
-	42, // 82: iotmakerDockerCommunicationGrpc.DockerServer.ImageGarbageCollector:output_type -> iotmakerDockerCommunicationGrpc.Empty
-	63, // 83: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServer:output_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerReply
-	63, // 84: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildAndContainerStartFromRemoteServer:output_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerReply
-	66, // 85: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServerStatus:output_type -> iotmakerDockerCommunicationGrpc.ImageOrContainerBuildPullStatusReply
-	87, // 86: iotmakerDockerCommunicationGrpc.DockerServer.ImageList:output_type -> iotmakerDockerCommunicationGrpc.ImageListReply
-	52, // [52:87] is the sub-list for method output_type
-	17, // [17:52] is the sub-list for method input_type
+	67, // 51: iotmakerDockerCommunicationGrpc.DockerServer.ImageFindIdByName:input_type -> iotmakerDockerCommunicationGrpc.ImageFindIdByNameRequest
+	42, // 52: iotmakerDockerCommunicationGrpc.DockerServer.ImageList:input_type -> iotmakerDockerCommunicationGrpc.Empty
+	17, // 53: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreate:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateReply
+	19, // 54: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndChangeExposedPort:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndChangeExposedPortReply
+	13, // 55: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspect:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectReply
+	21, // 56: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndExposePortsAutomatically:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndExposePortsAutomaticallyReply
+	23, // 57: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateAndStartReply
+	25, // 58: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateChangeExposedPortAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateChangeExposedPortAndStartReply
+	27, // 59: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateExposePortsAutomaticallyAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateExposePortsAutomaticallyAndStartReply
+	29, // 60: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePorts:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsReply
+	31, // 61: iotmakerDockerCommunicationGrpc.DockerServer.ContainerCreateWithoutExposePortsAndStart:output_type -> iotmakerDockerCommunicationGrpc.ContainerCreateWithoutExposePortsAndStartReply
+	33, // 62: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameReply
+	35, // 63: iotmakerDockerCommunicationGrpc.DockerServer.ContainerFindIdByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerFindIdByNameContainsReply
+	37, // 64: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameReply
+	89, // 65: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectByNameContains:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectByNameContainsReply
+	39, // 66: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSon:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonReply
+	41, // 67: iotmakerDockerCommunicationGrpc.DockerServer.ContainerInspectJSonByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerInspectJSonByNameReply
+	43, // 68: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListAll:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
+	43, // 69: iotmakerDockerCommunicationGrpc.DockerServer.ContainerListQuiet:output_type -> iotmakerDockerCommunicationGrpc.ContainerListAllReply
+	42, // 70: iotmakerDockerCommunicationGrpc.DockerServer.ContainerRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 71: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStart:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	49, // 72: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShot:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
+	49, // 73: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStatisticsOneShotByName:output_type -> iotmakerDockerCommunicationGrpc.ContainerStatisticsOneShotReply
+	42, // 74: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStop:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 75: iotmakerDockerCommunicationGrpc.DockerServer.ContainerStopAndRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 76: iotmakerDockerCommunicationGrpc.DockerServer.ContainerWaitStatusNotRunning:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	56, // 77: iotmakerDockerCommunicationGrpc.DockerServer.NetworkCreate:output_type -> iotmakerDockerCommunicationGrpc.NetworkCreateReply
+	58, // 78: iotmakerDockerCommunicationGrpc.DockerServer.NetworkFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.NetworkFindIdByNameReply
+	59, // 79: iotmakerDockerCommunicationGrpc.DockerServer.NetworkList:output_type -> iotmakerDockerCommunicationGrpc.NetworkListReply
+	42, // 80: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemove:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	42, // 81: iotmakerDockerCommunicationGrpc.DockerServer.NetworkRemoveByName:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	15, // 82: iotmakerDockerCommunicationGrpc.DockerServer.NetworkInspect:output_type -> iotmakerDockerCommunicationGrpc.NetworkInspectReply
+	42, // 83: iotmakerDockerCommunicationGrpc.DockerServer.ImageGarbageCollector:output_type -> iotmakerDockerCommunicationGrpc.Empty
+	63, // 84: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServer:output_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerReply
+	63, // 85: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildAndContainerStartFromRemoteServer:output_type -> iotmakerDockerCommunicationGrpc.ImageBuildFromRemoteServerReply
+	66, // 86: iotmakerDockerCommunicationGrpc.DockerServer.ImageBuildFromRemoteServerStatus:output_type -> iotmakerDockerCommunicationGrpc.ImageOrContainerBuildPullStatusReply
+	68, // 87: iotmakerDockerCommunicationGrpc.DockerServer.ImageFindIdByName:output_type -> iotmakerDockerCommunicationGrpc.ImageFindIdByNameReply
+	87, // 88: iotmakerDockerCommunicationGrpc.DockerServer.ImageList:output_type -> iotmakerDockerCommunicationGrpc.ImageListReply
+	53, // [53:89] is the sub-list for method output_type
+	17, // [17:53] is the sub-list for method input_type
 	17, // [17:17] is the sub-list for extension type_name
 	17, // [17:17] is the sub-list for extension extendee
 	0,  // [0:17] is the sub-list for field type_name
@@ -6881,7 +6892,7 @@ type DockerServerClient interface {
 	ImageBuildFromRemoteServer(ctx context.Context, in *ImageBuildFromRemoteServerRequest, opts ...grpc.CallOption) (*ImageBuildFromRemoteServerReply, error)
 	ImageBuildAndContainerStartFromRemoteServer(ctx context.Context, in *ImageBuildFromRemoteServerRequest, opts ...grpc.CallOption) (*ImageBuildFromRemoteServerReply, error)
 	ImageBuildFromRemoteServerStatus(ctx context.Context, in *ImageOrContainerBuildPullStatusRequest, opts ...grpc.CallOption) (*ImageOrContainerBuildPullStatusReply, error)
-	//  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
+	ImageFindIdByName(ctx context.Context, in *ImageFindIdByNameRequest, opts ...grpc.CallOption) (*ImageFindIdByNameReply, error)
 	ImageList(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ImageListReply, error)
 }
 
@@ -7199,6 +7210,15 @@ func (c *dockerServerClient) ImageBuildFromRemoteServerStatus(ctx context.Contex
 	return out, nil
 }
 
+func (c *dockerServerClient) ImageFindIdByName(ctx context.Context, in *ImageFindIdByNameRequest, opts ...grpc.CallOption) (*ImageFindIdByNameReply, error) {
+	out := new(ImageFindIdByNameReply)
+	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageFindIdByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *dockerServerClient) ImageList(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ImageListReply, error) {
 	out := new(ImageListReply)
 	err := c.cc.Invoke(ctx, "/iotmakerDockerCommunicationGrpc.DockerServer/ImageList", in, out, opts...)
@@ -7244,7 +7264,7 @@ type DockerServerServer interface {
 	ImageBuildFromRemoteServer(context.Context, *ImageBuildFromRemoteServerRequest) (*ImageBuildFromRemoteServerReply, error)
 	ImageBuildAndContainerStartFromRemoteServer(context.Context, *ImageBuildFromRemoteServerRequest) (*ImageBuildFromRemoteServerReply, error)
 	ImageBuildFromRemoteServerStatus(context.Context, *ImageOrContainerBuildPullStatusRequest) (*ImageOrContainerBuildPullStatusReply, error)
-	//  rpc ImageFindIdByName (ImageFindIdByNameRequest) returns (ImageFindIdByNameReply) {}
+	ImageFindIdByName(context.Context, *ImageFindIdByNameRequest) (*ImageFindIdByNameReply, error)
 	ImageList(context.Context, *Empty) (*ImageListReply, error)
 }
 
@@ -7353,6 +7373,9 @@ func (*UnimplementedDockerServerServer) ImageBuildAndContainerStartFromRemoteSer
 }
 func (*UnimplementedDockerServerServer) ImageBuildFromRemoteServerStatus(context.Context, *ImageOrContainerBuildPullStatusRequest) (*ImageOrContainerBuildPullStatusReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ImageBuildFromRemoteServerStatus not implemented")
+}
+func (*UnimplementedDockerServerServer) ImageFindIdByName(context.Context, *ImageFindIdByNameRequest) (*ImageFindIdByNameReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ImageFindIdByName not implemented")
 }
 func (*UnimplementedDockerServerServer) ImageList(context.Context, *Empty) (*ImageListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ImageList not implemented")
@@ -7974,6 +7997,24 @@ func _DockerServer_ImageBuildFromRemoteServerStatus_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DockerServer_ImageFindIdByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImageFindIdByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DockerServerServer).ImageFindIdByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/iotmakerDockerCommunicationGrpc.DockerServer/ImageFindIdByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DockerServerServer).ImageFindIdByName(ctx, req.(*ImageFindIdByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DockerServer_ImageList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -8131,6 +8172,10 @@ var _DockerServer_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ImageBuildFromRemoteServerStatus",
 			Handler:    _DockerServer_ImageBuildFromRemoteServerStatus_Handler,
+		},
+		{
+			MethodName: "ImageFindIdByName",
+			Handler:    _DockerServer_ImageFindIdByName_Handler,
 		},
 		{
 			MethodName: "ImageList",
