@@ -8,8 +8,8 @@ import (
 func SupportGRpcToNatPotMap(
 	pt *pb.PortMap,
 ) (
-	err error,
 	portMap nat.PortMap,
+	err error,
 ) {
 
 	portMap = nat.PortMap{}

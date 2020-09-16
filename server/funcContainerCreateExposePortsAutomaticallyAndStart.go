@@ -33,7 +33,7 @@ func (el *GRpcServer) ContainerCreateExposePortsAutomaticallyAndStart(
 		return
 	}
 
-	err, containerID = el.dockerSystem.ContainerFindIdByName(inData.ContainerName)
+	containerID, err = el.dockerSystem.ContainerFindIdByName(inData.ContainerName)
 	if err != nil && errors.Is(err, errors.New("container name not found")) {
 		err = errors.New("container find by name error: " + err.Error())
 		return
@@ -52,14 +52,14 @@ func (el *GRpcServer) ContainerCreateExposePortsAutomaticallyAndStart(
 			return
 		}
 
-		err, networkConfig = networkControl[inData.NetworkName].Generator.GetNext()
+		networkConfig, err = networkControl[inData.NetworkName].Generator.GetNext()
 		if err != nil {
 			err = errors.New("network generator error: " + err.Error())
 			return
 		}
 	}
 
-	err, containerID = el.dockerSystem.ContainerCreateAndExposePortsAutomatically(
+	containerID, err = el.dockerSystem.ContainerCreateAndExposePortsAutomatically(
 		inData.ImageName,
 		inData.ContainerName,
 		inData.RestartPolicy,

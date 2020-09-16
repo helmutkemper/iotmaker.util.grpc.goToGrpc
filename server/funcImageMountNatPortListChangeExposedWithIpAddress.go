@@ -24,18 +24,18 @@ func (el *GRpcServer) ImageMountNatPortListChangeExposedWithIpAddress(
 	var currentPortList []nat.Port
 	var changeToPortList []nat.Port
 
-	err, currentPortList = SupportGRpcArrayPortToArrayNatPot(in.GetCurrentPortList())
+	currentPortList, err = SupportGRpcArrayPortToArrayNatPot(in.GetCurrentPortList())
 	if err != nil {
 		return
 	}
 
-	err, changeToPortList = SupportGRpcArrayPortToArrayNatPot(in.ChangeToPortList)
+	changeToPortList, err = SupportGRpcArrayPortToArrayNatPot(in.ChangeToPortList)
 	if err != nil {
 		return
 	}
 
 	var list nat.PortMap
-	err, list = el.dockerSystem.ImageMountNatPortListChangeExposedWithIpAddress(in.GetID(), in.GetIp(), currentPortList, changeToPortList)
+	list, err = el.dockerSystem.ImageMountNatPortListChangeExposedWithIpAddress(in.GetID(), in.GetIp(), currentPortList, changeToPortList)
 
 	var data []byte
 	data, err = json.Marshal(&list)

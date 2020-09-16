@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/util"
 	"time"
@@ -28,7 +28,7 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 		return
 	}
 
-	var pullStatusChannel = make(chan iotmakerDocker.ContainerPullStatusSendToChannel, 1)
+	var pullStatusChannel = make(chan iotmakerdocker.ContainerPullStatusSendToChannel, 1)
 	var imageChannelID string
 
 	for {
@@ -44,7 +44,7 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 		},
 	)
 
-	go func(c chan iotmakerDocker.ContainerPullStatusSendToChannel, imageChannelID string) {
+	go func(c chan iotmakerdocker.ContainerPullStatusSendToChannel, imageChannelID string) {
 
 		for {
 			select {
@@ -78,9 +78,9 @@ func (el *GRpcServer) ImageBuildFromRemoteServer(
 		serverPath,
 		imageName string,
 		imageTags []string,
-		pullStatusChannel *chan iotmakerDocker.ContainerPullStatusSendToChannel,
+		pullStatusChannel *chan iotmakerdocker.ContainerPullStatusSendToChannel,
 	) {
-		err = el.dockerSystem.ImageBuildFromRemoteServer(
+		_, err = el.dockerSystem.ImageBuildFromRemoteServer(
 			serverPath,
 			imageName,
 			imageTags,

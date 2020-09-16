@@ -22,7 +22,7 @@ func (el *GRpcServer) ContainerFindIdByNameContains(
 
 	var data []byte
 	var list interface{}
-	err, list = el.dockerSystem.ContainerFindIdByNameContains(in.GetName())
+	list, err = el.dockerSystem.ContainerFindIdByNameContains(in.GetName())
 
 	data, err = json.Marshal(&list)
 	if err != nil {

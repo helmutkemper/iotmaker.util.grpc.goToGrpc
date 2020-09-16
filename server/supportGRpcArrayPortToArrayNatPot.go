@@ -5,7 +5,13 @@ import (
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
-func SupportGRpcArrayPortToArrayNatPot(pt []*pb.Port) (err error, ret []nat.Port) {
+func SupportGRpcArrayPortToArrayNatPot(
+	pt []*pb.Port,
+) (
+	ret []nat.Port,
+	err error,
+) {
+
 	ret = make([]nat.Port, 0)
 	for _, p := range pt {
 		var port nat.Port

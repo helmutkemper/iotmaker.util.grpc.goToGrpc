@@ -22,7 +22,7 @@ func (el *GRpcServer) ImageList(
 	}
 
 	var imageList []types.ImageSummary
-	err, imageList = el.dockerSystem.ImageList()
+	imageList, err = el.dockerSystem.ImageList()
 
 	var data []byte
 	data, err = json.Marshal(&imageList)

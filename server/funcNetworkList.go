@@ -23,7 +23,7 @@ func (el *GRpcServer) NetworkList(
 
 	var list []types.NetworkResource
 
-	err, list = el.dockerSystem.NetworkList()
+	list, err = el.dockerSystem.NetworkList()
 	if err != nil {
 		return nil, err
 	}

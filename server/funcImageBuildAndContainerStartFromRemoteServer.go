@@ -8,7 +8,7 @@ import (
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/go-connections/nat"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/util"
 	"time"
@@ -28,7 +28,7 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 		return
 	}
 
-	var pullStatusChannel = make(chan iotmakerDocker.ContainerPullStatusSendToChannel, 1)
+	var pullStatusChannel = make(chan iotmakerdocker.ContainerPullStatusSendToChannel, 1)
 	var imageChannelID string
 	var containerID string
 	var networkConfig *network.NetworkingConfig = nil
@@ -46,7 +46,7 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 		},
 	)
 
-	go func(c chan iotmakerDocker.ContainerPullStatusSendToChannel, imageChannelID string) {
+	go func(c chan iotmakerdocker.ContainerPullStatusSendToChannel, imageChannelID string) {
 
 		for {
 			select {
@@ -84,7 +84,7 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 			return
 		}
 
-		err, networkConfig = networkControl[inData.NetworkName].Generator.GetNext()
+		networkConfig, err = networkControl[inData.NetworkName].Generator.GetNext()
 		if err != nil {
 			err = errors.New("network generator error: " + err.Error())
 			return
@@ -96,14 +96,14 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 		imageName string,
 		imageTags []string,
 		containerName string,
-		restartPolicy iotmakerDocker.RestartPolicy,
+		restartPolicy iotmakerdocker.RestartPolicy,
 		mountVolumes []mount.Mount,
 		containerNetwork *network.NetworkingConfig,
 		currentPort []nat.Port,
 		changeToPort []nat.Port,
-		pullStatusChannel *chan iotmakerDocker.ContainerPullStatusSendToChannel,
+		pullStatusChannel *chan iotmakerdocker.ContainerPullStatusSendToChannel,
 	) {
-		err = el.dockerSystem.ImageBuildFromRemoteServer(
+		_, err = el.dockerSystem.ImageBuildFromRemoteServer(
 			serverPath,
 			imageName,
 			imageTags,
@@ -117,7 +117,7 @@ func (el *GRpcServer) ImageBuildAndContainerStartFromRemoteServer(
 			fmt.Printf("funcImageBuildAndContainerStartFromRemoteServer().error: %v\n", err.Error())
 			return
 		}
-		err, containerID = el.dockerSystem.ContainerCreateAndChangeExposedPort(
+		containerID, err = el.dockerSystem.ContainerCreateAndChangeExposedPort(
 			imageName,
 			containerName,
 			restartPolicy,

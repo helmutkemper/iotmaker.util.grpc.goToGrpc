@@ -21,7 +21,7 @@ func (el *GRpcServer) NetworkFindIdByName(
 
 	var networkID string
 
-	err, networkID = el.dockerSystem.NetworkFindIdByName(
+	networkID, err = el.dockerSystem.NetworkFindIdByName(
 		in.GetName(),
 	)
 	if err != nil {

@@ -31,7 +31,7 @@ func (el *GRpcServer) ContainerStatisticsOneShot(
 	}
 
 	var stat types.Stats
-	err, stat = el.dockerSystem.ContainerStatisticsOneShot(inData.Id)
+	stat, err = el.dockerSystem.ContainerStatisticsOneShot(inData.Id)
 
 	var data []byte
 	data, err = json.Marshal(&stat)

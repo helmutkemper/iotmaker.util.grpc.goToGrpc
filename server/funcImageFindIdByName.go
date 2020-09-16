@@ -20,7 +20,7 @@ func (el *GRpcServer) ImageFindIdByName(
 	}
 
 	var imageID string
-	err, imageID = el.dockerSystem.ImageFindIdByName(in.GetName())
+	imageID, err = el.dockerSystem.ImageFindIdByName(in.GetName())
 	if err != nil {
 		return
 	}

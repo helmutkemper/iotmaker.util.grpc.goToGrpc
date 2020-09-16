@@ -23,7 +23,7 @@ func (el *GRpcServer) ContainerInspect(
 
 	var data []byte
 	var inspect types.ContainerJSON
-	err, inspect = el.dockerSystem.ContainerInspect(in.GetID())
+	inspect, err = el.dockerSystem.ContainerInspect(in.GetID())
 	if err != nil {
 		return nil, err
 	}

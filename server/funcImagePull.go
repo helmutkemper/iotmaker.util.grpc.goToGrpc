@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/util"
 )
@@ -21,10 +21,10 @@ func (el *GRpcServer) ImagePull(
 		return
 	}
 
-	var pullStatusChannel = make(chan iotmakerDocker.ContainerPullStatusSendToChannel, 1)
+	var pullStatusChannel = make(chan iotmakerdocker.ContainerPullStatusSendToChannel, 1)
 	var imageChannelID = util.RandId30()
 
-	go func(c chan iotmakerDocker.ContainerPullStatusSendToChannel, imageChannelID string) {
+	go func(c chan iotmakerdocker.ContainerPullStatusSendToChannel, imageChannelID string) {
 
 		for {
 			select {
@@ -45,7 +45,7 @@ func (el *GRpcServer) ImagePull(
 
 	var imageName, imageID string
 
-	err, imageName, imageID = el.dockerSystem.ImagePull(in.GetName(), &pullStatusChannel)
+	imageName, imageID, err = el.dockerSystem.ImagePull(in.GetName(), &pullStatusChannel)
 
 	response = &pb.ImagePullReply{
 		Name: imageName,

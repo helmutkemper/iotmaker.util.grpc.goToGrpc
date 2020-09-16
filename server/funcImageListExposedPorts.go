@@ -22,7 +22,7 @@ func (el *GRpcServer) ImageListExposedPorts(
 	}
 
 	var portList []nat.Port
-	err, portList = el.dockerSystem.ImageListExposedPorts(in.GetID())
+	portList, err = el.dockerSystem.ImageListExposedPorts(in.GetID())
 
 	var data []byte
 	data, err = json.Marshal(&portList)

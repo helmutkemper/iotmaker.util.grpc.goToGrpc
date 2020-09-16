@@ -7,14 +7,14 @@ import (
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/go-connections/nat"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
 type containerCreateAndChangeExposedPort struct {
 	ImageName     string
 	ContainerName string
-	RestartPolicy iotmakerDocker.RestartPolicy
+	RestartPolicy iotmakerdocker.RestartPolicy
 	MountVolumes  []mount.Mount
 	NetworkName   string
 	CurrentPort   []nat.Port
@@ -24,7 +24,7 @@ type containerCreateAndChangeExposedPort struct {
 type containerCreate struct {
 	ImageName     string
 	ContainerName string
-	RestartPolicy iotmakerDocker.RestartPolicy
+	RestartPolicy iotmakerdocker.RestartPolicy
 	MountVolumes  []mount.Mount
 	NetworkName   string
 	PortList      []nat.Port
@@ -55,7 +55,7 @@ func (el *GRpcServer) ContainerCreateAndChangeExposedPort(
 		return
 	}
 
-	err, containerID = el.dockerSystem.ContainerFindIdByName(inData.ContainerName)
+	containerID, err = el.dockerSystem.ContainerFindIdByName(inData.ContainerName)
 	if err != nil && errors.Is(err, errors.New("container name not found")) {
 		err = errors.New("container find by name error: " + err.Error())
 		return
@@ -75,7 +75,7 @@ func (el *GRpcServer) ContainerCreateAndChangeExposedPort(
 			return
 		}
 
-		err, networkConfig = networkControl[inData.NetworkName].Generator.GetNext()
+		networkConfig, err = networkControl[inData.NetworkName].Generator.GetNext()
 		if err != nil {
 			err = errors.New("network generator error: " + err.Error())
 			return

@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"errors"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
 
@@ -22,7 +22,7 @@ func (el *GRpcServer) NetworkCreate(
 	}
 
 	var networkID string
-	var networkGenerator *iotmakerDocker.NextNetworkAutoConfiguration
+	var networkGenerator *iotmakerdocker.NextNetworkAutoConfiguration
 	var found bool
 
 	_, found = networkControl[in.GetName()]
@@ -31,7 +31,7 @@ func (el *GRpcServer) NetworkCreate(
 		return
 	}
 
-	err, networkID, networkGenerator = el.dockerSystem.NetworkCreate(
+	networkID, networkGenerator, err = el.dockerSystem.NetworkCreate(
 		in.GetName(),
 		SupportStringToNetworkDrive(in.GetNetworkDrive()),
 		in.GetScope(),

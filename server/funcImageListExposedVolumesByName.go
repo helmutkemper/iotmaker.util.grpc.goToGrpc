@@ -20,7 +20,7 @@ func (el *GRpcServer) ImageListExposedVolumesByName(
 	}
 
 	var list []string
-	err, list = el.dockerSystem.ImageListExposedVolumesByName(in.GetName())
+	list, err = el.dockerSystem.ImageListExposedVolumesByName(in.GetName())
 
 	response = &pb.ImageListExposedVolumesByNameReply{
 		List: list,

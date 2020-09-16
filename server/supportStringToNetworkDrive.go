@@ -1,23 +1,21 @@
 package server
 
-import (
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
-)
+import iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 
-func SupportStringToNetworkDrive(str string) (drive iotmakerDocker.NetworkDrive) {
+func SupportStringToNetworkDrive(str string) (drive iotmakerdocker.NetworkDrive) {
 	switch str {
 	case "bridge":
-		drive = iotmakerDocker.KNetworkDriveBridge
+		drive = iotmakerdocker.KNetworkDriveBridge
 	case "host":
-		drive = iotmakerDocker.KNetworkDriveHost
+		drive = iotmakerdocker.KNetworkDriveHost
 	case "overlay":
-		drive = iotmakerDocker.KNetworkDriveOverlay
+		drive = iotmakerdocker.KNetworkDriveOverlay
 	case "macvlan":
-		drive = iotmakerDocker.KNetworkDriveMacVLan
+		drive = iotmakerdocker.KNetworkDriveMacVLan
 	case "none":
-		drive = iotmakerDocker.KNetworkDriveNone
+		drive = iotmakerdocker.KNetworkDriveNone
 	default:
-		drive = iotmakerDocker.KNetworkDriveNone
+		drive = iotmakerdocker.KNetworkDriveNone
 	}
 
 	return

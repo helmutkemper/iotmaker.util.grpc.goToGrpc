@@ -1,9 +1,9 @@
 package server
 
-import iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+import iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 
 type NetworkControl struct {
-	Generator *iotmakerDocker.NextNetworkAutoConfiguration
+	Generator *iotmakerdocker.NextNetworkAutoConfiguration
 	ID        string
 	Name      string
 	Drive     string

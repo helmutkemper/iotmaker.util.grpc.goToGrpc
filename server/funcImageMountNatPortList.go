@@ -22,7 +22,7 @@ func (el *GRpcServer) ImageMountNatPortList(
 	}
 
 	var list nat.PortMap
-	err, list = el.dockerSystem.ImageMountNatPortList(in.GetID())
+	list, err = el.dockerSystem.ImageMountNatPortList(in.GetID())
 
 	var data []byte
 	data, err = json.Marshal(&list)

@@ -2,23 +2,29 @@ package server
 
 import (
 	"errors"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 )
 
-func SupportGRpcToContainerPolicy(value string) (err error, policy iotmakerDocker.RestartPolicy) {
+func SupportGRpcToContainerPolicy(
+	value string,
+) (
+	policy iotmakerdocker.RestartPolicy,
+	err error,
+) {
+
 	switch value {
 	case "no":
-		return nil, iotmakerDocker.KRestartPolicyNo
+		return iotmakerdocker.KRestartPolicyNo, nil
 
 	case "on-failure":
-		return nil, iotmakerDocker.KRestartPolicyOnFailure
+		return iotmakerdocker.KRestartPolicyOnFailure, nil
 
 	case "always":
-		return nil, iotmakerDocker.KRestartPolicyAlways
+		return iotmakerdocker.KRestartPolicyAlways, nil
 
 	case "unless-stopped":
-		return nil, iotmakerDocker.KRestartPolicyUnlessStopped
+		return iotmakerdocker.KRestartPolicyUnlessStopped, nil
 	}
 
-	return errors.New(value + " not implemented"), iotmakerDocker.KRestartPolicyNo
+	return iotmakerdocker.KRestartPolicyNo, errors.New(value + " not implemented")
 }

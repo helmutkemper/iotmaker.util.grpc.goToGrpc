@@ -23,7 +23,7 @@ func (el *GRpcServer) NetworkInspect(
 
 	var inspect types.NetworkResource
 
-	err, inspect = el.dockerSystem.NetworkInspect(in.GetID())
+	inspect, err = el.dockerSystem.NetworkInspect(in.GetID())
 	if err != nil {
 		return nil, err
 	}

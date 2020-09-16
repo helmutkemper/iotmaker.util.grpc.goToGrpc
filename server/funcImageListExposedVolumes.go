@@ -21,7 +21,7 @@ func (el *GRpcServer) ImageListExposedVolumes(
 	}
 
 	var list []string
-	err, list = el.dockerSystem.ImageListExposedVolumes(in.GetID())
+	list, err = el.dockerSystem.ImageListExposedVolumes(in.GetID())
 
 	var data []byte
 	data, err = json.Marshal(&list)

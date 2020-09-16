@@ -23,7 +23,7 @@ func (el *GRpcServer) ContainerInspectByName(
 
 	var inspect types.ContainerJSON
 
-	err, inspect = el.dockerSystem.ContainerInspectByName(in.GetName())
+	inspect, err = el.dockerSystem.ContainerInspectByName(in.GetName())
 	if err != nil {
 		return nil, err
 	}

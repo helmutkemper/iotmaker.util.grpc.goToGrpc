@@ -22,7 +22,7 @@ func (el *GRpcServer) ContainerListAll(
 	}
 
 	var list []types.Container
-	err, list = el.dockerSystem.ContainerListAll()
+	list, err = el.dockerSystem.ContainerListAll()
 
 	var data []byte
 	data, err = json.Marshal(&list)
