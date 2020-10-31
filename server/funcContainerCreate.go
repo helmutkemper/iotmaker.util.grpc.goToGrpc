@@ -4,10 +4,21 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/go-connections/nat"
+	iotmakerdocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 	pb "github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/main/protobuf"
 )
+
+type containerCreate struct {
+	ImageName     string
+	ContainerName string
+	RestartPolicy iotmakerdocker.RestartPolicy
+	MountVolumes  []mount.Mount
+	NetworkName   string
+	PortList      []nat.Port
+}
 
 func (el *GRpcServer) ContainerCreate(
 	ctx context.Context,

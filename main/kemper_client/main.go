@@ -7,7 +7,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/go-connections/nat"
-	iotmakerDocker "github.com/helmutkemper/iotmaker.docker"
+	iotmakerDocker "github.com/helmutkemper/iotmaker.docker/v1.0.0"
 	"github.com/helmutkemper/iotmaker.util.grpc.goToGrpc/server"
 	"html/template"
 	"io/ioutil"
