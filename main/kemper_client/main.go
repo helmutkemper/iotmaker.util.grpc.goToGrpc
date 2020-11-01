@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -54,6 +55,147 @@ type containerCreateAndChangeExposedPort struct {
 	ChangeToPort     []nat.Port
 }
 
+type serverMux struct {
+	http.ServeMux
+}
+
+func (el *serverMux) ToJson(data interface{}, w http.ResponseWriter, r *http.Request) {
+	var skipString, limitString string
+	var skip, limit int64
+	var toOut interface{}
+	var err error
+	var errorList = make([]string, 0)
+	var length int64
+	var output []byte
+	var success = true
+
+	skipString = r.URL.Query().Get("skip")
+	if skipString == "" {
+		skipString = "0"
+	}
+
+	limitString = r.URL.Query().Get("limit")
+	if limitString == "" {
+		limitString = "0"
+	}
+
+	skip, err = strconv.ParseInt(skipString, 10, 64)
+	if err != nil {
+		skip = 0
+		errorList = append(errorList, fmt.Sprintf("query string skip error: %v", err.Error()))
+	}
+	if skip < 0 {
+		skip = 0
+		errorList = append(errorList, fmt.Sprint("query string skip error: skip must be a positive value"))
+	}
+
+	limit, err = strconv.ParseInt(limitString, 10, 64)
+	if err != nil {
+		limit = 0
+		errorList = append(errorList, fmt.Sprintf("query string limit error: %v", err.Error()))
+	}
+	if limit < 0 {
+		limit = 0
+		errorList = append(errorList, fmt.Sprint("query string limit error: limit must be a positive value"))
+	}
+
+	v := reflect.ValueOf(data)
+	switch v.Kind() {
+	case reflect.Slice:
+		length = int64(v.Len())
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = v.Slice(int(skip), int(length)).Interface()
+			v = reflect.ValueOf(toOut)
+			length = length - skip
+		}
+
+		if limit > 0 {
+			if limit > length {
+				toOut = v.Slice(0, int(length)).Interface()
+				//length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = v.Slice(0, int(limit)).Interface()
+				length = limit
+			}
+		}
+	}
+
+	toJsonOut := Output{
+		Length:  length,
+		Limit:   limit,
+		Skip:    skip,
+		Success: success,
+		Error:   errorList,
+		Data:    toOut,
+	}
+
+	output, err = json.Marshal(&toJsonOut)
+	if err != nil {
+		toJsonOut.Length = 0
+		toJsonOut.Skip = 0
+		toJsonOut.Limit = 0
+		toJsonOut.Success = false
+		toJsonOut.Data = make([]int, 0)
+		toJsonOut.Error = append(toJsonOut.Error, fmt.Sprintf("json marshal error: %v", err.Error()))
+
+		output, err = json.Marshal(&toJsonOut)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	_, err = w.Write(output)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (el *serverMux) ImageFindIdByName(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var list []map[string]string
+	var image *pb.ImageFindIdByNameReply
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	image, err = GRpcClient.ImageFindIdByName(
+		ctx,
+		&pb.ImageFindIdByNameRequest{
+			Name: r.URL.Query().Get("Name"),
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	list = []map[string]string{
+		{
+			"ID": image.ID,
+		},
+		{
+			"ID": "1",
+		},
+		{
+			"ID": "2",
+		},
+		{
+			"ID": "3",
+		},
+		{
+			"ID": "4",
+		},
+	}
+
+	el.ToJson(list, w, r)
+}
+
 func main() {
 	var err error
 
@@ -65,7 +207,7 @@ func main() {
 	defer conn.Close()
 	GRpcClient = pb.NewDockerServerClient(conn)
 
-	mux := http.NewServeMux()
+	mux := &serverMux{}
 
 	fs := http.FileServer(http.Dir("./static"))
 	mux.Handle("/static/", http.StripPrefix("/static", fs))
@@ -95,7 +237,7 @@ func main() {
 	mux.HandleFunc("/imageBuildFromRemoteServer", ImageBuildFromRemoteServer)
 	mux.HandleFunc("/imageBuildAndContainerStartFromRemoteServer", ImageBuildAndContainerStartFromRemoteServer)
 	mux.HandleFunc("/imageBuildFromRemoteServerStatus", ImageBuildFromRemoteServerStatus)
-	//mux.HandleFunc("/imageFindIdByName", ImageFindIdByName)
+	mux.HandleFunc("/imageFindIdByName", mux.ImageFindIdByName)
 	//mux.HandleFunc("/imageListExposedPorts", ImageListExposedPorts)
 	//mux.HandleFunc("/imageListExposedPortsByName", ImageListExposedPortsByName)
 	//mux.HandleFunc("/imageListExposedVolumes", ImageListExposedVolumes)
@@ -566,6 +708,38 @@ func ToJson(dataType interface{}, data interface{}, w http.ResponseWriter, r *ht
 			}
 		}
 
+	case pb.ImageFindIdByNameReply:
+		var list = []map[string]string{
+			{
+				"ID": data.(*pb.ImageFindIdByNameReply).ID,
+			},
+		}
+		toOut = list
+		length = 1
+
+		if skip >= length {
+			toOut = make([]int, 0)
+			length = 0
+			errorList = append(errorList, "skip overflow")
+			success = false
+		} else {
+			toOut = toOut.([]map[string]string)[skip:]
+			length = int64(len(toOut.([]map[string]string)))
+		}
+
+		if length > 0 {
+			if limit > length && limit > 0 {
+				toOut = toOut.([]map[string]string)[:length]
+				length = int64(len(toOut.([]map[string]string)))
+			} else if limit > 0 {
+				toOut = toOut.([]map[string]string)[:limit]
+				length = int64(len(toOut.([]map[string]string)))
+			} else {
+				toOut = toOut.([]map[string]string)
+				length = int64(len(toOut.([]map[string]string)))
+			}
+		}
+
 	case pb.ImageOrContainerBuildPullStatusReply:
 		var list = []string{
 			data.(*pb.ImageOrContainerBuildPullStatusReply).String(),
@@ -980,6 +1154,39 @@ func ImageBuildFromRemoteServerStatus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ToJson(pb.ImageOrContainerBuildPullStatusRequest{}, status, w, r)
+}
+
+func ImageFindIdByName(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var list []map[string]string
+	var image *pb.ImageFindIdByNameReply
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	image, err = GRpcClient.ImageFindIdByName(
+		ctx,
+		&pb.ImageFindIdByNameRequest{
+			Name: r.URL.Query().Get("Name"),
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	list = []map[string]string{
+		{
+			"ID": image.ID,
+		},
+	}
+
+	var output []byte
+	output, err = json.Marshal(&list)
+	_, err = w.Write(output)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func ContainerStopAndRemove(w http.ResponseWriter, r *http.Request) {
