@@ -204,7 +204,7 @@ func (el *serverMux) NetworkList(w http.ResponseWriter, r *http.Request) {
 
 func (el *serverMux) ImageFindIdByName(w http.ResponseWriter, r *http.Request) {
 	var err error
-	var output []map[string]string
+	var output []map[string]interface{}
 	var image *pb.ImageFindIdByNameReply
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
@@ -221,13 +221,108 @@ func (el *serverMux) ImageFindIdByName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	output = []map[string]string{
+	output = []map[string]interface{}{
 		{
 			"ID": image.ID,
 		},
 	}
 
 	el.ToJson(output, nil, w, r)
+}
+
+func (el *serverMux) ContainerCreate(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var output []map[string]interface{}
+	var container *pb.ContainerCreateReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerCreate(
+		ctx,
+		&pb.ContainerCreateRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	output = []map[string]interface{}{
+		{
+			"ID": container.ID,
+		},
+	}
+
+	el.ToJson(output, nil, w, r)
+}
+
+func (el *serverMux) ContainerStatisticsOneShot(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var statsRet = make([]types.Stats, 1)
+	var container *pb.ContainerStatisticsOneShotReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*12000)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerStatisticsOneShot(
+		ctx,
+		&pb.ContainerStatisticsOneShotRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	err = json.Unmarshal(container.Data, &statsRet[0])
+	el.ToJson(statsRet, err, w, r)
+}
+
+func (el *serverMux) ContainerStatisticsOneShotByName(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var statsRet = make([]types.Stats, 1)
+	var container *pb.ContainerStatisticsOneShotReply
+	var body []byte
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*12000)
+	defer cancel()
+
+	body, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("body.err: %v", err.Error())
+		return
+	}
+
+	container, err = GRpcClient.ContainerStatisticsOneShotByName(
+		ctx,
+		&pb.ContainerStatisticsOneShotByNameRequest{
+			Data: body,
+		},
+	)
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	err = json.Unmarshal(container.Data, &statsRet[0])
+	el.ToJson(statsRet, err, w, r)
 }
 
 func main() {
@@ -247,9 +342,9 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static", fs))
 	mux.HandleFunc("/networkListAll", mux.NetworkList)
 	mux.HandleFunc("/imageListAll", mux.ImageList)
-	mux.HandleFunc("/containerCreate", ContainerCreate)
-	mux.HandleFunc("/containerStatisticsOneShot", ContainerStatisticsOneShot)
-	mux.HandleFunc("/containerStatisticsOneShotByName", ContainerStatisticsOneShotByName)
+	mux.HandleFunc("/containerCreate", mux.ContainerCreate)
+	mux.HandleFunc("/containerStatisticsOneShot", mux.ContainerStatisticsOneShot)
+	mux.HandleFunc("/containerStatisticsOneShotByName", mux.ContainerStatisticsOneShotByName)
 	mux.HandleFunc("/containerCreateAndStart", ContainerCreateAndStart)
 	mux.HandleFunc("/containerCreateAndChangeExposedPort", ContainerCreateAndChangeExposedPort)
 	mux.HandleFunc("/containerCreateChangeExposedPortAndStart", ContainerCreateChangeExposedPortAndStart)
@@ -1353,33 +1448,6 @@ func ContainerCreateAndChangeExposedPort(w http.ResponseWriter, r *http.Request)
 	ToJson(pb.ContainerCreateAndChangeExposedPortReply{}, container, w, r)
 }
 
-func ContainerCreate(w http.ResponseWriter, r *http.Request) {
-	var err error
-	var container *pb.ContainerCreateReply
-	var body []byte
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-	defer cancel()
-
-	body, err = ioutil.ReadAll(r.Body)
-	if err != nil {
-		fmt.Printf("body.err: %v", err.Error())
-		return
-	}
-
-	container, err = GRpcClient.ContainerCreate(
-		ctx,
-		&pb.ContainerCreateRequest{
-			Data: body,
-		},
-	)
-	if err != nil {
-		fmt.Printf("could not greet: %v", err)
-		return
-	}
-	ToJson(pb.ContainerCreateReply{}, container, w, r)
-}
-
 func ContainerCreateAndStart(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var container *pb.ContainerCreateAndStartReply
@@ -1405,60 +1473,6 @@ func ContainerCreateAndStart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ToJson(pb.ContainerCreateAndStartReply{}, container, w, r)
-}
-
-func ContainerStatisticsOneShot(w http.ResponseWriter, r *http.Request) {
-	var err error
-	var container *pb.ContainerStatisticsOneShotReply
-	var body []byte
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*12000)
-	defer cancel()
-
-	body, err = ioutil.ReadAll(r.Body)
-	if err != nil {
-		fmt.Printf("body.err: %v", err.Error())
-		return
-	}
-
-	container, err = GRpcClient.ContainerStatisticsOneShot(
-		ctx,
-		&pb.ContainerStatisticsOneShotRequest{
-			Data: body,
-		},
-	)
-	if err != nil {
-		fmt.Printf("could not greet: %v", err)
-		return
-	}
-	ToJson(pb.ContainerStatisticsOneShotReply{}, container, w, r)
-}
-
-func ContainerStatisticsOneShotByName(w http.ResponseWriter, r *http.Request) {
-	var err error
-	var container *pb.ContainerStatisticsOneShotReply
-	var body []byte
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*12000)
-	defer cancel()
-
-	body, err = ioutil.ReadAll(r.Body)
-	if err != nil {
-		fmt.Printf("body.err: %v", err.Error())
-		return
-	}
-
-	container, err = GRpcClient.ContainerStatisticsOneShotByName(
-		ctx,
-		&pb.ContainerStatisticsOneShotByNameRequest{
-			Data: body,
-		},
-	)
-	if err != nil {
-		fmt.Printf("could not greet: %v", err)
-		return
-	}
-	ToJson(pb.ContainerStatisticsOneShotReply{}, container, w, r)
 }
 
 func ContainerCreateChangeExposedPortAndStart(w http.ResponseWriter, r *http.Request) {
