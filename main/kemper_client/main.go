@@ -59,11 +59,10 @@ type serverMux struct {
 	http.ServeMux
 }
 
-func (el *serverMux) ToJson(data interface{}, w http.ResponseWriter, r *http.Request) {
+func (el *serverMux) ToJson(data interface{}, err error, w http.ResponseWriter, r *http.Request) {
 	var skipString, limitString string
 	var skip, limit int64
 	var toOut interface{}
-	var err error
 	var errorList = make([]string, 0)
 	var length int64
 	var output []byte
@@ -135,20 +134,32 @@ func (el *serverMux) ToJson(data interface{}, w http.ResponseWriter, r *http.Req
 		Data:    toOut,
 	}
 
-	output, err = json.Marshal(&toJsonOut)
 	if err != nil {
-		toJsonOut.Length = 0
-		toJsonOut.Skip = 0
-		toJsonOut.Limit = 0
-		toJsonOut.Success = false
-		toJsonOut.Data = make([]int, 0)
-		toJsonOut.Error = append(toJsonOut.Error, fmt.Sprintf("json marshal error: %v", err.Error()))
-
+		length = 0
+		limit = 0
+		skip = 0
+		success = false
+		errorList = append(errorList, err.Error())
+		toOut = make([]int, 0)
+	} else {
 		output, err = json.Marshal(&toJsonOut)
 		if err != nil {
-			panic(err)
+			toJsonOut.Length = 0
+			toJsonOut.Skip = 0
+			toJsonOut.Limit = 0
+			toJsonOut.Success = false
+			toJsonOut.Data = make([]int, 0)
+			toJsonOut.Error = append(toJsonOut.Error, fmt.Sprintf("json marshal error: %v", err.Error()))
+
+			output, err = json.Marshal(&toJsonOut)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
+
+	w.Header().
+		Add("Content-Type", "application/json")
 
 	_, err = w.Write(output)
 	if err != nil {
@@ -156,9 +167,44 @@ func (el *serverMux) ToJson(data interface{}, w http.ResponseWriter, r *http.Req
 	}
 }
 
+func (el *serverMux) ImageList(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var list *pb.ImageListReply
+	var output []types.ImageSummary
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	list, err = GRpcClient.ImageList(ctx, &pb.Empty{})
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	err = json.Unmarshal(list.Data, &output)
+
+	el.ToJson(output, err, w, r)
+}
+
+func (el *serverMux) NetworkList(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var output *pb.NetworkListReply
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	output, err = GRpcClient.NetworkList(ctx, &pb.Empty{})
+	if err != nil {
+		fmt.Printf("could not greet: %v", err)
+		return
+	}
+
+	var list []types.NetworkResource
+	err = json.Unmarshal(output.Data, &list)
+	el.ToJson(output, err, w, r)
+}
+
 func (el *serverMux) ImageFindIdByName(w http.ResponseWriter, r *http.Request) {
 	var err error
-	var list []map[string]string
+	var output []map[string]string
 	var image *pb.ImageFindIdByNameReply
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
@@ -175,25 +221,13 @@ func (el *serverMux) ImageFindIdByName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	list = []map[string]string{
+	output = []map[string]string{
 		{
 			"ID": image.ID,
 		},
-		{
-			"ID": "1",
-		},
-		{
-			"ID": "2",
-		},
-		{
-			"ID": "3",
-		},
-		{
-			"ID": "4",
-		},
 	}
 
-	el.ToJson(list, w, r)
+	el.ToJson(output, nil, w, r)
 }
 
 func main() {
@@ -211,9 +245,8 @@ func main() {
 
 	fs := http.FileServer(http.Dir("./static"))
 	mux.Handle("/static/", http.StripPrefix("/static", fs))
-	mux.HandleFunc("/", serveTemplate)
-	mux.HandleFunc("/networkListAll", NetworkList)
-	mux.HandleFunc("/imageListAll", ImageList)
+	mux.HandleFunc("/networkListAll", mux.NetworkList)
+	mux.HandleFunc("/imageListAll", mux.ImageList)
 	mux.HandleFunc("/containerCreate", ContainerCreate)
 	mux.HandleFunc("/containerStatisticsOneShot", ContainerStatisticsOneShot)
 	mux.HandleFunc("/containerStatisticsOneShotByName", ContainerStatisticsOneShotByName)
@@ -1678,21 +1711,6 @@ func ImageList(w http.ResponseWriter, r *http.Request) {
 	ToJson(pb.ImageListReply{}, list, w, r)
 }
 
-func NetworkList(w http.ResponseWriter, r *http.Request) {
-	var err error
-	var list *pb.NetworkListReply
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-	defer cancel()
-	list, err = GRpcClient.NetworkList(ctx, &pb.Empty{})
-	if err != nil {
-		fmt.Printf("could not greet: %v", err)
-		return
-	}
-
-	ToJson(pb.NetworkListReply{}, list, w, r)
-}
-
 func HeaderWrite(w http.ResponseWriter, headerType string) {
 	w.Header().Set("Content-Type", headerType)
 	w.Header().Add("Expires", "Mon, 26 Jul 1997 05:00:00 GMT")
@@ -1739,16 +1757,4 @@ func TemplateParser(w http.ResponseWriter, name string, data interface{}) (err e
 
 	err = tmpl.ExecuteTemplate(w, name, data)
 	return
-}
-
-func serveTemplate(w http.ResponseWriter, r *http.Request) {
-	return
-	_ = r
-
-	var err error
-	HeaderWrite(w, KHeaderTypeHtmlUtf8)
-	err = TemplateParser(w, "page", nil)
-	if err != nil {
-		panic(err)
-	}
 }
